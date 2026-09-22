@@ -820,10 +820,6 @@ public abstract class EvolutionSimulation
 		{
 			playerOpponent.activateSpellCounters() ;
 			playerOpponent.activateCounters() ;
-			if (playerOpponent.getAttWindow().isOpen())
-			{
-				CreatureType.ATT_WINDOW.display(playerOpponent.getType()) ;
-			}
 		}
 
 		Animation.playAll() ;

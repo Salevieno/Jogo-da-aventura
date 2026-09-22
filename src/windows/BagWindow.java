@@ -66,7 +66,7 @@ public class BagWindow extends GameWindow
 	private static final Image TAB_SELECTED_IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "BagTabSelected.png") ;    
     private static final Dimension TAB_SIZE = Util.getSize(TAB_IMAGE) ;
     private static final Dimension SLOT_SIZE = Util.getSize(SLOT_IMAGE) ;
-
+// TODO ajustar a navegação: permitir clique em outro menu mesmo quando um menu já está selecionado e não abrir menu já usando item
     public BagWindow()
 	{
     	super("Mochila", Screen.getMe().pos(0.28, 0.4), IMAGE, 2, 10, 0, 0) ;

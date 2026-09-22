@@ -46,7 +46,7 @@ public class Creature extends LiveBeing
 
  	public Creature(CreatureType CT, Point2D.Double pos)
  	{
- 		super(new PersonalAttributes(CT.getPA()), new BattleAttributes(CT.getBA()), CT.getMovingAnimations(), CreatureType.ATT_WINDOW) ;
+ 		super(new PersonalAttributes(CT.getPA()), new BattleAttributes(CT.getBA()), CT.getMovingAnimations(), CT.getAttributesWindow()) ;
 		
 		this.type = CT ;
 		this.name = CT.getName();

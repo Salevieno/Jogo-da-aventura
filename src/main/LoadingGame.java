@@ -144,7 +144,7 @@ public abstract class LoadingGame
 				return;
 
 			case 4:
-				CreatureData.create() ;
+				CreatureData.create(Game.getDifficultLevel()) ;
 				logInitializationTime("creature types", initialStepLoadingTime);
 				return;
 

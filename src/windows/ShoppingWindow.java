@@ -5,14 +5,17 @@ import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Set;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import graphics.Align;
 import graphics.Scale;
 import items.Item;
 import liveBeings.Player;
 import main.GamePanel;
+import main.GameTimer;
 import main.ImageLoader;
 import main.Log;
 import main.Palette;
@@ -24,8 +27,10 @@ import utilities.Util;
 
 public class ShoppingWindow extends GameWindow
 {
-	private List<Item> itemsForSale ;
-	private List<Item> itemsOnPage ;
+	private final Map<Item, Integer> maxStock ;
+    private GameTimer renewStockTimer ;
+	private Map<Item, Integer> stock ;
+	private Map<Item, Integer> itemsOnPage ;
 	private boolean buyMode ; // TODO fazer venda funcionar no shopping
     private final Point titlePos ;
 	private final List<Point> itemPos ;    
@@ -33,18 +38,16 @@ public class ShoppingWindow extends GameWindow
 	private final List<Point> pricePos ;
     private final List<Point> coinPos ;
 	private final ShopBag shopBag ;
+    private final int renewStockDuration ;
 
+    private static final int QTD_ITEMS_ON_STOCK = 12 ;
 	private static final int MAX_ITEMS_PER_PAGE = 10 ;
     private static final Dimension ITEM_HOVER_AREA = new Dimension(100, 10) ;
 	private static final Image IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "Shopping.png") ;
 	
-	public ShoppingWindow(List<Item> itemsForSale)
+	public ShoppingWindow(Map<Item, Integer> maxStock)
 	{
-		super("Shopping", Screen.getMe().pos(0.4, 0.2), IMAGE, 1, 1, Math.min(itemsForSale.size(), MAX_ITEMS_PER_PAGE), calcNumberPages(itemsForSale.size())) ;
-		this.itemsForSale = itemsForSale ;
-		this.itemsOnPage = calcItemsOnPage() ;
-		this.buyMode = true ;
-
+		super("Shopping", Screen.getMe().pos(0.4, 0.2), IMAGE, 1, 1, Math.min(maxStock.size(), MAX_ITEMS_PER_PAGE), calcNumberPages(maxStock.size())) ;
         this.titlePos = Util.translate(topLeftPos, size.width / 2, 16) ;
         this.itemPos = new ArrayList<>() ;
         this.namePos = new ArrayList<>() ;
@@ -59,6 +62,13 @@ public class ShoppingWindow extends GameWindow
         }
 
         this.shopBag = new ShopBag(Util.translate(topLeftPos, 300, 200)) ;
+		this.maxStock = maxStock ;
+        this.renewStockDuration = 10 ;
+        this.stock = calcNewStock();
+		this.itemsOnPage = calcItemsOnPage() ;
+		this.buyMode = true ;
+        this.renewStockTimer = new GameTimer(renewStockDuration) ;
+        this.renewStockTimer.start();
 	}
 
     protected void onOpen()
@@ -66,12 +76,62 @@ public class ShoppingWindow extends GameWindow
         
     }
 
+    private Map<Item, Integer> calcNewStock()
+    {
+        if (stock == null)
+        {
+            stock = new LinkedHashMap<>() ;
+        }
+
+        Map<Item, Integer> newStock = new LinkedHashMap<>();
+
+        for (Item item : stock.keySet())
+        {
+            if (maxStock.containsKey(item))
+            {
+                newStock.put(item, maxStock.get(item));
+            }
+        }
+
+        List<Item> availableItems = new ArrayList<>(maxStock.keySet());
+        availableItems.removeAll(newStock.keySet());
+
+        int itemsToAdd = Math.min(
+            QTD_ITEMS_ON_STOCK - newStock.size(),
+            availableItems.size()
+        );
+
+        for (int i = 0; i < itemsToAdd; i++)
+        {
+            int itemIndex = Util.randomInt(0, availableItems.size() - 1);
+            Item item = availableItems.remove(itemIndex);
+            newStock.put(item, maxStock.get(item));
+        }
+
+        return newStock;
+    }
+
+    public void update()
+    {
+        if (!renewStockTimer.hasFinished() || !buyMode) { return ;}
+
+        stock = calcNewStock();
+        updateNumberPages();
+        updatePage();
+        renewStockTimer.restart();
+    }
+
 	public void setBuyMode(boolean buyMode) { this.buyMode = buyMode ;}
 	
 	private Item selectedItem()
     {
-        if (item + page * MAX_ITEMS_PER_PAGE <= -1) { return null ;}
-        return itemsForSale.get(item + page * MAX_ITEMS_PER_PAGE) ;
+        int index = item + page * MAX_ITEMS_PER_PAGE ;
+
+        if (index <= -1) { return null ;}
+        if (stock.size() <= 0) { return null ;}
+
+        List<Item> items = new ArrayList<>(stock.keySet());
+        return items.get(index) ;
     }
 	
     public void openShopBag()
@@ -86,15 +146,14 @@ public class ShoppingWindow extends GameWindow
 
 	public void setIemsForSellingMode(BagWindow bag)
 	{
-		Set<Item> newItems = bag.getAllItems().keySet();
-		itemsForSale = new ArrayList<>(newItems) ;
+		stock = bag.getAllItems() ;
 		updateNumberPages() ;
 		updatePage() ;
 	}
 	
 	private static int calcNumberPages(int numberItems) { return (int) Math.ceil(numberItems / (double)MAX_ITEMS_PER_PAGE) ;}
 	
-	private void updateNumberPages() { numberPages = calcNumberPages(itemsForSale.size()) ;}
+	private void updateNumberPages() { numberPages = calcNumberPages(stock.size()) ;}
 	
 	public void navigate(String action)
 	{
@@ -153,7 +212,7 @@ public class ShoppingWindow extends GameWindow
     // TODO mover para shopBag
 	private void sellItemFromBag(BagWindow bag)
 	{
-		if (itemsForSale == null || itemsForSale.isEmpty()) { return ;}
+		if (stock == null || stock.isEmpty()) { return ;}
 
 		Item selectedItem = selectedItem() ;
 
@@ -164,17 +223,24 @@ public class ShoppingWindow extends GameWindow
 		setIemsForSellingMode(bag) ;
 	}
 	
-	private List<Item> calcItemsOnPage()
+	private Map<Item, Integer> calcItemsOnPage()
 	{
-		if (itemsForSale.size() <= MAX_ITEMS_PER_PAGE)
+		if (stock.size() <= MAX_ITEMS_PER_PAGE)
 		{
-			return itemsForSale ;
+			return stock ;
 		}
 		
 		int firstItemID = page * MAX_ITEMS_PER_PAGE ;
-		int lastItemID = Math.min(firstItemID + MAX_ITEMS_PER_PAGE, itemsForSale.size()) ;
 		
-		return itemsForSale.subList(firstItemID, lastItemID) ;		
+		return stock.entrySet().stream()
+                                .skip(firstItemID)
+                                .limit(MAX_ITEMS_PER_PAGE)
+                                .collect(Collectors.toMap(
+                                    Map.Entry::getKey,
+                                    Map.Entry::getValue,
+                                    (a, b) -> a,
+                                    LinkedHashMap::new
+                                )) ;		
 	}
 	
 	public void display(Point mousePos)
@@ -182,19 +248,25 @@ public class ShoppingWindow extends GameWindow
 		GamePanel.getDP().drawImage(image, topLeftPos, Scale.unit, Align.topLeft, stdOpacity) ;		
 		GamePanel.getDP().drawText(titlePos, Align.center, name, TITLE_FONT, Palette.colors[0]) ;				
 
-		for (int i = 0 ; i <= itemsOnPage.size() - 1 ; i += 1)
+        int i = 0 ;
+        for (Map.Entry<Item, Integer> entry : itemsOnPage.entrySet())
         {
-			Item bagItem = itemsOnPage.get(i) ;
-            bagItem.displayInSlot(itemPos.get(i));
-            
+            Item bagItem = entry.getKey();
+
+            bagItem.displayInSlot(itemPos.get(i));            
 			String qtdItem = buyMode ? "" : "" ; // TODO pegar bag e mostrar qtos itens tem
 			Color itemColor = this.item == i ? SELECTED_COLOR : STD_COLOR ;
 			GamePanel.getDP().drawText(namePos.get(i), Align.centerLeft, bagItem.getName() + qtdItem, STD_FONT, itemColor) ;            
 			GamePanel.getDP().drawText(pricePos.get(i), Align.centerRight, String.valueOf(bagItem.getPrice()), STD_FONT, Palette.colors[14]) ;
 			GamePanel.getDP().drawImage(SharedImages.getCoinImg(), coinPos.get(i), Align.center) ;
-		}
+            i += 1 ;
+        }
 
-        itemsOnPage.get(this.item).displayInfo(Util.translate(topLeftPos, -10, 0), Align.topRight) ;
+        Item selectedItem = selectedItem() ;
+        if (selectedItem != null)
+        {
+            selectedItem.displayInfo(Util.translate(topLeftPos, -10, 0), Align.topRight) ;
+        }
 
 		shopBag.display() ;
 		

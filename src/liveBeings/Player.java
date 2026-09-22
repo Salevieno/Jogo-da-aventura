@@ -1729,8 +1729,7 @@ public class Player extends LiveBeing
 		{
 			displayDrunk() ;
 		}
-		// TODO this should be the return of is defending
-		if (!battleActionCounter.hasFinished() && AtkTypes.defense.equals(getCurrentAtkType()))
+		if (isDefending())
 		{
 			displayDefending() ;
 		}

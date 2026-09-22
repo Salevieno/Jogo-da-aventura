@@ -33,6 +33,8 @@ public class CreatureAttributesWindow extends AttributesWindow
 	private final Point critPos ;
 	private final Font namefont ;
 	private final Font font ;
+    private CreatureType creatureType ;
+
 	public CreatureAttributesWindow()
 	{
 		super(ImageLoader.loadImage(Path.WINDOWS_IMG + "CreatureAttWindow.png"), 1, Screen.getMe().pos(0.4, 0.2));
@@ -50,11 +52,12 @@ public class CreatureAttributesWindow extends AttributesWindow
 	    this.critPos = Util.translate(initialAttPos, 0, 71) ;
         this.namefont = new Font(Game.getMainFontName(), Font.BOLD, 13) ;
         this.font = new Font(Game.getMainFontName(), Font.BOLD, 11) ;
+        this.creatureType = null ;
 	}
 
     protected void onOpen()
     {
-        
+        this.creatureType = Game.getPlayer().getOpponent().getType() ;
     }
 
     public void act(Player player, Point mousePos)
@@ -70,7 +73,7 @@ public class CreatureAttributesWindow extends AttributesWindow
     {
     }
 
-	public void display(CreatureType creatureType)
+	public void display()
 	{
 		GamePanel.getDP().drawImage(image, topLeftPos, Align.topLeft) ;
 

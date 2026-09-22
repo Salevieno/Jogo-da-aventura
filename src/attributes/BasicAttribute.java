@@ -40,9 +40,13 @@ public class BasicAttribute extends LiveBeingAttribute
 	public void decTotalValue(int amount)
 	{
 		if (amount == 0) { return ;}
-		if (amount < 0) {Log.warn("tentando usar método decTotalValue com valor negativo") ; return ;}
+		if (amount < 0) { Log.warn("tentando usar método decTotalValue com valor negativo") ; return ;}
 		
-		if (Math.abs(amount) <= bonus) { bonus += -amount ; return ;}
+		if (Math.abs(amount) <= bonus)
+        {
+            bonus += -amount ;
+            return ;
+        }
 		
 		currentValue = (int) Math.max(currentValue - Math.abs(amount - bonus), 0) ;
 		bonus = 0 ;

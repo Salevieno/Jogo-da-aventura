@@ -5,9 +5,7 @@ import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Point;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import graphics.Align;
 import graphics.UtilAlignment;
@@ -40,11 +38,6 @@ public abstract class Item
 		this.price = price ;
 		this.dropChance = dropChance ;
 		ALL.add(this) ;
-	}
-
-	public static List<Item> getItems(int[] itemIDs)
-	{
-		return Arrays.stream(itemIDs).mapToObj(itemID -> ALL.get(itemID)).collect(Collectors.toList());
 	}
 	
 	public int getId() { return id ;}

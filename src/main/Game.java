@@ -66,7 +66,7 @@ public class Game
 	private double dt ;	
 	private Player player;
 	private Pet pet;
-	private int difficultLevel ; // TODO use
+	private double difficultLevel ;
 	private int saveSlotInUse ;	
 	private GameTimer dayTimer ;
 	private final Map<TextCategories, String[]> allText ;	
@@ -92,7 +92,7 @@ public class Game
 		this.settings = new Settings(true, true, false, 1, 0) ;
 		this.player = new Player("", "", 1);
 		this.player.setPos(Screen.getMe().getCenterAsDouble());
-		this.difficultLevel = 0;
+		this.difficultLevel = 0.7;
 		this.saveSlotInUse = -1;
 		this.state = GameStates.loading;
 		this.dayTimer = new GameTimer(DAY_DURATION);
@@ -114,7 +114,8 @@ public class Game
 	public static List<String> getArrowKeys() { return ARROW_KEYS ;}
 	public static boolean getShouldRepaint() { return game.shouldRepaint ;}
 	public static Map<TextCategories, String[]> getAllText() { return game.allText ;}
-	public static void setDifficultLevel(int difficultLevel) { game.difficultLevel = difficultLevel ;}
+    public static double getDifficultLevel() { return game.difficultLevel ;}
+	public static void setDifficultLevel(double difficultLevel) { game.difficultLevel = difficultLevel ;}
 	public static int getSaveSlotInUse() { return game.saveSlotInUse ;}
 	public static void setSaveSlotInUse(int newSaveSlotInUse) { game.saveSlotInUse = newSaveSlotInUse ;}
 	public static void setPlayer(Player newPlayer) { game.player = newPlayer ;}

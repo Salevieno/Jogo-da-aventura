@@ -36,14 +36,13 @@ public abstract class Opening
     private static List<GameButton> loadSlotButtons = new ArrayList<>() ;
 	private static Player[] players ;
     private static String[] stepMessage ;
-    private static String[] jobDescriptionPtBr ;
-    private static String[] jobDescriptionEn ;
+    private static String[] jobDescription ;
     private static int step = 0;
     private static boolean newGame = true ;
     private static boolean isOver = false ;
     
     private static String chosenName ;
-    private static int difficultLevel ;
+    private static double difficultLevel ;
     private static String chosenSex ;
     private static int chosenJob ;
 	private static LiveInput liveInput = new LiveInput() ;	
@@ -73,9 +72,9 @@ public abstract class Opening
 		ButtonFunction confirmNameAction = () -> {chosenName = liveInput.getText() ; advanceStep() ;} ;
 		ButtonFunction maleAction = () -> { chosenSex = "M" ; advanceStep() ;} ;
 		ButtonFunction femaleAction = () -> { chosenSex = "F" ; advanceStep() ;} ;
-		ButtonFunction easyAction = () -> { difficultLevel = 0 ; advanceStep() ;} ;
-		ButtonFunction mediumAction = () -> { difficultLevel = 1 ; advanceStep() ;} ;
-		ButtonFunction hardAction = () -> { difficultLevel = 2 ; advanceStep() ;} ;
+		ButtonFunction easyAction = () -> { difficultLevel = 0.3 ; advanceStep() ;} ;
+		ButtonFunction mediumAction = () -> { difficultLevel = 0.7 ; advanceStep() ;} ;
+		ButtonFunction hardAction = () -> { difficultLevel = 1.0 ; advanceStep() ;} ;
 		ButtonFunction knightAction = () -> { chosenJob = 0 ; advanceStep() ;} ;
 		ButtonFunction mageAction = () -> { chosenJob = 1 ; advanceStep() ;} ;
 		ButtonFunction archerAction = () -> { chosenJob = 2 ; advanceStep() ;} ;
@@ -127,15 +126,15 @@ public abstract class Opening
     	buttons.get(1).activate() ;
     	
     	stepMessage = new String[] {"", "Qual o seu nome?", "", "", "", ""} ;
-    	jobDescriptionEn = new String[]
-		{
-			"Knights are powerful melee warriors. They have great attack, power and vitality and are the strongest warriors in the realm.",
-		    "Mages have the greatest magical power. They control the elements and can use supernatural powers to manipulate magic and life.",
-		    "Archers are specialized in distance fighting. They use physical power combined with the power of the elements.",
-		    "Animals live in harmony with nature and can enjoy its powers. They have great power over life and are incredibly agile.",
-		    "Thieves are the fastest in the whole realm. They brutally attack any enemy that crosses their way, looking for power and wealth."	
-		};
-    	jobDescriptionPtBr = new String[]
+    	// jobDescriptionEn = new String[]
+		// {
+		// 	"Knights are powerful melee warriors. They have great attack, power and vitality and are the strongest warriors in the realm.",
+		//     "Mages have the greatest magical power. They control the elements and can use supernatural powers to manipulate magic and life.",
+		//     "Archers are specialized in distance fighting. They use physical power combined with the power of the elements.",
+		//     "Animals live in harmony with nature and can enjoy its powers. They have great power over life and are incredibly agile.",
+		//     "Thieves are the fastest in the whole realm. They brutally attack any enemy that crosses their way, looking for power and wealth."	
+		// };
+    	jobDescription = new String[]
 		{
 			"Cavaleiros são poderosos guerreiros corpo-a-corpo. Eles tem grande ataque, poder e vitalidade e são os guerreiros mais fortes do reino.",
 		    "Magos tem o maior poder mágico. Eles controlam os elementos e podem usar poderes sobrenaturais para manipular a magia e a vida.",
@@ -147,7 +146,7 @@ public abstract class Opening
 	}
 
 	public static Player getChosenPlayer() { return new Player(chosenName, chosenSex, chosenJob) ;}
-	public static int getChosenDifficultLevel() { return difficultLevel ;}
+	public static double getChosenDifficultLevel() { return difficultLevel ;}
 	public static SpriteAnimation getOpeningGif() { return openingAni ;}
 
 	private static void switchToLoadGameScreen()
@@ -304,7 +303,7 @@ public abstract class Opening
 			Point rectPos = Screen.getMe().pos(0.02 + i * 0.2, 0.4) ;
 			Point textPos = Util.translate(rectPos, padding, padding) ;
 			GamePanel.getDP().drawImage(jobDescriptionBackground, rectPos, Align.topLeft) ;
-			Draw.fitText(textPos, sy, Align.topLeft, jobDescriptionPtBr[i], font, maxLength, Palette.colors[0]) ;
+			Draw.fitText(textPos, sy, Align.topLeft, jobDescription[i], font, maxLength, Palette.colors[0]) ;
 		}
 	}
 	

@@ -31,7 +31,7 @@ public class BestiaryWindow extends GameWindow
     private static final int NUM_COLS = 6 ;
 	
 	public BestiaryWindow()
-	{
+	{// TODO imagem do bestiário
 		super("Bestiário", Screen.getMe().pos(0.1, 0.3), null, 0, 0, 0, 0) ;
 		this.windowSize = new Dimension(384, 288) ;
         this.offset = 12 ;

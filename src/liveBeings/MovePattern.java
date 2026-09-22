@@ -31,7 +31,7 @@ public enum MovePattern
 	}
 
     public static Point2D.Double calcNewPos(Directions dir, Point2D.Double currentPos, double speed, double dt)
-	{// TODO corrigir bug às vezes o movimento é grande e atravessa paredes
+	{
 		Point2D.Double newPos = switch (dir)
 		{
 			case up -> calcNewPos(3 * Math.PI / 2, currentPos, speed, dt) ;

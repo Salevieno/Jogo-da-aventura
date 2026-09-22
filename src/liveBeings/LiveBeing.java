@@ -644,28 +644,18 @@ public abstract class LiveBeing implements Drawable
 		return 1 <= spell.getLevel() ;
 		
 	}
-	public boolean usedPhysicalAtk() {return hasActed() ? currentAction.equals(BATTLE_KEYS[0]) : false ;}
-	public boolean usedDef() {return hasActed() ? currentAction.equals(BATTLE_KEYS[1]) : false ;}
+	public boolean usedPhysicalAtk() {return BATTLE_KEYS[0].equals(currentAction) ;}
+	public boolean usedDef() {return BATTLE_KEYS[1].equals(currentAction) ;}
 	public boolean actionIsArrowAtk()
 	{
-		if (!( this instanceof Player)) { return false ;}
-		return (usedPhysicalAtk() | usedSpell()) & ((Player) this).arrowIsEquipped() ;
+		if (!(this instanceof Player)) { return false ;}
+		return (usedPhysicalAtk() || usedSpell()) && ((Player) this).arrowIsEquipped() ;
 	}
 	
-	public boolean canAtk() {return battleActionCounter.hasFinished() & !isStun() ;}
+	public boolean canAtk() {return battleActionCounter.hasFinished() && !isStun() ;}
 	public boolean isStun() { return status.get(Attributes.stun).isActive() ;}
 	public boolean isSilent() {return status.get(Attributes.silence).isActive() ;}
-	public boolean isDefending()
-	{
-		if (combo == null) { return false ;}
-		if (combo.isEmpty()) { return false ;}
-		
-		if (this instanceof Player)
-		{
-			return (!battleActionCounter.hasFinished() & combo.get(combo.size() - 1).equals(BATTLE_KEYS[1])) ;
-		}
-		return usedDef() ;
-	}
+	public boolean isDefending() { return combo != null && !combo.isEmpty() && usedDef() ;}
 	public boolean isDrunk() {return drunk.isActive() ;}
 	public boolean isInCloseRange(Point2D.Double target) {return pos.distance(target) <= size.getWidth() ;}
 	public boolean isInRange(Point2D.Double target) {return pos.distance(target) <= range ;}

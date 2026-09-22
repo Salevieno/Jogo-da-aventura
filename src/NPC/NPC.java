@@ -7,7 +7,9 @@ import java.awt.Image ;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.json.simple.JSONObject;
 
@@ -263,28 +265,30 @@ public abstract class NPC implements Interactable
 
 			case equipsSeller:
 				int[] itemIDs = new int[] {300, 305, 307, 309, 315, 322, 326, 328, 332, 336, 340, 344} ;
-				// int cityID = id / 17 ;
-				// for (int i = 0 ; i <= itemIDs.length - 1; i += 1) { itemIDs[i] += 200 * cityID ;}
-				return new NPCSeller(name, new Point(0, 0), menus, Item.getItems(itemIDs)) ;
+                Map<Item, Integer> maxStock = new HashMap<>() ;
+                for (int itemID : itemIDs)
+                {
+                    maxStock.put(Item.getAllItems().get(itemID), 1) ; // TODO  + 200 * cityID
+                }
+				return new NPCSeller(name, new Point(0, 0), menus, maxStock) ;
 		
 			case itemsSeller:
 				itemIDs = new int[] {1329, 0, 1, 4, 5, 121, 122, 125, 130, 1301, 1305, 1702, 1708, 1710, 1713} ;
-				return new NPCSeller(name, new Point(0, 0), menus, Item.getItems(itemIDs)) ;
+                maxStock = new HashMap<>() ;
+                for (int itemID : itemIDs)
+                {
+                    maxStock.put(Item.getAllItems().get(itemID), 1) ;
+                }
+				return new NPCSeller(name, new Point(0, 0), menus, maxStock) ;
 
 			case smuggleSeller:
-				itemIDs = new int[] {1, 2} ;
-				// itemIDs = newSmuggledStock() ;
-				// if (renewStocks)
-				// {
-				// 	itemids = newSmuggledStock() ;
-				// 	renewStocks = false ;
-				// }
-				// int cityID = id / 17 ;
-				// for (int i = 0 ; i <= itemids.length - 1; i += 1)
-				// {
-				// 	itemids[i] += 200 * cityID ;
-				// }
-				return new NPCSeller(name, new Point(0, 0), menus, Item.getItems(itemIDs)) ;
+				itemIDs = new int[] {400, 402, 403, 406, 407, 410, 413, 415, 420, 421, 424, 426, 429, 430, 432, 436, 440} ;
+                maxStock = new HashMap<>() ;
+                for (int itemID : itemIDs)
+                {
+                    maxStock.put(Item.getAllItems().get(itemID), 1) ;
+                }
+				return new NPCSeller(name, new Point(0, 0), menus, maxStock) ;
 			
 			case master:
 				return new NPCMaster(name, new Point(0, 0), menus) ;

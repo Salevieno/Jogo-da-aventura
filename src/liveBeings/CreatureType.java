@@ -18,6 +18,7 @@ import main.Elements;
 import main.Path;
 import music.GameSound;
 import spells.Spell;
+import windows.AttributesWindow;
 import windows.CreatureAttributesWindow;
 
 public class CreatureType
@@ -44,9 +45,9 @@ public class CreatureType
 	private Genetics genes;
 
 	private static final List<MovingAnimations> MOVE_ANIMATIONS = new ArrayList<>() ;
-	public static final int QTD_CREATURE_TYPES_IMAGES = 3 ;
+	private static final int QTD_CREATURE_TYPES_IMAGES = 3 ;
 	private static final List<CreatureType> ALL = new ArrayList<>() ;
-	public static final CreatureAttributesWindow ATT_WINDOW;
+	private static final CreatureAttributesWindow ATT_WINDOW;
 
 	static
 	{// TODO imagens das criaturas tem que refletir o poder (1, 6, 11, 16 e 21) são as nível 0, pode ser a mesma imagem mudando cores
@@ -137,7 +138,7 @@ public class CreatureType
 	{
 		this(id, name, level, range, step, movePatternID, elem,
 			mpDuration, satiationDuration, actionDuration, stepDuration,
-			life * diffMult, mp * diffMult, exp * diffMult, satiation * diffMult, thirst * diffMult, 
+			life * diffMult, mp * diffMult, exp, satiation, thirst, 
 			phyAtk * diffMult, magAtk * diffMult, phyDef * diffMult, magDef * diffMult, dex * diffMult, agi * diffMult, critAtk * diffMult, critDef * diffMult,
 			stunAtkChance * diffMult, stunDefChance * diffMult, stunDuration * diffMult,
 			bloodAtkChance * diffMult, bloodAtk * diffMult, bloodDefChance * diffMult, bloodDef * diffMult, bloodDuration * diffMult,
@@ -170,6 +171,7 @@ public class CreatureType
 	public Genetics getGenes() { return genes ;}
     public GameSound getMoveSound() { return moveSound ;}
 	public void setGenes(Genetics newGenes) { genes = newGenes ;}
+    public AttributesWindow getAttributesWindow() { return ATT_WINDOW ;}
 	public static List<CreatureType> getAll() { return ALL ;}
 
 	public void display(Point pos, Scale scale)
