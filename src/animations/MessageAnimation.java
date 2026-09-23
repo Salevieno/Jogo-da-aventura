@@ -8,6 +8,7 @@ import java.awt.Point;
 import graphics.Align;
 import graphics.DrawPrimitives;
 import graphics.Scale;
+import graphics2.Draw;
 import main.GamePanel;
 import main.ImageLoader;
 import main.Path;
@@ -21,6 +22,7 @@ public class MessageAnimation extends Animation
 
 	private static final Font SMALL_FONT = DrawPrimitives.stdFont ;
 	private static final Image MESSAGE_BOX_IMG = ImageLoader.loadImage(Path.PLAYER_IMG + "messageBox.png") ;
+    private static final int MESSAGE_BOX_WIDTH = Util.getSize(MESSAGE_BOX_IMG).width ;
     private static final double SPEED = 60 ;
 
 	private MessageAnimation(Point pos, String text, Color color)
@@ -41,6 +43,6 @@ public class MessageAnimation extends Animation
     {
 		Point pos = Util.translate(initialPos, 0, (int) (-SPEED * timer.rate())) ;
 		GamePanel.getDP().drawImage(MESSAGE_BOX_IMG, pos, Scale.unit, Align.topCenter, 0.9) ;
-		GamePanel.getDP().drawText(Util.translate(pos, 5 - MESSAGE_BOX_IMG.getWidth(null) / 2, 20), Align.centerLeft, text, SMALL_FONT, color) ;
+		Draw.fitText(Util.translate(pos, 5 - MESSAGE_BOX_IMG.getWidth(null) / 2, 10), Align.centerLeft, text, SMALL_FONT, MESSAGE_BOX_WIDTH - 10, color) ;
     }
 }
