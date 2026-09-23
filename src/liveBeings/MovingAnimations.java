@@ -33,7 +33,7 @@ public class MovingAnimations
 	public void displayIdle(Point pos, Scale scale, Align align)
 	{
 		spriteIdle.activateIfInactive() ; 
-		spriteIdle.display(GamePanel.getDP(), pos, align) ;
+		spriteIdle.display(GamePanel.getDP(), pos, align, scale) ;
 	}
 	
 	public void displayMoving(Directions direction, Point pos, Scale scale, Align align)

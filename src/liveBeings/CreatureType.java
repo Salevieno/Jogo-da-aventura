@@ -83,7 +83,7 @@ public class CreatureType
 		this.name = name;
 		this.level = level;
 		this.movingAni = CreatureType.MOVE_ANIMATIONS.get(id % QTD_CREATURE_TYPES_IMAGES);
-		this.size = new Dimension(movingAni.spriteIdle.getFrameSize().width, movingAni.spriteIdle.getFrameSize().height);
+		this.size = movingAni.spriteIdle.getFrameSize();
 		this.range = range;
 		this.step = step;
 		this.atkElem = elem[0];

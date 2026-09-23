@@ -1099,6 +1099,7 @@ public class Player extends LiveBeing
 		List<Creature> creaturesInMap = map.getCreatures() ;
 		for (Creature creature : creaturesInMap)
 		{
+				bestiary.addDiscoveredCreature(creature.getType()) ;
 			if (isInCloseRange(creature.getPosAsDouble()))
 			{
 				engageInFight(creature) ;

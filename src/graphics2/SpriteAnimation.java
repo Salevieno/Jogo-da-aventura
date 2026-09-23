@@ -8,6 +8,7 @@ import java.util.Set;
 
 import graphics.Align;
 import graphics.DrawPrimitives;
+import graphics.Scale;
 import main.GameTimer;
 import main.Log;
 
@@ -128,6 +129,11 @@ public class SpriteAnimation
     public boolean hasFinished()
     {
         return timer.hasFinished();
+    }
+    
+    public void display(DrawPrimitives DP, Point pos, Align align, Scale scale)
+    {
+    	DP.drawImage(getCurrentFrame(), pos, scale, align) ;
     }
     
     public void display(DrawPrimitives DP, Point pos, Align align)

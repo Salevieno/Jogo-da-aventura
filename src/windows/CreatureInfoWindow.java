@@ -1,7 +1,7 @@
 package windows;
 
-import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Image;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
@@ -12,30 +12,32 @@ import liveBeings.CreatureType;
 import liveBeings.Player;
 import main.Game;
 import main.GamePanel;
+import main.ImageLoader;
 import main.Palette;
+import main.Path;
 import screen.Screen;
 import utilities.Util;
 
 public class CreatureInfoWindow extends GameWindow
 {
-    private final Point windowPos ; // TODO redundante
 	private final Font nameFont ;
     private final Font infoFont ;
-    private final Dimension windowSize ;
     private final Point creaturePos ;
+    private final Point creatureNametextPos ;
     private final List<Point> creatureInfotextPos ;
 	private List<String> selectedCreatureTypeInfo ;
 	private String[] creatureInfoText ;
     private CreatureType creatureType ;
 
+	private static final Image IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "CreatureInfoWindow.png") ;
+
     public CreatureInfoWindow()
     {
-		super("Creature info", Screen.getMe().pos(0.1, 0.3), null, 0, 0, 0, 0) ;
+		super("Creature info", Screen.getMe().pos(0.48, 0.3), IMAGE, 0, 0, 0, 0) ;
         this.nameFont = new Font(Game.getMainFontName(), Font.BOLD, 15) ;
         this.infoFont = new Font(Game.getMainFontName(), Font.BOLD, 13) ;
-        this.windowPos = Util.translate(topLeftPos, 384, 0) ;
-        this.windowSize = new Dimension(128, 240) ;
-        this.creaturePos = Util.translate(windowPos, 40, 12) ;
+        this.creaturePos = Util.translate(topLeftPos, 88, 64) ;
+        this.creatureNametextPos = Util.translate(topLeftPos, 88, 16) ;
         this.creatureInfotextPos = new ArrayList<>() ;
         this.selectedCreatureTypeInfo = new ArrayList<>() ;
         this.creatureInfoText = new String[] {"Bestiário",
@@ -55,10 +57,9 @@ public class CreatureInfoWindow extends GameWindow
         this.creatureType = creatureType ;
         this.selectedCreatureTypeInfo = getSelectedCreatureInfo(creatureType) ;
         this.creatureInfotextPos.clear() ;
-        this.creatureInfotextPos.add(Util.translate(windowPos, 12, 12)) ;
         for (int i = 0 ; i <= selectedCreatureTypeInfo.size() - 1 ; i += 1)
 		{
-			creatureInfotextPos.add(Util.translate(creatureInfotextPos.get(0), 0, (i + 1) * infoFont.getSize())) ;
+			creatureInfotextPos.add(Util.translate(topLeftPos, 20, 80 + (i + 1) * (infoFont.getSize() + 4))) ;
 		}
     }
 
@@ -78,18 +79,6 @@ public class CreatureInfoWindow extends GameWindow
     {
     }
 
-    public void display(Point mousePos)
-    {
-		GamePanel.getDP().drawGradRoundRect(windowPos, Align.topLeft, windowSize, 3, Palette.colors[5], Palette.colors[14], Palette.colors[0], true) ;		
-		creatureType.display(creaturePos, Scale.unit) ;
- 
-		GamePanel.getDP().drawText(creatureInfotextPos.get(0), Align.topLeft, creatureType.getName(), nameFont, Palette.colors[0]) ;
-		for (int i = 0 ; i <= selectedCreatureTypeInfo.size() - 1 ; i += 1)
-		{
-			GamePanel.getDP().drawText(creatureInfotextPos.get(i + 1), Align.topLeft, selectedCreatureTypeInfo.get(i), infoFont, Palette.colors[0]) ;
-		}
-    }
-
     private List<String> getSelectedCreatureInfo(CreatureType creatureType)
     {
 		List<String> info = new ArrayList<>() ;
@@ -102,6 +91,18 @@ public class CreatureInfoWindow extends GameWindow
 		creatureType.getItems().forEach(item -> info.add(item.getName())) ;
 
         return info ;
+    }
+
+    public void display(Point mousePos)
+    {
+		GamePanel.getDP().drawImage(image, topLeftPos, Scale.unit, Align.topLeft, 1.0) ;
+		creatureType.display(creaturePos, Scale.unit) ;
+ 
+		GamePanel.getDP().drawText(creatureNametextPos, Align.center, creatureType.getName(), nameFont, Palette.colors[0]) ;
+		for (int i = 0 ; i <= selectedCreatureTypeInfo.size() - 1 ; i += 1)
+		{
+			GamePanel.getDP().drawText(creatureInfotextPos.get(i), Align.topLeft, selectedCreatureTypeInfo.get(i), infoFont, Palette.colors[0]) ;
+		}
     }
 
     protected void onClose()

@@ -185,7 +185,7 @@ public class CraftWindow extends GameWindow
 	}
 	
 	public void display(Point mousePos)
-	{		
+	{
 		GamePanel.getDP().drawImage(image, topLeftPos, Scale.unit, Align.topLeft, stdOpacity) ;
 
 		for (Recipe recipe : recipesInPage)
