@@ -14,6 +14,7 @@ import main.ImageLoader;
 import main.Palette;
 import main.Path;
 import utilities.Util;
+import windows.ShoppingWindow;
 
 
 public abstract class Item
@@ -49,6 +50,7 @@ public abstract class Item
 	public static List<Item> getAllItems() { return ALL ;}
 	public void setName(String name) { this.name = name ;}
 	public void setDescription(String description) { this.description = description ;}
+	public int calcSellingPrice() { return (int) Math.ceil(price * ShoppingWindow.getSellingPriceRate()) ;}
 
     public static boolean isHovered(Point itemPos, Point mousePos)
     {

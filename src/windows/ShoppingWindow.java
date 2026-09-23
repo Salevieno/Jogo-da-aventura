@@ -44,6 +44,7 @@ public class ShoppingWindow extends GameWindow
 	private static final int MAX_ITEMS_PER_PAGE = 10 ;
     private static final Dimension ITEM_HOVER_AREA = new Dimension(100, 10) ;
 	private static final Image IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "Shopping.png") ;
+	private static final double SELLING_PRICE_RATE = 0.75 ;
 	
 	public ShoppingWindow(Map<Item, Integer> maxStock)
 	{
@@ -70,6 +71,8 @@ public class ShoppingWindow extends GameWindow
         this.renewStockTimer = new GameTimer(renewStockDuration) ;
         this.renewStockTimer.start();
 	}
+
+    public static double getSellingPriceRate() { return SELLING_PRICE_RATE ;}
 
     protected void onOpen()
     {

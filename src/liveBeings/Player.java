@@ -171,7 +171,7 @@ public class Player extends LiveBeing
 		this.hearingRange = PlayerData.getHearingRange().get(job) ;
 		this.step = PlayerData.getStep().get(job);
 	    this.atkElem = Elements.neutral ;
-		// TODO optional - passar counters para dentro dos atributos com counter increment e counter deplete
+		// optionalTODO - passar counters para dentro dos atributos com counter increment e counter deplete
 		this.satiationCounter = new GameTimer(PlayerData.getSatiationcounterduration().get(job)) ;
 		this.thirstCounter = new GameTimer(PlayerData.getThirstcounterduration().get(job)) ;
 		this.mpCounter = new GameTimer(PlayerData.getMpcounterduration().get(job)) ;

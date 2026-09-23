@@ -55,7 +55,7 @@ public class Game
 		// bestiary
 		// hints
 		// hot keys
-	// TODO optional - unificar throw item, calcPhysicalAtk e useSpell dos liveBeings
+	// optionalTODO - unificar throw item, calcPhysicalAtk e useSpell dos liveBeings
 	// TODO ideia - magias e flechas são projéteis que precisam acertar o oponente para dar dano. O oponente pode se mover durante a luta E usar magias de longe enquanto se move (ou defender)
 	// TODO ideia - todo personagem pode inspecionar para aprender 1 att ou 2 da criatura, mas tem que estar perto e isso pode provocar certas criaturas meio agressivas
 	// TODO shopping de cada cidade vender itens diferentes

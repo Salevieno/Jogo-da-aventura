@@ -42,7 +42,7 @@ public class SpellTest
 	
 	static Creature refCreature ;
 
-	// TODO optional - test jackpot spell
+	// optionalTODO - test jackpot spell
 	@BeforeAll
 	static void initializeGame()
 	{

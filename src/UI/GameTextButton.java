@@ -44,7 +44,7 @@ public class GameTextButton extends GameButton
         |  2  9  6  |
         |__3__4__5__|
     */
-// TODO dá pra otimizar updating e stretching reutilizando botões iguais
+    // optionalTODO dá pra otimizar updating e stretching reutilizando botões iguais
     static
     {
         BOX_IMGS = imagesToListImages("TextBox1.png", "TextBox2.png", "TextBox3.png", "TextBox4.png") ;

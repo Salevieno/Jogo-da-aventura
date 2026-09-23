@@ -385,9 +385,9 @@ public class BagWindow extends GameWindow
 		numberPages = getItemsInTab(tab).size() / QTD_SLOTS_PER_PAGE + 1 ;
 	}
 	
-	public int totalValue() // TODO considerar valor de venda dos itens
+	public int totalValue()
 	{
-		return itemsInBag.entrySet().stream().mapToInt(entry -> entry.getKey().getPrice() * entry.getValue()).sum() ;
+		return itemsInBag.entrySet().stream().mapToInt(entry -> entry.getKey().calcSellingPrice() * entry.getValue()).sum() ;
 	}
 		
 	public Item itemHovered(Point mousePos)

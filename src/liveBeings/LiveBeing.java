@@ -523,7 +523,7 @@ public abstract class LiveBeing implements Drawable
 	
 	protected int totalPower()
 	{
-		// TODO optional - consider special ba, element mult, mp with spells and items
+		// optionalTODO - consider special ba, element mult, mp with spells and items
 		// Dano = nHits . hitRate . (PhyAtkRate . PhyDam + MagAtkRate . MagDam + BloodRate . BloodDam + PoisonRate . PoisonDam)
 		// TODO função para estudo de como o poder evolui com o aumento de cada atributo
 		LiveBeing defender = new Creature(CreatureType.getAll().get(0)) ;
