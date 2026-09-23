@@ -1402,7 +1402,6 @@ public class Player extends LiveBeing
 	{
 		if (win.isOpen())
 		{
-			win.reset() ;
 			win.close() ;
 			openWindows.remove(win) ;
 			setFocusWindow(openWindows.isEmpty() ? null : openWindows.get(openWindows.size() - 1)) ;
@@ -1412,7 +1411,6 @@ public class Player extends LiveBeing
 		openWindows.add(win) ;
 		setFocusWindow(win) ;
 	}	
-	
 	
 	public void updateWindows(Pet pet, Point mousePos)
 	{

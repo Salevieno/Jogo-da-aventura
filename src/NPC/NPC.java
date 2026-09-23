@@ -143,6 +143,11 @@ public abstract class NPC implements Interactable
 		{
 			Game.getPlayer().switchOpenClose(window) ;
 		}
+
+        if (this instanceof NPCMaster)
+        {
+            Game.getPlayer().switchOpenClose(Game.getPlayer().getSpellsTreeWindow()) ;
+        }
 	}
 		
 	public static boolean actionIsForward(String action) { return action.equals("Enter") | action.equals("LeftClick") ;}

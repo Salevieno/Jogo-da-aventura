@@ -170,6 +170,7 @@ public abstract class GameWindow
 
 	public void close()
     {
+        reset() ;
         openingAnimationTimer.reset() ;
         isOpen = false ;
         onClose() ;
@@ -239,7 +240,7 @@ public abstract class GameWindow
 		}
 	}
 
-	public void reset()
+	private void reset()
 	{
 		menu = 0 ;
 		tab = 0 ;

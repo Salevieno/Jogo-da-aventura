@@ -204,9 +204,7 @@ public class ForgeWindow extends GameWindow
 	}
 	
 	public void display(Point mousePos)
-	{		
-		// if (itemsOnPage.size() == 0) { item = -1 ;}
-		
+	{
 		GamePanel.getDP().drawImage(image, topLeftPos, Scale.unit, Align.topLeft, stdOpacity) ;		
 		GamePanel.getDP().drawText(titlePos, Align.center, name, TITLE_FONT, Palette.colors[1]) ;
 		GamePanel.getDP().drawText(messagePos, Align.center, MESSAGES.get(0), STD_FONT, STD_COLOR) ;

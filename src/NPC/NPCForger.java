@@ -19,24 +19,7 @@ public class NPCForger extends NPC
     {
         super(NPCJobs.forger, name, pos, menus, FORGE_DESK_IMAGE, new ForgeWindow());
     }
-	// TODO update on interaction with player
-	// 				((ForgeWindow) window).setItemsForForge(equipsForForge);
-// 				((ForgeWindow) window).setBag(playerBag);
 
-
-				 
-// 			case forger:
-// 			{
-// 				List<Equip> equipsForForge = new ArrayList<>() ;
-// 				playerBag.getEquip().keySet().forEach(equipsForForge::add) ;
-// 				equipsForForge = equipsForForge.stream().filter(eq -> !Arrays.asList(player.getEquips()).contains(eq)).collect(Collectors.toList());
-// 				((ForgeWindow) window).setItemsForForge(equipsForForge);
-// 				((ForgeWindow) window).setBag(playerBag);
-				
-// 				forgerAction(player, playerAction, (ForgeWindow) window) ;
-				
-// 				break ;
-// 			}
 	public void act(Player player, Pet pet, String action)
 	{
 		if (action == null) { return ;}

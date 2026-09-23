@@ -13,27 +13,9 @@ public class NPCMaster extends NPC
     {
         super(NPCJobs.master, name, pos, menus);
     }
-	
-// 			case master:
-// 			{
-// 				player.getSpellsTreeWindow().setSpells(player.getSpells()) ;
-				
-// 				if (50 <= player.getLevel() & player.getProJob() == 0 & menu == 0)
-// 				{
-// 					menu = 2 ;
-// 					String[] proClassesText = Game.getAllText().get(TextCategories.proclasses) ;
-// 					String proJob1 = proClassesText[2 * player.getJob() + 0] ;
-// 					String proJob2 = proClassesText[2 * player.getJob() + 1] ;
-// 					type.getOptions().set(3, new ArrayList<String>(Arrays.asList(proJob1, proJob2))) ;
-// 				}
-// 				window = player.getSpellsTreeWindow() ;
-				
-// 				masterAction(player, player.getCurrentAction(), mousePos, (SpellsTreeWindow) window) ;
 
-// 				break ;
-// 			}
 	public void act(Player player, Pet pet, String action)
-	{// TODO como spells window é do player, janela não fecha ao encerrar interação.
+	{
 		if (50 <= player.getLevel() && player.getProJob() == 0 && currentMenuID == 3)
 		{
 			if (action == null) { return ;}
