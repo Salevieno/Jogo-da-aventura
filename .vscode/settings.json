@@ -1,6 +1,22 @@
 {
   "java.project.sourcePaths": ["src"],
   "java.project.outputPath": "bin",
+  "java.project.resourceFilters": [
+    "bin/**",
+    "images/**",
+    "music/**",
+    "soundEffects/**",
+    "dados/**",
+    "referências/**"
+  ],
+  "files.watcherExclude": {
+    "**/bin/**": true,
+    "**/images/**": true,
+    "**/music/**": true,
+    "**/soundEffects/**": true,
+    "**/dados/**": true,
+    "**/referências/**": true
+  },
   "java.project.referencedLibraries": [
     "lib/**/*.jar"
   ],
