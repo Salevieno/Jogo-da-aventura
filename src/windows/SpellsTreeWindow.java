@@ -57,7 +57,7 @@ public class SpellsTreeWindow extends GameWindow
 	private static final Color HAS_PRE_REQ_COLOR = Palette.colors[21] ;
 	private static final Color DOESNT_HAVE_PRE_REQ_COLOR = Palette.colors[21] ;
 	private static final Dimension SLOT_SIZE = Util.getSize(SPELL_SLOT_IMAGE) ;
-// TODO ajustar posições dos spells
+
 	public SpellsTreeWindow(int playerJob)
 	{
 		super("Árvore de magias", Screen.getMe().pos(0.4, 0.2), WINDOW_IMAGE, 0, 1, 0, 1) ;
@@ -93,6 +93,7 @@ public class SpellsTreeWindow extends GameWindow
         for (int i = 0 ; i <= spellsOnPage.size() - 1 ; i += 1)
 		{
             Point newSlotPos = calcSlotPos(row, col, spellsDistribution.length, spellsDistribution[row], SLOT_SIZE) ;
+            System.out.println(newSlotPos);
             this.slotPos.add(newSlotPos) ;
             this.spellImagePos.add(Util.translate(newSlotPos, SLOT_SIZE.width / 2, 4 + spacing.y)) ;
             this.spellLevelPos.add(Util.translate(newSlotPos, SLOT_SIZE.width / 2, SLOT_SIZE.height / 2 + spacing.y + 4)) ;
@@ -217,14 +218,20 @@ public class SpellsTreeWindow extends GameWindow
 	
 	private Point calcSlotPos(int row, int col, int numberRows, int numberCols, Dimension slotSize)
 	{
-		int padding = 30 ;
-		Point offset = new Point(topLeftPos.x + BORDER + padding, topLeftPos.y + 22 + padding) ;
-		double spacingX = Util.spacing(WINDOW_IMAGE.getWidth(null) - BORDER - padding, numberCols, slotSize.width, padding) ;
-		double spacingY = Util.spacing(WINDOW_IMAGE.getHeight(null) - 22 - padding, numberRows, slotSize.height, padding) ;
+        int padding = 30;
+        int left = topLeftPos.x + BORDER + padding;
+        int top = topLeftPos.y + 22 + padding;
 
-		Point slotPos = new Point((int) (offset.x + col * spacingX), (int) (offset.y + row * spacingY)) ;
-		
-		return slotPos ;
+        double availableWidth = WINDOW_IMAGE.getWidth(null) - 2.0 * (BORDER + padding);
+        double availableHeight = WINDOW_IMAGE.getHeight(null) - 22.0 - 2.0 * padding;
+
+        double freeWidth = availableWidth - numberCols * slotSize.width;
+        double freeHeight = availableHeight - numberRows * slotSize.height;
+
+        double offsetX = left + freeWidth / (2.0 * numberCols) + col * (slotSize.width + freeWidth / numberCols) ;
+        double offsetY = top + freeHeight / (2.0 * numberRows) + row * (slotSize.height + freeHeight / numberRows) ;
+
+        return new Point((int) offsetX, (int) offsetY);
 	}
 	
 	private void displaySpellsInfo()
