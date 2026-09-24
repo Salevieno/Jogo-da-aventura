@@ -153,7 +153,7 @@ public class Quest
 		
 		if (isRepeatable) { isComplete = false ;}
 		
-		PA.getExp().incCurrentValue(expReward) ;
+		Game.getPlayer().receiveExp(expReward) ;
 		bag.addGold(goldReward) ;
 
 		Map<Item, Integer> reqItems = reqItemIDs.entrySet().stream().collect(Collectors.toMap(entry -> Item.getAllItems().get(entry.getKey()), Map.Entry::getValue)) ;

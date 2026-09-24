@@ -112,7 +112,7 @@ public abstract class GameWindow
 	public abstract void navigate(String action) ;
 	public abstract void display(Point mousePos) ;
 
-    // TODO considerar criar um enum com o estado da janela // OPENING, OPEN, CLOSED
+    // optionalTODO considerar criar um enum com o estado da janela // OPENING, OPEN, CLOSED
 	public boolean isOpen() { return isOpen ;}
 	
 	public static boolean actionIsForward(String action) { return action != null && (action.equals("Enter") || action.equals("LeftClick")) ;}

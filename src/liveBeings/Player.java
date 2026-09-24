@@ -99,6 +99,7 @@ public class Player extends LiveBeing
 	
 	private int attPoints ;
 	private int spellPoints ;
+    private int expToGain ;
 	private AttributeIncrease attInc ;
     private double hearingRange ;
 	private List<Double> collectLevel ;	// 0: herb, 1: wood, 2: metal
@@ -193,6 +194,7 @@ public class Player extends LiveBeing
 		this.equips = new Equip[4] ;
 		this.equippedArrow = null ;
 		this.spellPoints = 0 ;
+        this.expToGain = 0 ;
     	
 		this.collectLevel = new ArrayList<>(List.of(0.0, 0.0, 0.0));
 		this.goldMultiplier = PlayerData.getGoldmultiplier().get(job) ;
@@ -256,6 +258,7 @@ public class Player extends LiveBeing
 	public Arrow getEquippedArrow() {return equippedArrow ;}
 	public int getSpellPoints() {return spellPoints ;}
 	public AttributeIncrease getAttInc() { return attInc ;}
+    public void receiveExp(int amount) { expToGain += amount ;}
 	public BasicAttribute getLife() {return PA.getLife() ;}
 	public BasicAttribute getMp() {return PA.getMp() ;}
 	public NPC getNPCInContact() { return npcInContact ;}
@@ -291,9 +294,9 @@ public class Player extends LiveBeing
 		
 		return (EquipID[0].getId() + 1) == EquipID[1].getId() & (EquipID[1].getId() + 1) == EquipID[2].getId() ;
 	}
-	public static double calcExpToLevelUp(int level)
+	public static int calcExpToLevelUp(int level)
 	{
-		return 10 * (3 * Math.pow(level - 1, 2) + 3 * (level - 1) + 1) - 5 ;
+		return 10 * (3 * (level - 1) * (level - 1) + 3 * (level - 1) + 1) - 5 ;
 	}
 	
 	
@@ -321,7 +324,7 @@ public class Player extends LiveBeing
 	public boolean weaponIsEquipped() { return (equips[0] != null) ;}
 	public boolean arrowIsEquipped() { return (equippedArrow != null) ;}
 	private boolean hitCreature() { return (usedPhysicalAtk() | usedSpell()) & closestCreature != null ;}	
-	public boolean shouldLevelUP() {return getExp().getMaxValue() <= getExp().getCurrentValue() ;}
+	public boolean shouldLevelUP() { return getExp().getMaxValue() <= getExp().getCurrentValue() ;}
 	private boolean canThrowItem(GeneralItem item)
 	{
 		if (job != 4) { return false ;}
@@ -1451,10 +1454,17 @@ public class Player extends LiveBeing
 			equippedArrow.use(this) ;
 		}
 	}
+
+    public void gainExp()
+    {
+        if (expToGain <= 0) { return ;}
+
+        PA.getExp().incCurrentValue(expToGain) ;
+        expToGain += -Math.min(PA.getExp().getMaxValue(), expToGain) ;
+    }
 	
 	public void win(Creature creature, boolean showAnimation)
-	{		
-		
+	{
 		List<Item> itemsObtained = new ArrayList<>() ;
 
 		for (Item item : creature.getBag())
@@ -1466,7 +1476,7 @@ public class Player extends LiveBeing
 		}
 		
 		bag.addGold((int) (creature.getGold() * Util.randomMult(0.1 * goldMultiplier))) ;
-		PA.getExp().incCurrentValue((int) (creature.getExp().getCurrentValue() * PA.getExp().getMultiplier())) ;
+        receiveExp((int) (creature.getExp().getCurrentValue() * PA.getExp().getMultiplier())) ;
 		
 		for (Quest quest : quests)
 		{
@@ -1514,7 +1524,7 @@ public class Player extends LiveBeing
 			
 			increase[i] = attInc.getIncrement().basic()[i] ;
 		}
-		
+
 		increase[attInc.getIncrement().basic().length] = calcExpToLevelUp(level) ;
 		
 		return increase ;

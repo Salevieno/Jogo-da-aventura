@@ -80,8 +80,7 @@ public class BasicAttribute extends LiveBeingAttribute
 	@Override
 	public String toString()
 	{
-		return String.format("%d (%d + %.3f) / %d (x %.3f)",
+		return String.format("%d (%d + %.3f). Max =  %d (x %.3f)",
 				getTotalValue(), currentValue, bonus, maxValue, multiplier) ;
 	}
-	
 }

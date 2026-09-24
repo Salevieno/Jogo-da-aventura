@@ -284,9 +284,7 @@ public class PlayerAttributesWindow extends AttributesWindow
 
 		displayAttributes() ;
 		player.displayPowerBar(powerPos) ;
-		
-        // TODO verificar se funciona
-        incAttButtons.values().forEach(button -> this.buttons.add(button)) ;
+
 		incAttButtons.values().forEach(button -> button.display(false, mousePos)) ;
 	}
 	

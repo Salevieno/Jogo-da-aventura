@@ -345,6 +345,7 @@ public class Game
 		{
 			player.setClosestCreature(player.closestCreatureInRange());
 		}
+        player.gainExp() ;
 
 		if (player.shouldLevelUP())
 		{
