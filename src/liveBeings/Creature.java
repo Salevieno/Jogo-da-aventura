@@ -421,9 +421,9 @@ public class Creature extends LiveBeing
 		{
 			displayAttributes(0);
 		}
+        GamePanel.getDP().drawText(Util.translate(pos, 0, -20), Align.bottomCenter, name + ": " + type.getMovePattern().toString(), Color.black) ;
 		if (Game.DEBUG_MODE)
-            {
-            GamePanel.getDP().drawText(Util.translate(pos, 0, -20), Align.bottomCenter, name + ": " + type.getMovePattern().toString(), Color.black) ;
+        {
             GamePanel.getDP().drawText(Util.translate(pos, 0, -30), Align.bottomCenter, state.toString(), Color.black) ;
 			GamePanel.getDP().drawText(Util.translate(pos, 0, -40), Align.bottomCenter, !idleTimer.isActive() ? "is moving: " + dir : "", Color.black) ;
             displayState() ;

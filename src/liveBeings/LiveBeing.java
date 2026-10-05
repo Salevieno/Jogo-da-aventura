@@ -867,7 +867,7 @@ public abstract class LiveBeing implements Drawable
 			}
 		}
 		if (style == 1)
-		{			
+		{
 			Point topLeft = Screen.getMe().pos(0.01, 0.02) ;
 			Dimension barSize = new Dimension(5, 60) ;
 			int stroke = 1 ;

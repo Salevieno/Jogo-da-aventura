@@ -7,9 +7,10 @@ import main.Directions;
 public enum MovePattern
 {
     pattern0(1.5),
-    pattern1(3.0),
-	pattern2(5.0),
-	pattern3(5.0);
+    pattern1(1.5),
+    pattern2(3.0),
+	pattern3(5.0),
+	pattern4(5.0);
 
 	private final double duration ;
 	private MovePattern(double duration)
@@ -26,8 +27,7 @@ public enum MovePattern
 
     private static Point2D.Double calcNewPos(double angle, Point2D.Double currentPos, double speed, double dt)
 	{
-		Point2D.Double newPos = new Point2D.Double(currentPos.x + speed * dt * Math.cos(angle), currentPos.y + speed * dt * Math.sin(angle)) ;
-		return newPos ;
+		return new Point2D.Double(currentPos.x + speed * dt * Math.cos(angle), currentPos.y + speed * dt * Math.sin(angle)) ;
 	}
 
     public static Point2D.Double calcNewPos(Directions dir, Point2D.Double currentPos, double speed, double dt)
@@ -62,10 +62,11 @@ public enum MovePattern
 	{
 		return switch (pattern)
 		{
-			case pattern0 -> new Point2D.Double(100 * moveRate, 0.0) ;
-			case pattern1 -> new Point2D.Double(100 * (3 * moveRate * moveRate - 3 * moveRate + 0.5), 0.0) ;
-			case pattern2 -> new Point2D.Double(600.0 * (moveRate / 2.0 - moveRate * moveRate / 2.0), 0.0) ;
-			case pattern3 -> new Point2D.Double(100.0 * Math.tanh(2 * moveRate), 0.0) ;
+			case pattern0 -> new Point2D.Double(0.0, 0.0) ;
+			case pattern1 -> new Point2D.Double(100 * moveRate, 0.0) ;
+			case pattern2 -> new Point2D.Double(100 * (3 * moveRate * moveRate - 3 * moveRate + 0.5), 0.0) ;
+			case pattern3 -> new Point2D.Double(600.0 * (moveRate / 2.0 - moveRate * moveRate / 2.0), 0.0) ;
+			case pattern4 -> new Point2D.Double(100.0 * Math.tanh(2 * moveRate), 0.0) ;
 		} ;
 	}
 

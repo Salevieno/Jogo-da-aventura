@@ -1,6 +1,16 @@
 package attributes ;
 
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Point;
+import java.util.List;
+
 import org.json.simple.JSONObject;
+
+import graphics.Align;
+import main.GamePanel;
+import main.Palette;
+import utilities.Util;
 
 public class PersonalAttributes
 {
@@ -59,11 +69,29 @@ public class PersonalAttributes
 			default: return null ;
 		}
 	}
+
+    public List<BasicAttribute> getAttributes() { return List.of(life, mp, exp, satiation, thirst) ;}
+    public List<Color> getColors() { return List.of(Palette.colors[7], Palette.colors[20], Palette.colors[5], Palette.colors[15], Palette.colors[21]) ;}
 	
 	public static int numberFightsToLevelUp(int currentExp, int totalExp, int opponentExp, double expMult)
 	{
 		return 1 + (int) ((totalExp - currentExp) / (opponentExp * expMult)) ;
 	}
+
+    public void display(Point topLeft, Dimension barSize)
+    {
+        for (int i = 0; i <= this.getAttributes().size() - 1; i += 1)
+        {
+            BasicAttribute att = this.getAttributes().get(i) ;
+            Point barPos = Util.translate(topLeft, 0, 26 * i) ;
+            Point textPos = Util.translate(topLeft, barSize.width / 2, 26 * i) ;
+            Dimension rateSize = new Dimension(barSize.width, (int) (att.getRate() *  barSize.height)) ;
+
+            GamePanel.getDP().drawRect(barPos, Align.centerLeft, rateSize, 1, this.getColors().get(i), null, 1.0) ;
+            GamePanel.getDP().drawRect(barPos, Align.centerLeft, barSize, 1, null, Palette.colors[0], 1.0) ;
+            GamePanel.getDP().drawText(textPos, Align.center, att.getCurrentValue() + " / " + att.getMaxValue(), Palette.colors[0]);
+        }
+    }
 	
 	@SuppressWarnings("unchecked")
 	public JSONObject toJsonObject()

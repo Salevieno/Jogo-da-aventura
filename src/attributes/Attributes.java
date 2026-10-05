@@ -20,7 +20,8 @@ public enum Attributes
 	blood,
 	poison,
 	silence,
-	atkSpeed;
+	atkSpeed,
+    knockbackPower;
 
 	public static Attributes[] getBasicPersonal()
 	{

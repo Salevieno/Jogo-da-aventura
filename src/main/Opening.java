@@ -33,8 +33,8 @@ public abstract class Opening
     private static List<GameButton> buttons = new ArrayList<>() ;
     private static List<List<GameButton>> buttonsInStep = new ArrayList<>() ;
     private static List<GameButton> languageButtons = new ArrayList<>() ;
-    private static List<GameButton> loadSlotButtons = new ArrayList<>() ;
-	private static Player[] players ;
+    private static List<LoadingSlot> loadSlots = new ArrayList<>() ;
+	private static List<Player> players ;
     private static String[] stepMessage ;
     private static String[] jobDescription ;
     private static int step = 0;
@@ -47,24 +47,21 @@ public abstract class Opening
     private static int chosenJob ;
 	private static LiveInput liveInput = new LiveInput() ;	
 
-    private static final Font font = new Font(Game.getMainFontName(), Font.BOLD, 16) ;
-    private static final Font smallFont = new Font(Game.getMainFontName(), Font.BOLD, 13) ;
+    private static final Font FONT = new Font(Game.getMainFontName(), Font.BOLD, 16) ;
 
-	private static final SpriteAnimation openingAni = new SpriteAnimation(Path.OPENING_IMG + "Opening.png", new Point(), Align.topLeft, 12, 0.05) ;
+	private static final SpriteAnimation OPENING_ANI = new SpriteAnimation(Path.OPENING_IMG + "Opening.png", new Point(), Align.topLeft, 12, 0.05) ;
 	
-	private static final Image backgroundImage = ImageLoader.loadImage(Path.OPENING_IMG + "Opening.png") ;
-	private static final Image jobDescriptionBackground = ImageLoader.loadImage(Path.OPENING_IMG + "JobDescriptionBackground.png") ;
+	private static final Image BACKGROUND_IMAGE = ImageLoader.loadImage(Path.OPENING_IMG + "Opening.png") ;
+	private static final Image JOB_DESCRIPTION_BACKGROUND = ImageLoader.loadImage(Path.OPENING_IMG + "JobDescriptionBackground.png") ;
 	// private static final Image LoadingEnfeite ;
-	private static final GameSound thunderSound ;
-	private static final Clip introMusic ;
+	private static final GameSound THUNDER_SOUND = new GameSound("Thunder.wav") ;
+	private static final Clip INTRO_MUSIC = GameMusic.load("intro.wav") ;
+    private static final int QTD_LOAD_SLOTS = 3 ;
 	
 	
 	static
 	{
 		// LoadingEnfeite = ImageLoader.loadImage("\\Opening\\" + "LoadingEnfeite.png") ;
-		thunderSound = new GameSound("Thunder.wav") ;
-		introMusic = GameMusic.load("intro.wav") ;
-
 		ButtonFunction portAction = () -> { } ; // TODO switch language
 		ButtonFunction enAction = () -> { } ;
 		ButtonFunction newGameAction = () -> {advanceStep() ;} ;
@@ -147,11 +144,11 @@ public abstract class Opening
 
 	public static Player getChosenPlayer() { return new Player(chosenName, chosenSex, chosenJob) ;}
 	public static double getChosenDifficultLevel() { return difficultLevel ;}
-	public static SpriteAnimation getOpeningGif() { return openingAni ;}
+	public static SpriteAnimation getOpeningGif() { return OPENING_ANI ;}
 
 	private static void switchToLoadGameScreen()
 	{		
-		players = new Player[3] ;
+		players = new ArrayList<>(QTD_LOAD_SLOTS) ;
 
 		newGame = false ;
 		buttons.get(0).deactivate() ;
@@ -160,54 +157,25 @@ public abstract class Opening
 		BuffData.createNerfs() ;
 		SpellData.createSpells() ;
 		// Spell.load("portugues", Buff.getAllBuffs(), Buff.getAllNerfs()) ;
-		players[0] = Player.load(1) ;
-		players[1] = Player.load(2) ;
-		players[2] = Player.load(3) ;
-		if (players[0] != null)
-		{
-			Log.debug("save 1 loaded successfully!");
-		}
-		else
-		{
-			Log.warn("save 1 not loaded correctly or not found!");
-		}
-		if (players[1] != null)
-		{
-			Log.debug("save 2 loaded successfully!");
-		}
-		else
-		{
-			Log.warn("save 2 not loaded correctly or not found!");
-		}
-		if (players[2] != null)
-		{
-			Log.debug("save 3 loaded successfully!");
-		}
-		else
-		{
-			Log.warn("save 3 not loaded correctly or not found!");
-		}
+        for (int i = 0 ; i <= QTD_LOAD_SLOTS - 1 ; i += 1)
+        {
+            Player playerLoaded = Player.load(i + 1) ;
+            if (playerLoaded == null)
+            {
+                Log.warn("Save " + (i + 1) + " was not found or did not load corretly!") ;
+                continue ;
+            }
 
-		ButtonFunction loadSlot1 = () -> { loadGame(players, 0) ;} ;
-		ButtonFunction loadSlot2 = () -> { loadGame(players, 1) ;} ;
-		ButtonFunction loadSlot3 = () -> { loadGame(players, 2) ;} ;
-		
-		loadSlotButtons.add(new GameTextButton(new Point(60, 100), Align.topLeft, "Load slot 1", loadSlot1)) ;
-		loadSlotButtons.add(new GameTextButton(new Point(260, 100), Align.topLeft, "Load slot 2", loadSlot2)) ;
-		loadSlotButtons.add(new GameTextButton(new Point(460, 100), Align.topLeft, "Load slot 3", loadSlot3)) ;
-
-		if (players[0] == null) { loadSlotButtons.get(0).deactivate() ;}
-		if (players[1] == null) { loadSlotButtons.get(1).deactivate() ;}
-		if (players[2] == null) { loadSlotButtons.get(2).deactivate() ;}
+            players.add(playerLoaded) ;
+            loadSlots.add(new LoadingSlot("Load slot " + (i + 1), new Point(96 + 384 * i, 240), playerLoaded)) ;
+        }
 	}
 
-	private static void loadGame(Player[] players, int slot)
-	{
-		Game.setPlayer(players[slot]) ;
-		Game.setSaveSlotInUse(slot) ;
-		loadSlotButtons.forEach(GameButton::deactivate) ;
+    protected static void finish()
+    {
+		loadSlots.forEach(LoadingSlot::deactivateButton) ;
 		isOver = true ;
-	}
+    }
 
 	private static void navigate(String action)
 	{
@@ -266,44 +234,23 @@ public abstract class Opening
 		buttonsInStep.get(step + 1).get(0).activateAndSelect() ;
 		step += 1 ;
 	}
-	
-	private static void displaySlot(Point pos, int slotNumber)
-	{		
-		Player player = players[slotNumber] ;
-		Color textColor = Palette.colors[0] ;
-		
-		Point textPos = Util.translate(pos, 75, 10) ;
-		GamePanel.getDP().drawText(textPos, Align.center, "Slot " + (slotNumber + 1), font, textColor) ;
 
-		Point namePos = Util.translate(pos, 75, 30) ;
-		GamePanel.getDP().drawText(namePos, Align.center, player.getName(), smallFont, textColor) ;
-		
-		Point levelPos = Util.translate(pos, 10, 45) ;
-		GamePanel.getDP().drawText(levelPos, Align.centerLeft, "Nível: " + player.getLevel(), smallFont, textColor) ;
-	}
-	
-	private static void displayLoadingSlot(Player player, Point mousePos)
+	private static void displayLoadingSlot(Point mousePos)
 	{
-		for (int i = 0 ; i <= loadSlotButtons.size() - 1 ; i += 1)
-		{
-			if (!loadSlotButtons.get(i).isActive()) { continue ;}
-
-			loadSlotButtons.get(i).display(true, mousePos) ;
-			displaySlot(new Point(60 + 200 * i, 100), i) ;
-		}
+        loadSlots.forEach(slot -> slot.display(mousePos)) ;
 	}
 	
 	private static void displayJobDescription()
 	{
 		int padding = 10 ;
-		int maxLength = jobDescriptionBackground.getWidth(null) - padding ;
-		int sy = font.getSize() + 6 ;
+		int maxLength = JOB_DESCRIPTION_BACKGROUND.getWidth(null) - padding ;
+		int sy = FONT.getSize() + 6 ;
 		for (int i = 0 ; i <= 5 - 1 ; i += 1)
 		{
 			Point rectPos = Screen.getMe().pos(0.02 + i * 0.2, 0.4) ;
 			Point textPos = Util.translate(rectPos, padding, padding) ;
-			GamePanel.getDP().drawImage(jobDescriptionBackground, rectPos, Align.topLeft) ;
-			Draw.fitText(textPos, sy, Align.topLeft, jobDescription[i], font, maxLength, Palette.colors[0]) ;
+			GamePanel.getDP().drawImage(JOB_DESCRIPTION_BACKGROUND, rectPos, Align.topLeft) ;
+			Draw.fitText(textPos, sy, Align.topLeft, jobDescription[i], FONT, maxLength, Palette.colors[0]) ;
 		}
 	}
 	
@@ -312,7 +259,7 @@ public abstract class Opening
 		Point textPos = Screen.getMe().pos(0.5, 0.3) ;
 		Color textColor = Palette.colors[0] ;
 		
-		GamePanel.getDP().drawImage(backgroundImage, new Point(0, 0), 0, Scale.unit, Align.topLeft) ;
+		GamePanel.getDP().drawImage(BACKGROUND_IMAGE, new Point(0, 0), 0, Scale.unit, Align.topLeft) ;
 
 		for (GameButton button : languageButtons)
 		{
@@ -338,18 +285,18 @@ public abstract class Opening
 		}
 		
 		if (stepMessage.length - 1 <= step) { return ;}
-		GamePanel.getDP().drawText(textPos, Align.center, stepMessage[step], font, textColor) ;
+		GamePanel.getDP().drawText(textPos, Align.center, stepMessage[step], FONT, textColor) ;
 	}
 
 	public static void run(Player player, Point mousePos)
 	{
-		if (!openingAni.hasFinished())
+		if (!OPENING_ANI.hasFinished())
 		{
-			if (!openingAni.isActive() && !openingAni.hasFinished())
+			if (!OPENING_ANI.isActive() && !OPENING_ANI.hasFinished())
 			{
-				thunderSound.play() ;
-				MusicManager.playMusic(introMusic) ;
-				openingAni.activate() ;
+				THUNDER_SOUND.play() ;
+				MusicManager.playMusic(INTRO_MUSIC) ;
+				OPENING_ANI.activate() ;
 			}
     		return ;
 		}
@@ -366,14 +313,14 @@ public abstract class Opening
 		}
 		else
 		{
-			displayLoadingSlot(player, mousePos) ;
+			displayLoadingSlot(mousePos) ;
 		}
 		player.resetAction() ;
 		
 		if (isOver())
 		{
-			MusicManager.stopMusic(introMusic) ;
-			openingAni.deactivate();
+			MusicManager.stopMusic(INTRO_MUSIC) ;
+			OPENING_ANI.deactivate();
 			if (newGame())
 			{
 				Game.setDifficultLevel(getChosenDifficultLevel()) ;

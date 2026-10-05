@@ -59,6 +59,7 @@ public class Game
 	// TODO ideia - magias e flechas são projéteis que precisam acertar o oponente para dar dano. O oponente pode se mover durante a luta E usar magias de longe enquanto se move (ou defender)
 	// TODO ideia - todo personagem pode inspecionar para aprender 1 att ou 2 da criatura, mas tem que estar perto e isso pode provocar certas criaturas meio agressivas
 	// TODO shopping de cada cidade vender itens diferentes
+    // TODO fome causa redução da força
 
 	private GameStates state ;
 	private boolean shouldRepaint; // tells if the panel should be repainted, responding to multiple requests only once
@@ -90,7 +91,7 @@ public class Game
 		Log.info("Game version " + MainGame3_4.getVersion()) ;	
 		this.allText = new HashMap<>();
 		this.settings = new Settings(true, true, false, 1, 0) ;
-		this.player = new Player("", "", 4);
+		this.player = new Player("", "", 1);
 		this.player.setPos(Screen.getMe().getCenterAsDouble());
 		this.difficultLevel = 0.7;
 		this.saveSlotInUse = -1;

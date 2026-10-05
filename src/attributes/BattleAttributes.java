@@ -227,6 +227,7 @@ public class BattleAttributes
 			case critAtk: return critAtk ;
 			case critDef: return critDef ;
 			case atkSpeed: return atkSpeed ;
+			case knockbackPower: return knockbackPower ;
 			
 			default: return null ;
 		}
@@ -329,6 +330,7 @@ public class BattleAttributes
             content.put(att.toString(), mapSpecialAttributes(att).toJsonObject());
         }
         content.put("atkSpeed", mapAttributes(Attributes.atkSpeed).toJsonObject()) ;
+        content.put("knockbackPower", mapAttributes(Attributes.knockbackPower).toJsonObject()) ;
         
         return content ;
         
