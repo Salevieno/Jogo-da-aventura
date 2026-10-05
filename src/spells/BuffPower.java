@@ -15,13 +15,11 @@ public class BuffPower
 
     protected double getPercentIncrease() { return percentIncrease ;}
     protected double getValueIncrease() { return valueIncrease ;}
-    protected double getChance() { return chance ;} // TODO buff chance não está sendo usado
+    protected double getChance() { return chance ;}
 
     @Override
     public String toString()
     {
-        return "BuffPower [percentIncrease=" + percentIncrease + ", valueIncrease=" + valueIncrease + ", chance="
-                + chance + "]";
+        return "BuffPower [percentIncrease=" + percentIncrease + ", valueIncrease=" + valueIncrease + ", chance=" + chance + "]";
     }
-
 }

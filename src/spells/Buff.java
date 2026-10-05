@@ -9,6 +9,7 @@ import attributes.BasicBattleAttribute;
 import attributes.BattleSpecialAttribute;
 import liveBeings.LiveBeing;
 import main.Log;
+import utilities.Util;
 
 public class Buff
 {
@@ -37,7 +38,7 @@ public class Buff
 		for (Attributes att : power.keySet())
 		{			
 			BasicAttribute personalAttribute = receiver.getPA().mapAttributes(att) ;
-			if (personalAttribute != null)
+			if (personalAttribute != null && Util.chance(power.get(att).getChance()))
 			{
 				double increment = personalAttribute.getMaxValue() * power.get(att).getPercentIncrease() + power.get(att).getValueIncrease() ;
 				personalAttribute.incBonus((int) (increment * level * mult));
@@ -46,7 +47,7 @@ public class Buff
 			}
 			
 			BasicBattleAttribute battleAttribute = receiver.getBA().mapAttributes(att) ;
-			if (battleAttribute != null)
+			if (battleAttribute != null && Util.chance(power.get(att).getChance()))
 			{
 				double increment = battleAttribute.getBaseValue() * power.get(att).getPercentIncrease() + power.get(att).getValueIncrease() ;
 				battleAttribute.incBonus(increment * level * mult);
@@ -55,7 +56,7 @@ public class Buff
 			}
 			
 			BattleSpecialAttribute battleSpecialAttribute = receiver.getBA().mapSpecialAttributes(att) ;
-			if (battleSpecialAttribute != null)
+			if (battleSpecialAttribute != null && Util.chance(power.get(att).getChance()))
 			{
 				battleSpecialAttribute.incAtkChanceBonus(power.get(att).getPercentIncrease() * level * mult);
 				battleSpecialAttribute.incAtkChanceBonus(power.get(att).getValueIncrease() * level * mult);

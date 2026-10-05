@@ -162,15 +162,17 @@ public class Spell
 	
 	public void applyBuffs(boolean activate, LiveBeing receiver)
 	{
+        System.out.println(buffID + " " + Buff.getAllBuffs().size());
 		if (buffID < 0 || Buff.getAllBuffs().size() <= buffID) { return ;}
 		
 		int mult = activate ? 1 : -1 ;
+        System.out.println("Applying buff " + buffID);
 		Buff.getAllBuffs().get(buffID).apply(mult, level, receiver) ;
 	}
 
 	public void applyNerfs(boolean activate, LiveBeing receiver)
 	{
-		if (buffID < 0 || Buff.getAllNerfs().size() <= buffID) { return ;}
+		if (nerfID < 0 || Buff.getAllNerfs().size() <= nerfID) { return ;}
 
 		int mult = activate ? -1 : 1 ;		
 		Buff.getAllNerfs().get(nerfID).apply(mult, level, receiver) ;

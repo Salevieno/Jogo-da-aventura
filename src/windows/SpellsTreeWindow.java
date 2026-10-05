@@ -93,7 +93,6 @@ public class SpellsTreeWindow extends GameWindow
         for (int i = 0 ; i <= spellsOnPage.size() - 1 ; i += 1)
 		{
             Point newSlotPos = calcSlotPos(row, col, spellsDistribution.length, spellsDistribution[row], SLOT_SIZE) ;
-            System.out.println(newSlotPos);
             this.slotPos.add(newSlotPos) ;
             this.spellImagePos.add(Util.translate(newSlotPos, SLOT_SIZE.width / 2, 4 + spacing.y)) ;
             this.spellLevelPos.add(Util.translate(newSlotPos, SLOT_SIZE.width / 2, SLOT_SIZE.height / 2 + spacing.y + 4)) ;
