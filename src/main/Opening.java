@@ -38,6 +38,8 @@ public abstract class Opening
     private static String[] stepMessage ;
     private static String[] jobDescription ;
     private static int step = 0;
+    private static boolean hasStarted = false ;
+    private static boolean animationHasFinished = false ;
     private static boolean newGame = true ;
     private static boolean isOver = false ;
     
@@ -49,12 +51,12 @@ public abstract class Opening
 
     private static final Font FONT = new Font(Game.getMainFontName(), Font.BOLD, 16) ;
 
-	private static final SpriteAnimation OPENING_ANI = new SpriteAnimation(Path.OPENING_IMG + "Opening.png", new Point(), Align.topLeft, 12, 0.05) ;
+	private static final SpriteAnimation OPENING_ANI = new SpriteAnimation(Path.OPENING_IMG + "OpeningAnimation.png", new Point(), Align.topLeft, false, 45, 0.065) ;
 	
 	private static final Image BACKGROUND_IMAGE = ImageLoader.loadImage(Path.OPENING_IMG + "Opening.png") ;
 	private static final Image JOB_DESCRIPTION_BACKGROUND = ImageLoader.loadImage(Path.OPENING_IMG + "JobDescriptionBackground.png") ;
 	// private static final Image LoadingEnfeite ;
-	private static final GameSound THUNDER_SOUND = new GameSound("Thunder.wav") ;
+	private static final GameSound THUNDER_SOUND = new GameSound("ThunderExtended.wav") ;
 	private static final Clip INTRO_MUSIC = GameMusic.load("intro.wav") ;
     private static final int QTD_LOAD_SLOTS = 3 ;
 	
@@ -290,23 +292,28 @@ public abstract class Opening
 
 	public static void run(Player player, Point mousePos)
 	{
-		if (!OPENING_ANI.hasFinished())
-		{
-			if (!OPENING_ANI.isActive() && !OPENING_ANI.hasFinished())
-			{
-				THUNDER_SOUND.play() ;
-				MusicManager.playMusic(INTRO_MUSIC) ;
-				OPENING_ANI.activate() ;
-			}
-    		return ;
-		}
+        if (!hasStarted)
+        {
+            OPENING_ANI.activate() ;
+            hasStarted = true ;
+            THUNDER_SOUND.play() ;
+        }
+        SpriteAnimation.updateActive() ;
+        SpriteAnimation.displayActive(GamePanel.getDP()) ;
+
+        if (OPENING_ANI.isActive()) { return ;}
+
+        if (animationHasFinished)
+        {
+            MusicManager.playMusic(INTRO_MUSIC) ;
+            animationHasFinished = true ;
+        }
 		
 		navigate(player.getCurrentAction()) ;
 		if (step == 1 && player.getCurrentAction() != null)
 		{
 			liveInput.receiveInput(player.getCurrentAction()) ;
 		}
-		// act(player.getCurrentAction(), mousePos) ;
 		if (newGame)
 		{
 			display(player.getCurrentAction(), mousePos) ;

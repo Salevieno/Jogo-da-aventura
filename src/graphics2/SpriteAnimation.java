@@ -90,17 +90,17 @@ public class SpriteAnimation
     }
     public void activateIfInactive() { if (!active) activate() ;}
     
-    public static void updateAll()
+    public static void updateActive()
     {
     	ALL.stream().filter(sprite -> sprite.active).forEach(sprite -> sprite.update()) ;
     }
     
-    public static void displayAllFromLayer(int layer, DrawPrimitives DP)
+    public static void displayActiveFromLayer(int layer, DrawPrimitives DP)
     {
     	ALL.stream().filter(sprite -> sprite.active).filter(sprite -> sprite.layer == layer).forEach(sprite -> sprite.display(DP)) ;
     }
     
-    public static void displayAll(DrawPrimitives DP)
+    public static void displayActive(DrawPrimitives DP)
     {
     	ALL.stream().filter(sprite -> sprite.active).forEach(sprite -> sprite.display(DP)) ;
     }

@@ -12,7 +12,7 @@ import main.Log;
 import utilities.Util;
 
 public class Buff
-{
+{// TODO registrar o aumento de atributos do buff para aplicar o exato valor oposto ao remover o buff
     private final double chance ;
 	private final Map<Attributes, BuffPower> power ;
 

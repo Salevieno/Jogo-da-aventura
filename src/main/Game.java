@@ -97,7 +97,7 @@ public class Game
 		this.player.setPos(Screen.getMe().getCenterAsDouble());
 		this.difficultLevel = 0.7;
 		this.saveSlotInUse = -1;
-		this.state = GameStates.loading;
+		this.state = GameStates.opening;
 		this.dayTimer = new GameTimer(DAY_DURATION);
 		this.dt = System.nanoTime() ;
 	}
@@ -374,7 +374,7 @@ public class Game
 
 		player.resetAction();
 
-		SpriteAnimation.updateAll();
+		SpriteAnimation.updateActive();
 
 	}
 
@@ -396,7 +396,7 @@ public class Game
 		player.getMap().displayTudoEstaBem();
 		drawTime(STD_FONT) ;
 		
-		SpriteAnimation.displayAllFromLayer(0, GamePanel.getDP());
+		SpriteAnimation.displayActiveFromLayer(0, GamePanel.getDP());
 
 		List<Drawable> drawables = new ArrayList<>();
 
@@ -451,7 +451,7 @@ public class Game
 		}
 
 		Animation.playAll();
-		SpriteAnimation.displayAllFromLayer(1, GamePanel.getDP());
+		SpriteAnimation.displayActiveFromLayer(1, GamePanel.getDP());
 
 		SideBar.display(player, pet, GamePanel.getMousePos());
 

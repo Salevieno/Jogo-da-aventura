@@ -213,7 +213,7 @@ public abstract class LoadingGame
 	protected static void display(Point mousePos)
 	{
 		GamePanel.getDP().drawRect(new Point(0, 0), Align.topLeft, Screen.getMe().getSize(), Palette.colors[0], null) ;
-		SpriteAnimation.updateAll();
+		SpriteAnimation.updateActive();
 		petIdle.display(GamePanel.getDP());
 
 		if (!isOver())
