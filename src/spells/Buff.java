@@ -13,13 +13,15 @@ import utilities.Util;
 
 public class Buff
 {
+    private final double chance ;
 	private final Map<Attributes, BuffPower> power ;
 
 	private static final Map<Integer, Buff> ALL_BUFFS = new HashMap<>() ;
 	private static final Map<Integer, Buff> ALL_NERFS = new HashMap<>() ;
 	
-	protected Buff(boolean isBuff, int id, Map<Attributes, BuffPower> power)
+	protected Buff(boolean isBuff, int id, double chance, Map<Attributes, BuffPower> power)
 	{
+        this.chance = chance ;
 		this.power = power ;
 		if (isBuff)
 		{
@@ -34,11 +36,12 @@ public class Buff
 	public void apply(int mult, int level, LiveBeing receiver)
 	{
 		if (receiver == null) { Log.warn("Tentando usar buffs de magia em ninguém!") ; return ;}
+        if (!Util.chance(chance)) { return ;}
 
 		for (Attributes att : power.keySet())
 		{			
 			BasicAttribute personalAttribute = receiver.getPA().mapAttributes(att) ;
-			if (personalAttribute != null && Util.chance(power.get(att).getChance()))
+			if (personalAttribute != null)
 			{
 				double increment = personalAttribute.getMaxValue() * power.get(att).getPercentIncrease() + power.get(att).getValueIncrease() ;
 				personalAttribute.incBonus((int) (increment * level * mult));
@@ -47,7 +50,7 @@ public class Buff
 			}
 			
 			BasicBattleAttribute battleAttribute = receiver.getBA().mapAttributes(att) ;
-			if (battleAttribute != null && Util.chance(power.get(att).getChance()))
+			if (battleAttribute != null)
 			{
 				double increment = battleAttribute.getBaseValue() * power.get(att).getPercentIncrease() + power.get(att).getValueIncrease() ;
 				battleAttribute.incBonus(increment * level * mult);
@@ -56,7 +59,7 @@ public class Buff
 			}
 			
 			BattleSpecialAttribute battleSpecialAttribute = receiver.getBA().mapSpecialAttributes(att) ;
-			if (battleSpecialAttribute != null && Util.chance(power.get(att).getChance()))
+			if (battleSpecialAttribute != null)
 			{
 				battleSpecialAttribute.incAtkChanceBonus(power.get(att).getPercentIncrease() * level * mult);
 				battleSpecialAttribute.incAtkChanceBonus(power.get(att).getValueIncrease() * level * mult);

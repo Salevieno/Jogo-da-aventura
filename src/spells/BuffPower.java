@@ -4,22 +4,19 @@ public class BuffPower
 {    
 	private final double percentIncrease;
 	private final double valueIncrease;
-	private final double chance;
 
-    protected BuffPower(double percentIncrease, double valueIncrease, double chance)
+    protected BuffPower(double percentIncrease, double valueIncrease)
     {
         this.percentIncrease = percentIncrease ;
         this.valueIncrease = valueIncrease ;
-        this.chance = chance ;
     }
 
     protected double getPercentIncrease() { return percentIncrease ;}
     protected double getValueIncrease() { return valueIncrease ;}
-    protected double getChance() { return chance ;}
 
     @Override
     public String toString()
     {
-        return "BuffPower [percentIncrease=" + percentIncrease + ", valueIncrease=" + valueIncrease + ", chance=" + chance + "]";
+        return "BuffPower [percentIncrease=" + percentIncrease + ", valueIncrease=" + valueIncrease + "]";
     }
 }
