@@ -128,7 +128,7 @@ public class PauseWindow extends GameWindow
 
     protected void onClose()
     {
-        menuButtons.get(menu).forEach(GameButton::deactivate) ;
+        menuButtons.values().forEach(buttons -> buttons.forEach(GameButton::deactivate)) ;
     }
 
     private static Point gridPos(int row, int col)
