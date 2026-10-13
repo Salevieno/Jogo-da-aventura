@@ -66,7 +66,7 @@ public class BagWindow extends GameWindow
 	private static final Image TAB_SELECTED_IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "BagTabSelected.png") ;    
     private static final Dimension TAB_SIZE = Util.getSize(TAB_IMAGE) ;
     private static final Dimension SLOT_SIZE = Util.getSize(SLOT_IMAGE) ;
-// TODO ajustar a navegação: permitir clique em outro menu mesmo quando um menu já está selecionado e não abrir menu já usando item
+
     public BagWindow()
 	{
     	super("Mochila", Screen.getMe().pos(0.28, 0.4), IMAGE, 2, 10, 0, 0) ;
@@ -155,8 +155,8 @@ public class BagWindow extends GameWindow
 				tabDown() ;
 				page = 0 ;
 				updatePage() ;
-			}			
-			if (actionIsForward(action))
+			}
+			if ("LeftClick".equals(action))
 			{
 				menuUp() ;
 			}
@@ -181,7 +181,7 @@ public class BagWindow extends GameWindow
 				{
                     pageDown() ;
                     updatePage() ;
-                    item = QTD_SLOTS_PER_PAGE * (page + 1) - 1 ;
+                    item = Math.min(itemsOnMenu.keySet().size() - 1, QTD_SLOTS_PER_PAGE * (page + 1) - 1) ;
                 }
                 else
                 {
@@ -209,7 +209,7 @@ public class BagWindow extends GameWindow
 	{
 		buttons.forEach(button -> { if (button.isClicked(mousePos, player.getCurrentAction())) { button.act() ;}}) ;
 		
-		if (menu == 1 && actionIsForward(player.getCurrentAction()))
+		if (menu == 1 && "Enter".equals(player.getCurrentAction()))
 		{
 			player.useItem(getSelectedItem()) ;
             updatePage() ;
