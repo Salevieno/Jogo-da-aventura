@@ -34,7 +34,7 @@ public class GameFrame extends JFrame implements ActionListener
 
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE) ;
         setVisible(true) ;
-        timer = new Timer(0, this) ;		// timer of the game, first number = frame duration
+        timer = new Timer(16, this) ;		// timer of the game, first number = frame duration
 		timer.start() ;							// Game will start checking for keyboard events every "timer" miliseconds
 		previousState = GameStates.opening ;
     }
