@@ -162,11 +162,9 @@ public class Spell
 	
 	public void applyBuffs(boolean activate, LiveBeing receiver)
 	{
-        System.out.println(buffID + " " + Buff.getAllBuffs().size());
 		if (buffID < 0 || Buff.getAllBuffs().size() <= buffID) { return ;}
 		
 		int mult = activate ? 1 : -1 ;
-        System.out.println("Applying buff " + buffID);
 		Buff.getAllBuffs().get(buffID).apply(mult, level, receiver) ;
 	}
 

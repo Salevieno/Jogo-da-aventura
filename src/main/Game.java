@@ -93,11 +93,9 @@ public class Game
 		Log.info("Game version " + MainGame3_4.getVersion()) ;	
 		this.allText = new HashMap<>();
 		this.settings = new Settings(true, true, false, 1, 0) ;
-		this.player = new Player("", "", 0);
-		this.player.setPos(Screen.getMe().getCenterAsDouble());
 		this.difficultLevel = 0.7;
 		this.saveSlotInUse = -1;
-		this.state = GameStates.opening;
+		this.state = GameStates.loading;
 		this.dayTimer = new GameTimer(DAY_DURATION);
 		this.dt = System.nanoTime() ;
 	}
@@ -105,6 +103,8 @@ public class Game
 	protected static void create()
 	{
 		game = new Game() ;
+		game.player = new Player("", "", 0);
+		game.player.setPos(Screen.getMe().getCenterAsDouble());
 	}
 
 	protected static Game getMe() { return game ;}

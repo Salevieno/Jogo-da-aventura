@@ -57,6 +57,7 @@ public class Settings
 		if (item == 3)
 		{
 			attDisplay = (attDisplay + 1) % 2 ;
+            Game.getPlayer().updateAttributeBarStyle(attDisplay) ;
 		}
 		if (item == 4)
 		{

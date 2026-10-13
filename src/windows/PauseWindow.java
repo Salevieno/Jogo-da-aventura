@@ -178,7 +178,8 @@ public class PauseWindow extends GameWindow
                 }
                 if (action.equals(stdExit))
                 {
-                    menu = 0;
+                    switchToMenu(0) ;
+                    return ;
                 }
 
             case 4:

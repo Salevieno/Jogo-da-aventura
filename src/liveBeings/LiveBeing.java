@@ -18,8 +18,10 @@ import java.util.stream.Collectors;
 import javax.sound.sampled.Clip;
 
 import animations.DamageAnimation;
+import animations.GainAttributeAnimation;
 import animations.ObtainedItemAnimation;
 import attributes.Attributes;
+import attributes.BasicAttribute;
 import attributes.BattleAttributes;
 import attributes.PersonalAttributes;
 import battle.AtkEffects;
@@ -63,6 +65,7 @@ public abstract class LiveBeing implements Drawable
 	protected Dimension size ;
 	protected int range ;
 	protected int step ;
+    protected AttributeBar attributeBar ;
 	protected Hitbox hitbox ;
 	protected Elements atkElem ;
 	protected GameTimer hpCounter ;
@@ -86,7 +89,6 @@ public abstract class LiveBeing implements Drawable
 	private static int damageStyle = 0 ;
 	private static final int LAYER = 1 ;
 	private static final int MAX_COMBO_SIZE = 10 ;
-	private static final Image ATT_IMAGE = ImageLoader.loadImage(Path.PLAYER_IMG + "Attributes.png") ;
 	private static final Image DRUNK_IMAGE = ImageLoader.loadImage(Path.STATUS_IMG + "Drunk.png") ;
 	private static final Image DEFENDING_IMAGE = ImageLoader.loadImage(Path.BATTLE_IMG + "ShieldIcon.png") ;
 	private static final Image POWER_BAR_IMAGE = ImageLoader.loadImage(Path.LIVE_BEINGS_IMG + "PowerBar.png") ;
@@ -218,6 +220,16 @@ public abstract class LiveBeing implements Drawable
         }
 	}
 
+    public void incPersonalAttribute(BasicAttribute att, int value)
+    {
+        int attIndex = PA.getAttributes().indexOf(att) ;
+
+        if (attIndex == -1) { Log.warn("Trying to increase invalid personal attribute!") ; return ;}
+
+        att.incCurrentValue(value) ;
+        GainAttributeAnimation.start(headPos(), value, PersonalAttributes.getColors().get(attIndex)) ;
+    }
+
     protected boolean pathIsWalkable(Point2D.Double originPos, Point2D.Double destinyPos, Elements superElem)
     {
         double dx = destinyPos.x - originPos.x ;
@@ -247,6 +259,10 @@ public abstract class LiveBeing implements Drawable
 		if (pathIsWalkable(pos, newPos, superElem))
 		{
 			setPos(newPos) ;
+            if (attributeBar.getStyle() == 0)
+            {
+                attributeBar.updatePos(new Point(headPos().x - size.width / 2, headPos().y)) ;
+            }
 		}
 		else
 		{
@@ -486,7 +502,8 @@ public abstract class LiveBeing implements Drawable
 		}
 		if (mpCounter.hasFinished())
 		{
-			PA.getMp().incCurrentValue(1) ;
+			// PA.getMp().incCurrentValue(1) ;
+            incPersonalAttribute(PA.getMp(), 1) ;
 			mpCounter.start() ;
 		}
 		if (!(this instanceof Creature))
@@ -506,7 +523,8 @@ public abstract class LiveBeing implements Drawable
 		{
 			if (thirstCounter.hasFinished())
 			{
-				PA.getThirst().incCurrentValue(-1) ;
+				// PA.getThirst().incCurrentValue(-1) ;
+                incPersonalAttribute(PA.getThirst(), -1) ;
 				thirstCounter.start() ;
 				if (PA.getThirst().getCurrentValue() == 0)
 				{
@@ -834,56 +852,7 @@ public abstract class LiveBeing implements Drawable
 		
 	}
 	
-	public void displayAttributes(int style)
-	{
-		
-		List<Double> attRate = new ArrayList<>() ;
-		List<Color> attColor = new ArrayList<>() ;
-		
-		attRate.add(PA.getLife().getRate()) ;
-		attColor.add(Palette.colors[7]) ;
-		attRate.add(PA.getMp().getRate()) ;
-		attColor.add(Palette.colors[20]) ;
-		if (!(this instanceof Creature))
-		{
-			attRate.add(PA.getExp().getRate()) ;
-			attColor.add(Palette.colors[5]) ;
-			attRate.add(PA.getSatiation().getRate()) ;
-			attColor.add(Palette.colors[15]) ;
-			attRate.add(PA.getThirst().getRate()) ;
-			attColor.add(Palette.colors[21]) ;
-		}
-		
-		if (style == 0)
-		{
-			Dimension barSize = new Dimension(32, 4) ;
-			int sy = barSize.height;
-			int clearSpace = 3 ;
-			for (int i = 0; i <= attRate.size() - 1; i += 1)
-			{
-				Point barPos = Util.translate(headPos(), -size.width / 2, - attRate.size() * barSize.height - clearSpace + i * sy) ;
-				Dimension filledSize = new Dimension((int)(attRate.get(i) * barSize.width), barSize.height) ;
-				GamePanel.getDP().drawRect(barPos, Align.topLeft, filledSize, 1, attColor.get(i), Palette.colors[0], 1.0) ;
-			}
-		}
-		if (style == 1)
-		{
-			Point topLeft = Screen.getMe().pos(0.01, 0.02) ;
-			Dimension barSize = new Dimension(5, 60) ;
-			int stroke = 1 ;
-			GamePanel.getDP().drawImage(ATT_IMAGE, topLeft, Align.topLeft, 0.85) ;
-			Point offset = new Point(63, 70) ;
-			Point barPos = Util.translate(topLeft, offset.x, offset.y) ;
-			for (int att = 0; att <= attRate.size() - 1; att += 1)
-			{
-				Dimension rateSize = new Dimension(barSize.width, (int) (attRate.get(att) *  barSize.height)) ;
-				GamePanel.getDP().drawRect(barPos, Align.bottomCenter, barSize, stroke, null, Palette.colors[0], 1.0) ;
-				GamePanel.getDP().drawRect(barPos, Align.bottomCenter, rateSize, stroke, attColor.get(att), null, 1.0) ;
-				barPos.x += barSize.width + 26 ;
-			}
-		}
-		
-	}
+	public void displayAttributes(Point topLeft, boolean showAll) { attributeBar.display(topLeft, PA, showAll) ;}
 	
 	public void displayBattleActionCounter()
 	{

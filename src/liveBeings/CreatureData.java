@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Set;
 
 import main.Elements;
+import main.Log;
 import main.Palette;
 import main.Path;
 import utilities.Util;
@@ -488,9 +489,9 @@ public abstract class CreatureData
                 writer.write(line);
                 writer.newLine(); // move to next line
             }
-            System.out.println("File saved successfully!");
+            Log.info("File saved successfully!");
         } catch (IOException e) {
-            System.err.println("Error writing file: " + e.getMessage());
+            Log.error("Error writing file: " + e.getMessage());
         }
     }
 }

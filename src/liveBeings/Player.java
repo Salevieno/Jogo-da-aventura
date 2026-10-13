@@ -18,6 +18,7 @@ import org.json.simple.JSONObject;
 
 import NPC.NPC;
 import animations.BufferedTextAnimation;
+import animations.GainAttributeAnimation;
 import animations.MessageAnimation;
 import animations.ObtainedItemAnimation;
 import animations.WinAnimation;
@@ -172,6 +173,7 @@ public class Player extends LiveBeing
 		this.hearingRange = PlayerData.getHearingRange().get(job) ;
 		this.step = PlayerData.getStep().get(job);
 	    this.atkElem = Elements.neutral ;
+        this.attributeBar = new AttributeBar(Game.getSettings().getAttDisplay(), Screen.getMe().pos(0.01, 0.02)) ;
 		// optionalTODO - passar counters para dentro dos atributos com counter increment e counter deplete
 		this.satiationCounter = new GameTimer(PlayerData.getSatiationcounterduration().get(job)) ;
 		this.thirstCounter = new GameTimer(PlayerData.getThirstcounterduration().get(job)) ;
@@ -250,6 +252,8 @@ public class Player extends LiveBeing
 	{
 		attInc = calcAttributeIncrease(job, proJob) ;
 	}
+
+    public void updateAttributeBarStyle(int style) { this.attributeBar.updateStyle(style) ;}
 
 	public List<Quest> getQuests() {return quests ;}
 	public BagWindow getBag() {return bag ;}
@@ -464,7 +468,7 @@ public class Player extends LiveBeing
 
 	public void applyAdjacentGroundEffect()
 	{
-		if (isInside(GroundType.lava) & superElem != null)
+		if (isInside(GroundType.lava) && superElem != null)
 		{
 			if (!superElem.equals(Elements.fire))
 			{
@@ -473,7 +477,8 @@ public class Player extends LiveBeing
 		}
 		if (isTouching(GroundType.water))
 		{
-			PA.getThirst().incCurrentValue(1) ;
+			// PA.getThirst().incCurrentValue(1) ;
+            incPersonalAttribute(PA.getThirst(), 1) ;
 		}
 	}
 
@@ -1254,8 +1259,9 @@ public class Player extends LiveBeing
 			case 42:
 				if (Util.chance(0.5)) { return ;}
 				Spell lastSpellUsed = getActiveSpells().get(SPELL_KEYS.indexOf(currentAction)) ;
-                // TODO add animation for + hp, + mp ...
-				PA.getMp().incCurrentValue((int) (0.04 * spell.getLevel()* lastSpellUsed.getMpCost())) ;
+                int increase = (int) (0.04 * spell.getLevel() * lastSpellUsed.getMpCost()) ;
+                GainAttributeAnimation.start(headPos(), increase, Palette.colors[19]) ;
+				PA.getMp().incCurrentValue(increase) ;
 				
 			case 82:
 				if (Util.chance(0.1 * spell.getLevel())) { return ;}
@@ -1459,7 +1465,9 @@ public class Player extends LiveBeing
     {
         if (expToGain <= 0) { return ;}
 
-        PA.getExp().incCurrentValue(expToGain) ;
+        incPersonalAttribute(PA.getExp(), expToGain) ;
+        // PA.getExp().incCurrentValue(expToGain) ;
+        // GainAttributeAnimation.start(headPos(), expToGain, Palette.colors[5]);
         expToGain += -Math.min(PA.getExp().getMaxValue(), expToGain) ;
     }
 	
@@ -1728,7 +1736,7 @@ public class Player extends LiveBeing
 	
 	public void display(Point pos, Scale scale, Directions direction, boolean showRange)
 	{
-		displayAttributes(Game.getSettings().getAttDisplay()) ;
+		displayAttributes(attributeBar.getStyle() == 1 ? Screen.getMe().pos(0.01, 0.02) : new Point(headPos().x - size.width / 2, headPos().y), true) ;
 		if (isRiding)
 		{
 			Point ridePos = Util.translate(pos, -TIGER_IMG.getWidth(null) / 2, TIGER_IMG.getHeight(null) / 2) ;

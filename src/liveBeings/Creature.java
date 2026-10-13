@@ -61,7 +61,6 @@ public class Creature extends LiveBeing
 		this.movingTimer = new GameTimer(CT.getMovingTimerDuration()) ;
 		this.combo = new ArrayList<>() ;
 		this.hitbox = CT.getHitboxType().equals("circle") ? new HitboxCircle(new Point(), size.width / 2) : new HitboxRectangle(new Point(), size) ;
-		
 		this.dir = LiveBeing.randomDir() ;
 		this.state = LiveBeingStates.idle ;
 		this.currentAction = "" ;
@@ -77,6 +76,7 @@ public class Creature extends LiveBeing
 
 		this.idleTimer = new GameTimer(CT.getMovingAnimations().getIdleDuration()) ;
  		setPos(pos) ;
+        this.attributeBar = new AttributeBar(0, new Point(headPos().x - size.width / 2, headPos().y)) ;
  	}
  	
  	public Creature(CreatureType CT)
@@ -141,7 +141,8 @@ public class Creature extends LiveBeing
 
 	private void move(GameMap playerMap, double dt)
 	{		
-		updatePos(dir, pos, step, dt, movingTimer.rate(), playerMap) ;	
+		updatePos(dir, pos, step, dt, movingTimer.rate(), playerMap) ;
+
 		if (movingTimer.hasFinished())
 		{
 			setState(LiveBeingStates.idle) ;
@@ -419,7 +420,7 @@ public class Creature extends LiveBeing
 		displayStatus() ;
 		if (isFighting())
 		{
-			displayAttributes(0);
+			displayAttributes(new Point(headPos().x - size.width / 2, headPos().y), false) ;
 		}
         GamePanel.getDP().drawText(Util.translate(pos, 0, -20), Align.bottomCenter, name + ": " + type.getMovePattern().toString(), Color.black) ;
 		if (Game.DEBUG_MODE)

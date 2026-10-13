@@ -22,7 +22,6 @@ public class NPCSaver extends NPC
 		if (actionIsForward(action) & currentMenuID == 1)
 		{
 			int slot = selOption + 1 ;
-            System.out.println(slot);
 	        player.save(slot) ;
 	        Game.setSaveSlotInUse(slot) ;
 		}

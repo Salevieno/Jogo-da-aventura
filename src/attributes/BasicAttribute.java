@@ -58,7 +58,6 @@ public class BasicAttribute extends LiveBeingAttribute
 
 	public static BasicAttribute fromJson(JSONObject jsonData)
 	{
-
 		int currentValue = (int) (long) jsonData.get("currentValue") ;
 		int maxValue = (int) (long) jsonData.get("maxValue") ;
 		double multiplier = (double) (Double) jsonData.get("multiplier") ;

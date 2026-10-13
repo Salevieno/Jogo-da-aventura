@@ -71,7 +71,7 @@ public class PersonalAttributes
 	}
 
     public List<BasicAttribute> getAttributes() { return List.of(life, mp, exp, satiation, thirst) ;}
-    public List<Color> getColors() { return List.of(Palette.colors[7], Palette.colors[20], Palette.colors[5], Palette.colors[15], Palette.colors[21]) ;}
+    public static List<Color> getColors() { return List.of(Palette.colors[7], Palette.colors[20], Palette.colors[5], Palette.colors[15], Palette.colors[21]) ;}
 	
 	public static int numberFightsToLevelUp(int currentExp, int totalExp, int opponentExp, double expMult)
 	{
@@ -87,7 +87,7 @@ public class PersonalAttributes
             Point textPos = Util.translate(topLeft, barSize.width / 2, 26 * i) ;
             Dimension rateSize = new Dimension(barSize.width, (int) (att.getRate() *  barSize.height)) ;
 
-            GamePanel.getDP().drawRect(barPos, Align.centerLeft, rateSize, 1, this.getColors().get(i), null, 1.0) ;
+            GamePanel.getDP().drawRect(barPos, Align.centerLeft, rateSize, 1, getColors().get(i), null, 1.0) ;
             GamePanel.getDP().drawRect(barPos, Align.centerLeft, barSize, 1, null, Palette.colors[0], 1.0) ;
             GamePanel.getDP().drawText(textPos, Align.center, att.getCurrentValue() + " / " + att.getMaxValue(), Palette.colors[0]);
         }
