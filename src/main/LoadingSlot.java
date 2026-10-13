@@ -14,7 +14,6 @@ import utilities.Util;
 
 public class LoadingSlot
 {
-    private final String name ;
     private final Point topLeftPos ;
     private final Player player ;
     private final GameButton loadButton ;
@@ -24,7 +23,6 @@ public class LoadingSlot
     private final Point attTopLeft ;
 
     private static final Image IMAGE = ImageLoader.loadImage(Path.OPENING_IMG + "LoadingSlot.png") ;
-    private static final Font FONT = new Font(Game.getMainFontName(), Font.BOLD, 16) ;
     private static final Font SMALL_FONT = new Font(Game.getMainFontName(), Font.BOLD, 13) ;
 
     // TODO pet window
@@ -32,7 +30,6 @@ public class LoadingSlot
 
     protected LoadingSlot(String name, Point topLeftPos, Player player)
     {
-        this.name = name ;
         this.topLeftPos = topLeftPos ;
         this.player = player ;
         Dimension windowSize = Util.getSize(IMAGE) ;

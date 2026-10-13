@@ -47,11 +47,11 @@ public abstract class Opening
     private static double difficultLevel ;
     private static String chosenSex ;
     private static int chosenJob ;
-	private static LiveInput liveInput = new LiveInput() ;	
+	private static LiveInput liveInput = new LiveInput() ;
 
     private static final Font FONT = new Font(Game.getMainFontName(), Font.BOLD, 16) ;
 
-	private static final SpriteAnimation OPENING_ANI = new SpriteAnimation(Path.OPENING_IMG + "OpeningAnimation.png", new Point(), Align.topLeft, false, 45, 0.065) ;
+	private static final SpriteAnimation OPENING_ANI = new SpriteAnimation(Path.OPENING_IMG + "OpeningAnimation.png", new Point(), Align.topLeft, false, 35, 0.06) ;
 	
 	private static final Image BACKGROUND_IMAGE = ImageLoader.loadImage(Path.OPENING_IMG + "Opening.png") ;
 	private static final Image JOB_DESCRIPTION_BACKGROUND = ImageLoader.loadImage(Path.OPENING_IMG + "JobDescriptionBackground.png") ;

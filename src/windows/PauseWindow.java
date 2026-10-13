@@ -35,51 +35,50 @@ public class PauseWindow extends GameWindow
     private static final GameSound SOUND_EFFECT_ON_HOVER = new GameSound("PauseButtonHoverSoundEffect.wav") ;
     private static final Image TEXT_BG_IMG = ImageLoader.loadImage(Path.UI_IMG + "SettingsTextBackground.png") ;
     private static final Font LARGE_FONT = new Font(Game.getMainFontName(), Font.BOLD, 20) ;
-    private static final int SETTING_COL_POS_X = WINDOW_POS.x + (2 * Util.getSize(IMAGE_BG).width) / 3 ;
+    private static final int SETTING_COL_POS_X = WINDOW_POS.x + (2 * Util.getSize(IMAGE_BG).width) / 3 ;        
+    private static final Image BTN_IMAGE = ImageLoader.loadImage(Path.UI_IMG + "SettingsButton.png") ;
+    private static final Image BTN_SELECTED_IMAGE = ImageLoader.loadImage(Path.UI_IMG + "SettingsButtonSelected.png") ;
+    private static final Image BTN_SHORT_IMAGE = ImageLoader.loadImage(Path.UI_IMG + "SettingsShortButton.png") ;
+    private static final Image BTN_SHORT_SELECTED_IMAGE = ImageLoader.loadImage(Path.UI_IMG + "SettingsShortButtonSelected.png") ;
 
     public PauseWindow()
     {
         super("Opções", WINDOW_POS, IMAGE_BG, 2, 0, 7, 0) ;
-        
-        Image btnImg = ImageLoader.loadImage(Path.UI_IMG + "SettingsButton.png") ;
-        Image selectedBtnImg = ImageLoader.loadImage(Path.UI_IMG + "SettingsButtonSelected.png") ;
-        Image btnShortImg = ImageLoader.loadImage(Path.UI_IMG + "SettingsShortButton.png") ;
-        Image selectedBtnShortImg = ImageLoader.loadImage(Path.UI_IMG + "SettingsShortButtonSelected.png") ;
 
-        GameButton returnToMainMenu = new GameTextButton(gridPos(17, 1), Align.center, "", "V O L T A R", btnImg, selectedBtnImg, () -> { switchToMenu(0) ;}, SOUND_EFFECT_ON_HOVER) ;
+        GameButton returnToMainMenu = new GameTextButton(gridPos(17, 1), Align.center, "", "V O L T A R", BTN_IMAGE, BTN_SELECTED_IMAGE, () -> { switchToMenu(0) ;}, SOUND_EFFECT_ON_HOVER) ;
         returnToMainMenu.deactivate() ;
 
         List<GameButton> buttonsMainMenu = List.of(
-            new GameTextButton(gridPos(4, 1), Align.center, "", "R E S U M E", btnImg, selectedBtnImg, () -> { 
+            new GameTextButton(gridPos(4, 1), Align.center, "", "R E S U M E", BTN_IMAGE, BTN_SELECTED_IMAGE, () -> { 
                 onClose() ;
                 Game.getPlayer().switchOpenClose(Game.getPlayer().getPauseWindow()) ;
             }, SOUND_EFFECT_ON_HOVER),
-            new GameTextButton(gridPos(6, 1), Align.center, "", "P L A Y E R", btnImg, selectedBtnImg, () -> { switchToMenu(1) ;}, SOUND_EFFECT_ON_HOVER),
-            new GameTextButton(gridPos(8, 1), Align.center, "", "A U D I O", btnImg, selectedBtnImg, () -> { switchToMenu(2) ;}, SOUND_EFFECT_ON_HOVER),
-            new GameTextButton(gridPos(10, 1), Align.center, "", "V I D E O", btnImg, selectedBtnImg, () -> { switchToMenu(3) ;}, SOUND_EFFECT_ON_HOVER),
-            new GameTextButton(gridPos(12, 1), Align.center, "", "C O N T R O L S", btnImg, selectedBtnImg, () -> { switchToMenu(4) ;}, SOUND_EFFECT_ON_HOVER),
-            new GameTextButton(gridPos(14, 1), Align.center, "", "L A N G U A G E", btnImg, selectedBtnImg, () -> { switchToMenu(5); ;}, SOUND_EFFECT_ON_HOVER),
-            new GameTextButton(gridPos(16, 1), Align.center, "", "E X I T", btnImg, selectedBtnImg, () -> { MainGame3_4.closeGame() ;}, SOUND_EFFECT_ON_HOVER)
+            new GameTextButton(gridPos(6, 1), Align.center, "", "P L A Y E R", BTN_IMAGE, BTN_SELECTED_IMAGE, () -> { switchToMenu(1) ;}, SOUND_EFFECT_ON_HOVER),
+            new GameTextButton(gridPos(8, 1), Align.center, "", "A U D I O", BTN_IMAGE, BTN_SELECTED_IMAGE, () -> { switchToMenu(2) ;}, SOUND_EFFECT_ON_HOVER),
+            new GameTextButton(gridPos(10, 1), Align.center, "", "V I D E O", BTN_IMAGE, BTN_SELECTED_IMAGE, () -> { switchToMenu(3) ;}, SOUND_EFFECT_ON_HOVER),
+            new GameTextButton(gridPos(12, 1), Align.center, "", "C O N T R O L S", BTN_IMAGE, BTN_SELECTED_IMAGE, () -> { switchToMenu(4) ;}, SOUND_EFFECT_ON_HOVER),
+            new GameTextButton(gridPos(14, 1), Align.center, "", "L A N G U A G E", BTN_IMAGE, BTN_SELECTED_IMAGE, () -> { switchToMenu(5); ;}, SOUND_EFFECT_ON_HOVER),
+            new GameTextButton(gridPos(16, 1), Align.center, "", "E X I T", BTN_IMAGE, BTN_SELECTED_IMAGE, () -> { MainGame3_4.closeGame() ;}, SOUND_EFFECT_ON_HOVER)
         ) ;
         buttonsMainMenu.forEach(GameButton::deactivate) ;
         buttonsMainMenu.get(0).select() ;
 
         List<GameButton> buttonsPlayerMenu = List.of(
-            new GameTextButton(gridPos(6, 1), Align.center, "", "R A N G E D I S P L A Y", btnImg, selectedBtnImg, () -> {Game.getSettings().update(2) ;}, SOUND_EFFECT_ON_HOVER),
-            new GameTextButton(gridPos(8, 1), Align.center, "", "A T T D I S P L A Y", btnImg, selectedBtnImg, () -> {Game.getSettings().update(3) ;}, SOUND_EFFECT_ON_HOVER),
-            new GameTextButton(gridPos(10, 1), Align.center, "", "D A M A G E S T Y L E", btnImg, selectedBtnImg, () -> {Game.getSettings().update(4) ;}, SOUND_EFFECT_ON_HOVER),
+            new GameTextButton(gridPos(6, 1), Align.center, "", "R A N G E D I S P L A Y", BTN_IMAGE, BTN_SELECTED_IMAGE, () -> {Game.getSettings().update(2) ;}, SOUND_EFFECT_ON_HOVER),
+            new GameTextButton(gridPos(8, 1), Align.center, "", "A T T D I S P L A Y", BTN_IMAGE, BTN_SELECTED_IMAGE, () -> {Game.getSettings().update(3) ;}, SOUND_EFFECT_ON_HOVER),
+            new GameTextButton(gridPos(10, 1), Align.center, "", "D A M A G E S T Y L E", BTN_IMAGE, BTN_SELECTED_IMAGE, () -> {Game.getSettings().update(4) ;}, SOUND_EFFECT_ON_HOVER),
             returnToMainMenu
         ) ;
         buttonsPlayerMenu.forEach(GameButton::deactivate) ;
 
         List<GameButton> buttonsAudioMenu = List.of(
-            new GameTextButton(gridPos(6, 1), Align.center, "", "M U S I C", btnImg, selectedBtnImg, () -> {Game.getSettings().update(0) ;}, SOUND_EFFECT_ON_HOVER),
-            new GameTextButton(gridPos(8, 1), Align.center, "", "S O U N D E F F E C T S", btnImg, selectedBtnImg, () -> {Game.getSettings().update(1) ;}, SOUND_EFFECT_ON_HOVER),
+            new GameTextButton(gridPos(6, 1), Align.center, "", "M U S I C", BTN_IMAGE, BTN_SELECTED_IMAGE, () -> {Game.getSettings().update(0) ;}, SOUND_EFFECT_ON_HOVER),
+            new GameTextButton(gridPos(8, 1), Align.center, "", "S O U N D E F F E C T S", BTN_IMAGE, BTN_SELECTED_IMAGE, () -> {Game.getSettings().update(1) ;}, SOUND_EFFECT_ON_HOVER),
             returnToMainMenu) ;
         buttonsAudioMenu.forEach(GameButton::deactivate) ;
 
         List<GameButton> buttonsVideoMenu = List.of(
-            new GameTextButton(gridPos(6, 1), Align.center, "", "F U L L S C R E E N", btnImg, selectedBtnImg, () -> {Game.getSettings().update(5) ;}, SOUND_EFFECT_ON_HOVER),
+            new GameTextButton(gridPos(6, 1), Align.center, "", "F U L L S C R E E N", BTN_IMAGE, BTN_SELECTED_IMAGE, () -> {Game.getSettings().update(5) ;}, SOUND_EFFECT_ON_HOVER),
             returnToMainMenu) ;
         buttonsVideoMenu.forEach(GameButton::deactivate) ;
 
@@ -87,14 +86,14 @@ public class PauseWindow extends GameWindow
         for (int i = 0 ; i <= PlayerActions.values().length - 1 ; i += 1)
         {
             final int index = i ;
-            buttonsControlsMenu.add(new GameTextButton(gridPos(i + 1, 0), Align.center, "", PlayerActions.values()[i].toString(), btnShortImg, selectedBtnShortImg, () -> { item = index ; isListeningToKeyInput = !isListeningToKeyInput ;}, SOUND_EFFECT_ON_HOVER)) ;
+            buttonsControlsMenu.add(new GameTextButton(gridPos(i + 1, 0), Align.center, "", PlayerActions.values()[i].toString(), BTN_SHORT_IMAGE, BTN_SHORT_SELECTED_IMAGE, () -> { item = index ; isListeningToKeyInput = !isListeningToKeyInput ;}, SOUND_EFFECT_ON_HOVER)) ;
         }
         buttonsControlsMenu.add(returnToMainMenu) ;
 
         buttonsControlsMenu.forEach(GameButton::deactivate) ;
 
         List<GameButton> buttonsLanguageMenu = List.of(
-            new GameTextButton(gridPos(6, 1), Align.center, "", "L A N G U A G E", btnShortImg, selectedBtnShortImg, () -> { Game.getSettings().update(6) ;}, SOUND_EFFECT_ON_HOVER)
+            new GameTextButton(gridPos(6, 1), Align.center, "", "L A N G U A G E", BTN_SHORT_IMAGE, BTN_SHORT_SELECTED_IMAGE, () -> { Game.getSettings().update(6) ;}, SOUND_EFFECT_ON_HOVER)
         ) ;
         buttonsLanguageMenu.forEach(GameButton::deactivate) ;
 
