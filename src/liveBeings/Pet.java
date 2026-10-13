@@ -413,7 +413,7 @@ public class Pet extends LiveBeing
 	
 	public void win(Creature creature)
 	{
-		PA.getExp().incCurrentValue((int) (creature.getExp().getCurrentValue() * PA.getExp().getMultiplier())); ;
+        incPersonalAttribute(PA.getExp(), (int) (creature.getExp().getCurrentValue() * PA.getExp().getMultiplier()), true) ;
 	}
 	
 	public void levelUp()

@@ -351,7 +351,7 @@ public abstract class EvolutionSimulation
 		{			
 			if (99 <= player.getLevel()) { break ;}
 			
-			player.getExp().incCurrentValue(player.getExp().getMaxValue());
+			player.incPersonalAttribute(player.getPA().getExp(), player.getPA().getExp().getMaxValue(), true) ;
 			player.levelUp() ;	
 		}
 	}
@@ -436,7 +436,7 @@ public abstract class EvolutionSimulation
 		{			
 			if (99 <= pet.getLevel()) { break ;}
 
-			pet.getExp().incCurrentValue(pet.getExp().getMaxValue());
+            pet.incPersonalAttribute(pet.getPA().getExp(), pet.getPA().getExp().getMaxValue(), true) ;
 			pet.levelUp() ;
 		}
 	}
@@ -742,14 +742,14 @@ public abstract class EvolutionSimulation
 	{
 		player.takeBloodAndPoisonDamage() ;
 		player.activateSpellCounters() ;
-		player.activateCounters() ;
+		player.applyCounterActions() ;
 		player.getSatiation().setToMaximum() ;
 		player.getThirst().setToMaximum() ;
 		if (pet != null)
 		{
 			pet.takeBloodAndPoisonDamage() ;
 			pet.activateSpellCounters() ;
-			pet.activateCounters() ;
+			pet.applyCounterActions() ;
 			pet.getSatiation().setToMaximum() ;
 		}
 
@@ -819,7 +819,7 @@ public abstract class EvolutionSimulation
 		if (playerOpponent != null)
 		{
 			playerOpponent.activateSpellCounters() ;
-			playerOpponent.activateCounters() ;
+			playerOpponent.applyCounterActions() ;
 		}
 
 		Animation.playAll() ;

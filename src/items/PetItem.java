@@ -100,15 +100,15 @@ public class PetItem extends Item
 		// proTODO - customizar pet item power
 		if (isLifePotion(id))
 		{
-			pet.getLife().incCurrentValue(20 + 10 * power) ;
+            pet.incPersonalAttribute(pet.getPA().getLife(), 20 + 10 * power, true) ;
 		}
 		if (isMpPotion(id))
 		{
-			pet.getMp().incCurrentValue(20 + 10 * power) ;
+            pet.incPersonalAttribute(pet.getPA().getMp(), 20 + 10 * power, true) ;
 		}
 		if (isFood(id))
 		{
-			pet.getSatiation().incCurrentValue(20 + 10 * power) ;
+            pet.incPersonalAttribute(pet.getPA().getSatiation(), 20 + 10 * power, true) ;
 		}
 		if (isEquipSet(id))
 		{

@@ -51,9 +51,9 @@ public class Food extends Item
 	public void use(LiveBeing user)
 	{
 		PersonalAttributes PA = user.getPA() ;
-		PA.getLife().incCurrentValue((int) (lifeHeal * PA.getLife().getMaxValue())) ;
-		PA.getMp().incCurrentValue((int) (MPHeal * PA.getMp().getMaxValue())) ;
-		PA.getSatiation().incCurrentValue((int) (satiationHeal / 310.0 * PA.getSatiation().getMaxValue())) ;
+        user.incPersonalAttribute(user.getPA().getLife(), (int) (lifeHeal * PA.getLife().getMaxValue()), true) ;
+        user.incPersonalAttribute(user.getPA().getMp(), (int) (MPHeal * PA.getMp().getMaxValue()), true) ;
+        user.incPersonalAttribute(user.getPA().getSatiation(), (int) (satiationHeal / 310.0 * PA.getSatiation().getMaxValue()), true) ;
 	}
 
 	public void displayInfo(Point pos, Align align)

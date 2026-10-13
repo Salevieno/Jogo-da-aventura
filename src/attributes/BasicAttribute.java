@@ -33,7 +33,8 @@ public class BasicAttribute extends LiveBeingAttribute
 	public double getRate() { return getTotalValue() / (double) maxValue ;}
 	public boolean isMaxed() { return getTotalValue() == maxValue ;}
 
-	public void incCurrentValue(int amount)
+	public void 
+    incCurrentValue(int amount)
 	{
 		currentValue = Math.max(0, Math.min(currentValue + amount, maxValue)) ;
 	}
@@ -79,7 +80,6 @@ public class BasicAttribute extends LiveBeingAttribute
 	@Override
 	public String toString()
 	{
-		return String.format("%d (%d + %.3f). Max =  %d (x %.3f)",
-				getTotalValue(), currentValue, bonus, maxValue, multiplier) ;
+		return String.format("Att value = %d (%d + %.3f). Max =  %d (x %.3f)", getTotalValue(), currentValue, bonus, maxValue, multiplier) ;
 	}
 }

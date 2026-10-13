@@ -472,13 +472,12 @@ public class Player extends LiveBeing
 		{
 			if (!superElem.equals(Elements.fire))
 			{
-				PA.getLife().decTotalValue(5) ;
+                incPersonalAttribute(PA.getLife(), -5, true) ;
 			}
 		}
 		if (isTouching(GroundType.water))
 		{
-			// PA.getThirst().incCurrentValue(1) ;
-            incPersonalAttribute(PA.getThirst(), 1) ;
+            incPersonalAttribute(PA.getThirst(), 1, true) ;
 		}
 	}
 
@@ -1261,7 +1260,7 @@ public class Player extends LiveBeing
 				Spell lastSpellUsed = getActiveSpells().get(SPELL_KEYS.indexOf(currentAction)) ;
                 int increase = (int) (0.04 * spell.getLevel() * lastSpellUsed.getMpCost()) ;
                 GainAttributeAnimation.start(headPos(), increase, Palette.colors[19]) ;
-				PA.getMp().incCurrentValue(increase) ;
+                incPersonalAttribute(PA.getMp(), increase, true) ;
 				
 			case 82:
 				if (Util.chance(0.1 * spell.getLevel())) { return ;}
@@ -1315,7 +1314,7 @@ public class Player extends LiveBeing
 		{
 			Potion pot = (Potion) item ;
 			double powerMult = job == 3 && 1 <= spells.get(7).getLevel() ? 1 + 0.06 * spells.get(7).getLevel() : 1 ;
-			
+			// TODO not use potion if HP or MP is maxed
 			pot.use(this, powerMult) ;
 			bag.remove(pot, 1) ;
 			
@@ -1465,9 +1464,7 @@ public class Player extends LiveBeing
     {
         if (expToGain <= 0) { return ;}
 
-        incPersonalAttribute(PA.getExp(), expToGain) ;
-        // PA.getExp().incCurrentValue(expToGain) ;
-        // GainAttributeAnimation.start(headPos(), expToGain, Palette.colors[5]);
+        incPersonalAttribute(PA.getExp(), expToGain, true) ;
         expToGain += -Math.min(PA.getExp().getMaxValue(), expToGain) ;
     }
 	
@@ -1826,7 +1823,7 @@ public class Player extends LiveBeing
 		int poisonDamage = (int) (status.get(Attributes.poison).getIntensity() * poisonMult) ;
 		if (job == 4 & 1 < spells.get(12).getLevel())
 		{
-			PA.getLife().incCurrentValue(bloodDamage) ;
+            incPersonalAttribute(PA.getLife(), bloodDamage, true) ;
 		}
 		stats.updateInflictedBlood(bloodDamage) ;		
 		stats.updateInflictedPoison(poisonDamage) ;

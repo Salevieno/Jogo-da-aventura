@@ -19,8 +19,10 @@ import graphics.Align;
 import graphics2.SpriteAnimation;
 import items.Arrow;
 import items.Equip;
+import items.Food;
 import items.GeneralItem;
 import items.Item;
+import items.Potion;
 import items.Recipe;
 import liveBeings.CreatureData;
 import liveBeings.Player;
@@ -102,6 +104,10 @@ public abstract class LoadingGame
 			{
 				MusicManager.switchMusic(player.getMap().getMusic());
 			}
+            player.getBag().add(Potion.getAll()[0], 1);
+            player.getBag().add(Potion.getAll()[1], 1);
+            player.getBag().add(Food.getAll()[0], 1);
+            player.getBag().add(Food.getAll()[1], 1);
             player.getBag().add(Equip.getAll()[0], 1);
             player.getBag().add(Equip.getAll()[1], 1);
             player.getBag().add(Equip.getAll()[3], 1);

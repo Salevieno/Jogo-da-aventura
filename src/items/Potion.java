@@ -4,7 +4,6 @@ import java.awt.Image;
 import java.awt.Point;
 import java.util.List;
 
-import attributes.PersonalAttributes;
 import graphics.Align;
 import liveBeings.LiveBeing;
 import main.ImageLoader;
@@ -62,9 +61,10 @@ public class Potion extends Item
 		
 	public void use(LiveBeing target, double powerMult)
 	{
-		PersonalAttributes PA = target.getPA() ;
-		PA.getLife().incCurrentValue((int) (lifeHeal * PA.getLife().getMaxValue() * powerMult)) ;
-		PA.getMp().incCurrentValue((int) (MPHeal * PA.getMp().getMaxValue() * powerMult)) ;
+        int lifeInc = (int) (lifeHeal * target.getPA().getLife().getMaxValue() * powerMult) ;
+        int mpInc = (int) (lifeHeal * target.getPA().getMp().getMaxValue() * powerMult) ;
+        target.incPersonalAttribute(target.getPA().getLife(), lifeInc, true);
+        target.incPersonalAttribute(target.getPA().getMp(), mpInc, true);
 		// proTODO - bebidas
 	}
 

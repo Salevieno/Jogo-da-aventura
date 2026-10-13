@@ -6,6 +6,7 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
+import animations.GainAttributeAnimation;
 import attributes.PersonalAttributes;
 import graphics.Align;
 import main.GamePanel;
@@ -20,16 +21,15 @@ public class AttributeBar
     private int style ;
 	private Dimension barSize ;
     private List<Point> barPos ;
+    private List<Point> attIncAnimationPos ;
 
     private static final int QTD_ATT = 5 ;
 	private static final Image ATT_IMAGE = ImageLoader.loadImage(Path.PLAYER_IMG + "Attributes.png") ;
 
     public AttributeBar(int style, Point topLeft)
     {
-        this.style = style ;
         this.topLeft = topLeft ;
-        updateBarSize(style) ;
-        updateBarsPos() ;
+        updateStyle(style) ;
     }
 
     public int getStyle() { return this.style ;}
@@ -37,7 +37,6 @@ public class AttributeBar
     public void updatePos(Point topLeft)
     {
         this.topLeft = topLeft ;
-        updateBarsPos() ;
     }
 
     public void updateStyle(int style)
@@ -45,7 +44,10 @@ public class AttributeBar
         this.style = style ;
         updateBarSize(style) ;
         updateBarsPos() ;
+        updateAttIncAnimationPos() ;
     }
+
+    public void displayAttInc(int attIndex, int value) { GainAttributeAnimation.start(attIncAnimationPos.get(attIndex), value, PersonalAttributes.getColors().get(attIndex)) ;}
 
     private void updateBarSize(int style) { this.barSize = style == 0 ? new Dimension(32, 4) : new Dimension(5, 60) ;}
 
@@ -64,6 +66,22 @@ public class AttributeBar
             }
         }
     }
+
+    private void updateAttIncAnimationPos()
+    {
+        this.attIncAnimationPos = new ArrayList<>() ;
+        for (int i = 0 ; i <= QTD_ATT - 1 ; i += 1)
+        {
+            if (style == 0)
+            {
+                attIncAnimationPos.add(Util.translate(topLeft, -13, - QTD_ATT * barSize.height - 3 + i * barSize.height)) ;
+            }
+            else
+            {
+			    attIncAnimationPos.add(Util.translate(topLeft, 63 - 13 + i * (barSize.width + 26), 70)) ;
+            }
+        }
+    }
     
 	public void display(Point topLeft, PersonalAttributes PA, boolean showAll)
 	{
@@ -71,6 +89,7 @@ public class AttributeBar
         {
             this.topLeft = topLeft ;
             updateBarsPos() ;
+            updateAttIncAnimationPos() ;
         }
 
 		List<Double> attRate = new ArrayList<>() ;

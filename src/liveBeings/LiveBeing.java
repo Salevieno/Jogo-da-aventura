@@ -18,7 +18,6 @@ import java.util.stream.Collectors;
 import javax.sound.sampled.Clip;
 
 import animations.DamageAnimation;
-import animations.GainAttributeAnimation;
 import animations.ObtainedItemAnimation;
 import attributes.Attributes;
 import attributes.BasicAttribute;
@@ -125,12 +124,12 @@ public abstract class LiveBeing implements Drawable
 		{
 			case 44:
 				double perc = 0.04 * spell.getLevel() * magicAtkBonus() ;
-				PA.getLife().incCurrentValue((int) (perc * PA.getLife().getMaxValue())) ;
+                incPersonalAttribute(PA.getLife(), (int) (perc * PA.getLife().getMaxValue()), true) ;
 				break ;
 				
 			case 112:
 				perc = 0.04 * spell.getLevel() * magicAtkBonus() ;
-				receiver.getPA().getLife().incCurrentValue((int) (perc * receiver.getPA().getLife().getCurrentValue())) ;
+                receiver.incPersonalAttribute(receiver.getPA().getLife(), (int) (perc * receiver.getPA().getLife().getCurrentValue()), true) ;
 				break ;
 				
 			case 141:
@@ -220,15 +219,21 @@ public abstract class LiveBeing implements Drawable
         }
 	}
 
-    public void incPersonalAttribute(BasicAttribute att, int value)
+    public void incPersonalAttribute(BasicAttribute att, int value, boolean displayAnimation)
     {
         int attIndex = PA.getAttributes().indexOf(att) ;
 
-        if (attIndex == -1) { Log.warn("Trying to increase invalid personal attribute!") ; return ;}
+        if (attIndex == -1) { Log.warn("Trying to increase invalid personal attribute " + att) ; return ;}
+        if (att.isMaxed() && 0 <= value) { Log.warn("Trying to increase maxed attribute " + att) ; return ;}
+        if (att.getCurrentValue() <= 0 && value < 0) { Log.warn("Trying to decrease attribute on zero " + att) ; return ;}
 
         att.incCurrentValue(value) ;
-        GainAttributeAnimation.start(headPos(), value, PersonalAttributes.getColors().get(attIndex)) ;
+
+        if (!displayAnimation) { return ;}
+
+        attributeBar.displayAttInc(attIndex, value) ;
     }
+
 
     protected boolean pathIsWalkable(Point2D.Double originPos, Point2D.Double destinyPos, Elements superElem)
     {
@@ -494,23 +499,25 @@ public abstract class LiveBeing implements Drawable
 		}
 	}
 	
-	public void activateCounters()
+	public void applyCounterActions()
 	{
-		if (hpCounter.isActive() & hpCounter.crossedTime(0.75))
+		if (hpCounter.isActive() && hpCounter.crossedTime(0.75) && !PA.getLife().isMaxed())
 		{
-			PA.getLife().incCurrentValue(2) ;
+            incPersonalAttribute(PA.getLife(), 2, true) ;
 		}
-		if (mpCounter.hasFinished())
+		if (mpCounter.hasFinished() && !PA.getMp().isMaxed())
 		{
-			// PA.getMp().incCurrentValue(1) ;
-            incPersonalAttribute(PA.getMp(), 1) ;
+            incPersonalAttribute(PA.getMp(), 1, false) ;
 			mpCounter.start() ;
 		}
 		if (!(this instanceof Creature))
 		{
 			if (satiationCounter.hasFinished())
 			{
-				PA.getSatiation().incCurrentValue(-1) ;
+                if (0 < PA.getSatiation().getTotalValue())
+                {
+                    incPersonalAttribute(PA.getSatiation(), -1, false) ;
+                }
 				satiationCounter.start() ;
 				if (PA.getSatiation().getCurrentValue() == 0)
 				{
@@ -523,18 +530,17 @@ public abstract class LiveBeing implements Drawable
 		{
 			if (thirstCounter.hasFinished())
 			{
-				// PA.getThirst().incCurrentValue(-1) ;
-                incPersonalAttribute(PA.getThirst(), -1) ;
+                if (0 < PA.getThirst().getTotalValue())
+                {
+                    incPersonalAttribute(PA.getThirst(), -1, false) ;
+                }
 				thirstCounter.start() ;
 				if (PA.getThirst().getCurrentValue() == 0)
 				{
-//					PA.getLife().incCurrentValue(-1) ;
 					takeDamage(1) ;
 				}
 			}
 		}
-		
-//		if (!isAlive()) { dies() ;}
 	}
 	
 	public void resetBattleActions() { battleActionCounter.restart() ; }

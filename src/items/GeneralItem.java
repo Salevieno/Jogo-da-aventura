@@ -106,8 +106,8 @@ public class GeneralItem extends Item
 				
 			case 23:
 				if (!user.isPlayerAlly()) { return ;}
-				
-				user.getPA().getLife().incCurrentValue(20) ;
+            // TODO not allow use if maxed?
+                user.incPersonalAttribute(user.getPA().getLife(), 20, true) ;
 				return ;
 				
 			case 26, 27, 28: 
@@ -116,9 +116,9 @@ public class GeneralItem extends Item
 				((Player) user).getBag().add(ALL[id + 3], 1) ;
 				return ;
 			
-			case 29: user.getPA().getThirst().incCurrentValue(30) ;  return ;
-			case 30: user.getPA().getThirst().incCurrentValue(60) ;  return ;
-			case 31: user.getPA().getThirst().incCurrentValue(100) ;  return ;
+			case 29: user.incPersonalAttribute(user.getPA().getThirst(), 30, true) ; return ;
+			case 30: user.incPersonalAttribute(user.getPA().getThirst(), 60, true) ;  return ;
+			case 31: user.incPersonalAttribute(user.getPA().getThirst(), 100, true) ;  return ;
 			case 74: user.getsDrunk(20) ;  return ;
 			case 79:
 				user.getBA().getAtkSpeed().incBonus(-user.getStatus().get(Attributes.atkSpeed).getIntensity()) ;

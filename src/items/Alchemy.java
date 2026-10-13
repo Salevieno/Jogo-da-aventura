@@ -4,7 +4,6 @@ import java.awt.Image;
 import java.awt.Point;
 import java.util.List;
 
-import attributes.PersonalAttributes;
 import graphics.Align;
 import liveBeings.LiveBeing;
 import main.ImageLoader;
@@ -50,10 +49,9 @@ public class Alchemy extends Item
 	public static Alchemy[] getAll() {return all ;}
 	
 	public void use(LiveBeing target, double powerMult)
-	{		
-		PersonalAttributes PA = target.getPA() ;
-		PA.getLife().incCurrentValue((int) (lifeHeal * PA.getLife().getMaxValue() * powerMult)); ;
-		PA.getMp().incCurrentValue((int) (MPHeal * PA.getMp().getMaxValue() * powerMult)); ;
+	{
+        target.incPersonalAttribute(target.getPA().getLife(), (int) (lifeHeal * target.getPA().getLife().getMaxValue() * powerMult), true) ;
+        target.incPersonalAttribute(target.getPA().getMp(), (int) (MPHeal * target.getPA().getMp().getMaxValue() * powerMult), true) ;
 	}
 	
 	public void displayInfo(Point pos, Align align)

@@ -230,20 +230,20 @@ public class Game
 			}
 		}
 
-		player.activateCounters();
+		player.applyCounterActions();
 
 		if (pet != null)
 		{
 			if (0 < pet.getLife().getCurrentValue())
 			{
-				pet.activateCounters();
+				pet.applyCounterActions();
 			}
 		}
 
 		if (!player.getMap().isField()) { return ;}
 
 		FieldMap fm = (FieldMap) player.getMap();
-		fm.getCreatures().forEach(Creature::activateCounters);
+		fm.getCreatures().forEach(Creature::applyCounterActions);
 		fm.activateCollectiblesCounter();
 
 	}
