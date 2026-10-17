@@ -1653,7 +1653,7 @@ public class Player extends LiveBeing
 	public static Player load(int slot)
 	{
 		
-		JSONObject jsonData = Util.readJsonObject("save " + slot + ".json") ;
+		JSONObject jsonData = Util.readJsonObject("saves/save " + slot + ".json") ;
 		if (jsonData == null) { return null ;}
 
 		String name = (String) jsonData.get("name") ;
