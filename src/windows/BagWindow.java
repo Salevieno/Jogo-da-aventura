@@ -216,7 +216,7 @@ public class BagWindow extends GameWindow
 	{
 		buttons.forEach(button -> { if (button.isClicked(mousePos, player.getCurrentAction())) { button.act() ;}}) ;
 
-		if (menu == 1 && "Enter".equals(player.getCurrentAction()))
+		if (menu == 1 && ("Enter".equals(player.getCurrentAction()) || ("DoubleLeftClick".equals(player.getCurrentAction()) && itemHoveredID(mousePos) != -1)))
 		{
             if (sellingMode)
             {

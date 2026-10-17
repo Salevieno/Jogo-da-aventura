@@ -590,6 +590,10 @@ public class Game
 
 	protected void mouseClickedAction(MouseEvent evt)
 	{
+		if (evt.getButton() == MouseEvent.BUTTON1 && evt.getClickCount() == 2)
+		{
+			player.setCurrentAction("DoubleLeftClick");
+		}
 	}
 
 	protected void mousePressedAction(MouseEvent evt)
