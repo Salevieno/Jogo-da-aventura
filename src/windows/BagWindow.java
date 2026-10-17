@@ -48,10 +48,12 @@ public class BagWindow extends GameWindow
 	private Map<Integer, List<Item>> recentlyUsedItems ;
 	private int gold ;
 	private Item itemFetched ;
+    private boolean sellingMode ;
 	private final List<Point> itemPos ;
 	private final List<Point> recentItemPos ;
     private final List<Point> tabTextPos ;
 	private final Point insideTopLeft ;
+    private final ShopBag shopBag ;
 
 	private static final int QTD_COL = 3 ;
 	private static final int MAX_RECENTLY_USED_ITEMS = 3 ;
@@ -73,6 +75,7 @@ public class BagWindow extends GameWindow
 		Dimension size = Util.getSize(image) ;
 		this.buttons.add(pageUpButton(new Point(topLeftPos.x + size.width - 10, topLeftPos.y + size.height + 10), Align.topLeft)) ;
 		this.buttons.add(pageDownButton(new Point(topLeftPos.x + 10, topLeftPos.y + size.height + 10), Align.topLeft)) ;
+        this.shopBag = new ShopBag(Util.translate(topLeftPos, -300, 0), true) ;
 		this.itemsOnPage = new LinkedHashMap<>() ;
         this.itemsOnMenu = new LinkedHashMap<>() ;
         this.itemsInBag = new LinkedHashMap<>() ;
@@ -109,6 +112,10 @@ public class BagWindow extends GameWindow
 
     protected void onOpen()
     {
+        if (sellingMode)
+        {
+            shopBag.open() ;
+        }
         updatePage() ;
     }
 
@@ -208,10 +215,18 @@ public class BagWindow extends GameWindow
 	public void act(Player player, Point mousePos)
 	{
 		buttons.forEach(button -> { if (button.isClicked(mousePos, player.getCurrentAction())) { button.act() ;}}) ;
-		
+
 		if (menu == 1 && "Enter".equals(player.getCurrentAction()))
 		{
-			player.useItem(getSelectedItem()) ;
+            if (sellingMode)
+            {
+                shopBag.addItem(getSelectedItem()) ;
+                remove(getSelectedItem(), 1) ;
+            }
+            else
+            {
+                player.useItem(getSelectedItem()) ;
+            }
             updatePage() ;
 		}		
 	}
@@ -246,7 +261,12 @@ public class BagWindow extends GameWindow
         updatePage() ;
 	}
 	
-	public void addGold (int amount) { gold += amount ;}
+	public void addGold (int amount)
+    {
+        if (amount < 0) { Log.warn("Tentando adicionar ouro negativo à mochila!") ; return ;}
+
+        gold += amount ;
+    }
 	
 	public void removeGold (int amount)
 	{
@@ -356,6 +376,7 @@ public class BagWindow extends GameWindow
 		return null ;
 	}
 
+    public void setSellingMode(boolean sellingMode) { this.sellingMode = sellingMode ;}
 	public int getAmount(Item item) { return itemsInBag.getOrDefault(item, 0) ;}
 	public boolean contains(Item item) { return itemsInBag.containsKey(item) && 1 <= itemsInBag.get(item) ;}
 	public boolean hasEnough(Item item, int qtd) { return contains(item) && qtd <= itemsInBag.get(item) ;}
@@ -371,6 +392,14 @@ public class BagWindow extends GameWindow
 	
 	public boolean hasEnoughGold (int amount) { return amount <= gold ;}
 	
+    public void sellItem(Item selectedItem)
+    {
+		if (!contains(selectedItem)) { Log.warn("Tentando vender item que não possui") ; return ;}
+		
+		remove(selectedItem, 1) ;
+		addGold(selectedItem.getPrice()) ;
+    }
+
 	private void updatePage()
 	{
 		item = page * QTD_SLOTS_PER_PAGE ;
@@ -547,11 +576,24 @@ public class BagWindow extends GameWindow
 		displayItemInfo(selectedItem) ;
 
         GamePanel.getDP().drawText(Util.translate(topLeftPos, size), Align.center, String.valueOf(totalValue()), Palette.colors[12]) ;
+
+        if (shopBag.isOpen())
+        {
+            shopBag.display() ;
+        }
 		
 		buttons.forEach(button -> button.display(false, mousePos)) ;
 	}
 
-	protected void onClose() { }
+	protected void onClose()
+    {
+    // TODO condicionar a sellingMode = true e fazer a interação com vendedor finalizada fechar a bag
+        shopBag.close() ;
+        sellingMode = false ;
+        if (sellingMode)
+        {
+        }
+    }
 	
 	@Override
 	public String toString()

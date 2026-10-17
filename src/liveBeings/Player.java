@@ -781,7 +781,6 @@ public class Player extends LiveBeing
 	
 	private void performKeyboardAction(Pet pet)
 	{
-
 		PlayerActions action = PlayerActions.actionOfKey(currentAction) ;
 		
 		if (action == null) { return ;}
@@ -795,7 +794,7 @@ public class Player extends LiveBeing
 				}
 				return ;
 
-			case bag: switchOpenClose(bag) ; return ;			
+			case bag: bag.setSellingMode(false) ; switchOpenClose(bag) ; return ;			
 			case attWindow: switchOpenClose(attWindow) ; return ;
 				
 			case interact:

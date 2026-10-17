@@ -26,7 +26,10 @@ public class NPCSeller extends NPC
 			shopping.setBuyMode(selOption == 0) ;
 			if (selOption == 1)
 			{
-				shopping.setIemsForSellingMode(player.getBag()) ;
+                player.getBag().setSellingMode(true) ;
+                player.switchOpenClose(player.getBag()) ;
+
+                return ;
 			}
             shopping.openShopBag() ;
 			player.switchOpenClose(shopping) ;

@@ -144,9 +144,17 @@ public abstract class NPC implements Interactable
 			Game.getPlayer().switchOpenClose(window) ;
 		}
 
+        // TODO consider abstract method onEndInteraction for each NPC
         if (this instanceof NPCMaster)
         {
             Game.getPlayer().switchOpenClose(Game.getPlayer().getSpellsTreeWindow()) ;
+        }
+        if (this instanceof NPCSeller)
+        {
+            if (selOption == 1)
+            {
+                Game.getPlayer().switchOpenClose(Game.getPlayer().getBag()) ;
+            }
         }
 	}
 		
@@ -172,6 +180,8 @@ public abstract class NPC implements Interactable
 			}
 		}
 	}
+
+    private void updateSelectedOption(int index) { this.selOption = index ;}
 	
 	public void switchOption(String action)
 	{
@@ -216,7 +226,7 @@ public abstract class NPC implements Interactable
 	
 	public void displaySpeech() { displaySpeech(pos) ;}
 
-	public void displayOptions(Point windowPos)
+	public void displayOptions()
 	{
 		if (menus == null) { return ;}
 		if (menus.size() <= currentMenuID) { return ;}
@@ -225,8 +235,6 @@ public abstract class NPC implements Interactable
 
 		menus.get(currentMenuID).getOptions().stream().filter(GameTextButton::isActive).forEach(GameTextButton::display) ;		
 	}
-	
-	public void displayOptions() { displayOptions(Util.translate(pos, 20, -10)) ;}
 
 	public void display(Hitbox playerHitbox)
 	{
@@ -340,14 +348,15 @@ public abstract class NPC implements Interactable
 				{
 					options = new ArrayList<>() ;
 				}
-				List<GameTextButton> buttons ;
 				List<Integer> destinationMenus = job.getDestination().get(i) ;
-				buttons = new ArrayList<>(options.size()) ;
+				List<GameTextButton> buttons = new ArrayList<>(options.size()) ;
 				for (int j = 0 ; j <= options.size() - 1 ; j += 1)
 				{
+					final int optionIndex = j;
 					int destinationMenu = destinationMenus.get(j) ;
 					String text = options.get(j) ;
 					GameTextButton button = new GameTextButton(new Point(0, 0), Align.topLeft, text, text, () -> {
+						newNPC.updateSelectedOption(optionIndex) ;
 						newNPC.act(Game.getPlayer(), Game.getPet(), Game.getPlayer().getCurrentAction());
 						newNPC.goToMenu(destinationMenu) ;
 					}) ;

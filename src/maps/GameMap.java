@@ -62,7 +62,7 @@ public abstract class GameMap
 
 	protected static final String DADOS_PATH = Path.DADOS + "gameMaps\\" ;
 
-	// TODO if it makes sense, move forge, sign AND the dock and boat to a new class of map elements or in the map elements class
+	// optionalTODO if it makes sense, move forge, sign AND the dock and boat to a new class of map elements or in the map elements class
 
 	protected static final Image DOCK_IMAGE = ImageLoader.loadImage(Path.MAPS_IMG + "Dock.png") ;
 	protected static final Image BOAT_IMAGE = ImageLoader.loadImage(Path.MAPS_IMG + "Boat.png") ;

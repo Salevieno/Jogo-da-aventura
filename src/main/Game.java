@@ -95,7 +95,7 @@ public class Game
 		this.settings = new Settings(true, true, false, 1, 0) ;
 		this.difficultLevel = 0.7;
 		this.saveSlotInUse = -1;
-		this.state = GameStates.opening;
+		this.state = GameStates.loading;
 		this.dayTimer = new GameTimer(DAY_DURATION);
 		this.dt = System.nanoTime() ;
 	}
@@ -454,6 +454,9 @@ public class Game
 		SpriteAnimation.displayActiveFromLayer(1, GamePanel.getDP());
 
 		SideBar.display(player, pet, GamePanel.getMousePos());
+
+        // TODO consider show all active buttons
+        // GameButton.getALL().stream().filter(b -> b.isActive()).forEach(b -> b.display(true, GamePanel.getMousePos())) ;
 
 		if (DEBUG_MODE)
 		{

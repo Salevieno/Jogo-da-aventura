@@ -17,7 +17,6 @@ import liveBeings.Player;
 import main.GamePanel;
 import main.GameTimer;
 import main.ImageLoader;
-import main.Log;
 import main.Palette;
 import main.Path;
 import screen.Screen;
@@ -31,7 +30,7 @@ public class ShoppingWindow extends GameWindow
     private GameTimer renewStockTimer ;
 	private Map<Item, Integer> stock ;
 	private Map<Item, Integer> itemsOnPage ;
-	private boolean buyMode ; // TODO fazer venda funcionar no shopping
+	private boolean buyMode ; // TODO fazer venda funcionar no shopping. Sell mode não abre shopping window
     private final Point titlePos ;
 	private final List<Point> itemPos ;    
 	private final List<Point> namePos ;
@@ -62,7 +61,7 @@ public class ShoppingWindow extends GameWindow
             this.coinPos.add(Util.translate(pricePos.get(i), 10, 0)) ;
         }
 
-        this.shopBag = new ShopBag(Util.translate(topLeftPos, 300, 200)) ;
+        this.shopBag = new ShopBag(Util.translate(topLeftPos, 300, 200), false) ;
 		this.maxStock = maxStock ;
         this.renewStockDuration = 10 ;
         this.stock = calcNewStock();
@@ -114,7 +113,7 @@ public class ShoppingWindow extends GameWindow
         return newStock;
     }
 
-    public void update()
+    public void update() // TODO update
     {
         if (!renewStockTimer.hasFinished() || !buyMode) { return ;}
 
@@ -193,7 +192,9 @@ public class ShoppingWindow extends GameWindow
 				return ;
 			}
 			
-			sellItemFromBag(player.getBag()) ;
+            Item selectedItem = selectedItem() ;
+            player.getBag().sellItem(selectedItem) ;
+            setIemsForSellingMode(player.getBag()) ;
 		}
 	}
     protected int itemHoveredID(Point mousePos)
@@ -211,21 +212,7 @@ public class ShoppingWindow extends GameWindow
 		itemsOnPage = calcItemsOnPage() ;
 		numberItems = itemsOnPage.size() ;
 	}
-	
-    // TODO mover para shopBag
-	private void sellItemFromBag(BagWindow bag)
-	{
-		if (stock == null || stock.isEmpty()) { return ;}
 
-		Item selectedItem = selectedItem() ;
-
-		if (!bag.contains(selectedItem)) { Log.warn("Tentando vender item que não possui") ; return ;}
-		
-		bag.remove(selectedItem, 1) ;
-		bag.addGold(selectedItem.getPrice()) ;
-		setIemsForSellingMode(bag) ;
-	}
-	
 	private Map<Item, Integer> calcItemsOnPage()
 	{
 		if (stock.size() <= MAX_ITEMS_PER_PAGE)
@@ -256,10 +243,9 @@ public class ShoppingWindow extends GameWindow
         {
             Item bagItem = entry.getKey();
 
-            bagItem.displayInSlot(itemPos.get(i));            
-			String qtdItem = buyMode ? "" : "" ; // TODO pegar bag e mostrar qtos itens tem
+            bagItem.displayInSlot(itemPos.get(i));
 			Color itemColor = this.item == i ? SELECTED_COLOR : STD_COLOR ;
-			GamePanel.getDP().drawText(namePos.get(i), Align.centerLeft, bagItem.getName() + qtdItem, STD_FONT, itemColor) ;            
+			GamePanel.getDP().drawText(namePos.get(i), Align.centerLeft, bagItem.getName(), STD_FONT, itemColor) ;            
 			GamePanel.getDP().drawText(pricePos.get(i), Align.centerRight, String.valueOf(bagItem.getPrice()), STD_FONT, Palette.colors[14]) ;
 			GamePanel.getDP().drawImage(SharedImages.getCoinImg(), coinPos.get(i), Align.center) ;
             i += 1 ;

@@ -25,7 +25,8 @@ import utilities.Util;
 public class ShopBag
 {
     private final Point topLeftPos ;
-    private List<Item> itemsForSale ;
+    private boolean isOpen ;
+    private List<Item> itemsInBag ;
     private List<Point> slotsCenter ;
     private List<Point> textsLeftCenter ;
     private int qtdItemsOnDisplay ;
@@ -33,7 +34,10 @@ public class ShopBag
     private Color priceColor ;
     private final Point coinPos ;
     private final Point pricePos ;
+    private final boolean sellingMode ;
     private final GameButton buyButton ;
+    private final GameButton sellButton ;
+    private final GameButton actButton ;
     private final GameButton cancelButton ;
     
     private static final Dimension MARGIN = new Dimension(16, 44) ;
@@ -41,12 +45,14 @@ public class ShopBag
     private static final int MAX_ITEMS_DISPLAYED = 7 ;
     private static final Image SHOP_BAG_IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "ShopBag.png") ;
     private static final Dimension BAG_SIZE = Util.getSize(SHOP_BAG_IMAGE) ;
-    public ShopBag(Point topLeftPos)
+
+    public ShopBag(Point topLeftPos, boolean sellingMode)
     {
         this.topLeftPos = topLeftPos ;
+        this.isOpen = false ;
         this.slotsCenter = new ArrayList<>() ;
         this.textsLeftCenter = new ArrayList<>() ;
-        this.itemsForSale = new ArrayList<>() ;
+        this.itemsInBag = new ArrayList<>() ;
         
         for (int i = 0 ; i <= MAX_ITEMS_DISPLAYED - 1 ; i += 1)
         {
@@ -57,25 +63,41 @@ public class ShopBag
 
         this.qtdItemsOnDisplay = 0 ;
         this.totalPrice = 0 ;
+        this.sellingMode = sellingMode ;
         this.coinPos = Util.translate(topLeftPos, 10, SHOP_BAG_IMAGE.getHeight(null) - 14) ;
         this.pricePos = Util.translate(coinPos, SharedImages.getCoinImg().getWidth(null) / 2 + 4, 0) ;
         this.priceColor = Palette.colors[12] ;
 
         this.buyButton = new GameTextButton(Util.translate(topLeftPos, 80, BAG_SIZE.height), Align.center, "Buy", "Buy", () -> { buyItems() ;}) ;
+        this.sellButton = new GameTextButton(Util.translate(topLeftPos, 80, BAG_SIZE.height), Align.center, "Sell", "Sell", () -> { sellItems() ;}) ;
         this.cancelButton = new GameTextButton(Util.translate(topLeftPos, 180, BAG_SIZE.height), Align.center, "Cancel", "Cancel", () -> { cancelItems() ;}) ;
         this.buyButton.deactivate() ;
+        this.sellButton.deactivate() ;
+        this.actButton = sellingMode ? sellButton : buyButton ;
+        // this.actButton.deactivate() ;
         this.cancelButton.deactivate() ;
     }
 
+    public boolean isOpen() { return isOpen ;}
+
     protected void open()
     {
-        buyButton.activate() ;
+        isOpen = true ;
+        actButton.activate() ;
         cancelButton.activate() ;
+    }
+
+    protected void close()
+    {
+        isOpen = false ;
+        deactivateButtons() ;
     }
 
     protected void deactivateButtons()
     {
+        actButton.deactivate() ;
         buyButton.deactivate() ;
+        sellButton.deactivate() ;
         cancelButton.deactivate() ;
     }
 
@@ -83,50 +105,70 @@ public class ShopBag
     {
         if (item == null) { Log.warn("Trying to add null item to shop bag") ; return ;}
 
-        if (MAX_ITEMS_DISPLAYED <= itemsForSale.size())
+        if (MAX_ITEMS_DISPLAYED <= itemsInBag.size())
         {
             MessageAnimation.start(Util.translate(topLeftPos, BAG_SIZE.width / 2, -30), "Sacola cheia", Palette.colors[0]) ;
             return ;
         }
 
-        itemsForSale.add(item) ;
-        qtdItemsOnDisplay = Math.min(itemsForSale.size(), MAX_ITEMS_DISPLAYED) ;
-        totalPrice += item.getPrice() ;
-        if (totalPrice <= Game.getPlayer().getBag().getGold())
+        itemsInBag.add(item) ;
+        qtdItemsOnDisplay = Math.min(itemsInBag.size(), MAX_ITEMS_DISPLAYED) ;
+        totalPrice += sellingMode ? item.calcSellingPrice() : item.getPrice() ;
+
+        if (sellingMode || totalPrice <= Game.getPlayer().getBag().getGold())
         {
-            buyButton.activate() ;
+            actButton.activate() ;
             priceColor = Palette.colors[12] ;
         }
         else
         {
-            buyButton.deactivate() ;
+            actButton.deactivate() ;
             priceColor = Palette.colors[6] ;
         }
     }
 
     private void buyItems()
     {
-        if (itemsForSale.isEmpty()) { return ;}
+        if (itemsInBag.isEmpty()) { return ;}
 
         BagWindow bag = Game.getPlayer().getBag() ;
-		itemsForSale.forEach(item -> bag.add(item, 1));
+		itemsInBag.forEach(item -> bag.add(item, 1));
 		bag.removeGold(totalPrice) ;
         MessageAnimation.start(Util.translate(topLeftPos, BAG_SIZE.width / 2, -30), "Itens comprados", Palette.colors[0]) ;
         clear() ;
     }
 
+    private void sellItems()
+    {
+        if (itemsInBag.isEmpty()) { return ;}
+
+        for (Item item : itemsInBag)
+        {
+            Game.getPlayer().getBag().addGold(item.calcSellingPrice()) ;
+        }
+        MessageAnimation.start(Util.translate(topLeftPos, BAG_SIZE.width / 2, -30), "Itens vendidos", Palette.colors[0]) ;
+        clear() ;
+    }
+
     private void cancelItems()
     {
+        if (sellingMode)
+        {
+            for (Item item : itemsInBag)
+            {
+                Game.getPlayer().getBag().add(item, 1);
+            }
+        }
         clear() ;
     }
 
     private void clear()
     {
-        itemsForSale.clear() ;
+        itemsInBag.clear() ;
         qtdItemsOnDisplay = 0 ;
         totalPrice = 0 ;
         priceColor = Palette.colors[12] ;
-        buyButton.activate() ;
+        actButton.activate() ;
     }
 
     protected void display()
@@ -135,14 +177,14 @@ public class ShopBag
 
         for (int i = 0 ; i <= qtdItemsOnDisplay - 1 ; i += 1)
         {
-            Item item = itemsForSale.get(i) ;
+            Item item = itemsInBag.get(i) ;
             item.displayInSlot(slotsCenter.get(i)) ;
             GamePanel.getDP().drawText(textsLeftCenter.get(i), Align.centerLeft, item.getName(), Palette.colors[0]);
         }
 
         GamePanel.getDP().drawImage(SharedImages.getCoinImg(), coinPos, Align.center) ;
         GamePanel.getDP().drawText(pricePos, Align.centerLeft, String.valueOf(totalPrice), priceColor);
-        buyButton.display(true, GamePanel.getMousePos()) ;
+        actButton.display(true, GamePanel.getMousePos()) ;
         cancelButton.display(true, GamePanel.getMousePos()) ;
     }
 }

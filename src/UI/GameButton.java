@@ -33,7 +33,7 @@ public abstract class GameButton
 	protected static final Color TEXT_SELECTED_COLOR = Palette.colors[18] ;
 	
 	private static final List<GameButton> ALL = new ArrayList<>() ;
-
+// TODO corrigir bug -> botões ativos travam "Enter" mesmo atrás de janelas em foco
 	protected GameButton(Point pos, Align alignment, String name, Image image, Image selectedImage, ButtonFunction action, GameSound soundOnHover)
 	{
 		this.name = name ;
