@@ -102,11 +102,7 @@ public abstract class GameWindow
     protected abstract int itemHoveredID(Point mousePos) ;
     public void updateSelectedItemOnHover(Point mousePos)
     {
-        int itemHoveredID = itemHoveredID(mousePos) ;
-
-        if (itemHoveredID == -1 || item == itemHoveredID) { return ;}
-      
-        item = itemHoveredID ;
+        item = itemHoveredID(mousePos) ;
     }
     protected abstract void onClose() ;
 	public abstract void navigate(String action) ;
