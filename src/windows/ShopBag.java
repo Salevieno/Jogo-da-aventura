@@ -6,7 +6,9 @@ import java.awt.Dimension;
 import java.awt.Image;
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import UI.GameButton;
 import UI.GameTextButton;
@@ -45,6 +47,7 @@ public class ShopBag
     private static final int MAX_ITEMS_DISPLAYED = 7 ;
     private static final Image SHOP_BAG_IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "ShopBag.png") ;
     private static final Dimension BAG_SIZE = Util.getSize(SHOP_BAG_IMAGE) ;
+    private static final Set<ShopBag> ALL = new HashSet<>() ;
 
     public ShopBag(Point topLeftPos, boolean sellingMode)
     {
@@ -74,9 +77,11 @@ public class ShopBag
         this.buyButton.deactivate() ;
         this.sellButton.deactivate() ;
         this.actButton = sellingMode ? sellButton : buyButton ;
-        // this.actButton.deactivate() ;
         this.cancelButton.deactivate() ;
+        ALL.add(this) ;
     }
+
+    public static Set<ShopBag> getAll() { return ALL ;}
 
     public boolean isOpen() { return isOpen ;}
 
@@ -125,6 +130,19 @@ public class ShopBag
             actButton.deactivate() ;
             priceColor = Palette.colors[6] ;
         }
+    }
+
+    public void addItemIfDroppedOver(Item item)
+    {
+        if (!isHovered(GamePanel.getMousePos())) { return ;}
+
+        addItem(item) ;
+        Game.getPlayer().getBag().remove(item, 1) ;
+    }
+
+    private boolean isHovered(Point mousePos)
+    {
+        return Util.isInside(mousePos, topLeftPos, Util.getSize(SHOP_BAG_IMAGE)) ;
     }
 
     private void buyItems()

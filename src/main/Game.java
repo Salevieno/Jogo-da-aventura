@@ -24,6 +24,7 @@ import graphics.Align;
 import graphics2.Draw;
 import graphics2.Drawable;
 import graphics2.SpriteAnimation;
+import items.Item;
 import liveBeings.Creature;
 import liveBeings.Pet;
 import liveBeings.Player;
@@ -37,6 +38,7 @@ import sidebar.SideBar;
 import simulations.EvolutionSimulation;
 import utilities.Util;
 import windows.BankWindow;
+import windows.ShopBag;
 
 public class Game
 {
@@ -95,7 +97,7 @@ public class Game
 		this.settings = new Settings(true, true, false, 1, 0) ;
 		this.difficultLevel = 0.7;
 		this.saveSlotInUse = -1;
-		this.state = GameStates.opening;
+		this.state = GameStates.loading;
 		this.dayTimer = new GameTimer(DAY_DURATION);
 		this.dt = System.nanoTime() ;
 	}
@@ -625,9 +627,15 @@ public class Game
 		{
 			return;
 		}
-		
-        HotKeysBar.addItem(player.getBag().getItemFetched()) ;
-		player.getBag().setItemFetched(null);
+
+        Item itemFetched = player.getBag().getItemFetched() ;
+
+        if (itemFetched != null)
+        {
+            HotKeysBar.addItemIfDroppedOnSlot(itemFetched) ;
+            ShopBag.getAll().stream().filter(ShopBag::isOpen).forEach(sb -> sb.addItemIfDroppedOver(itemFetched)) ;
+            player.getBag().setItemFetched(null);
+        }
 	}
 
 	protected void mouseWheelAction(MouseWheelEvent evt)

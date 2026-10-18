@@ -35,7 +35,7 @@ public abstract class HotKeysBar
 	private static final Color TEXT_COLOR = Palette.colors[0] ;
 	private static final Image IMAGE = ImageLoader.loadImage(Path.SIDEBAR_IMG + "HotBar.png") ;
 	private static final Point BAR_POS = new Point(Screen.getMe().mapSize().width + 2, Screen.getMe().getSize().height - 10) ;
-
+// TODO highlight empty slots when an item is fetched 
     static
     {
         SLOT_CENTER = new ArrayList<>(QTD_ITEMS) ;
@@ -49,7 +49,7 @@ public abstract class HotKeysBar
         }
     }
 
-    public static void addItem(Item item)
+    public static void addItemIfDroppedOnSlot(Item item)
     {
         int slotHovered = getSlotHoveredIndex(GamePanel.getMousePos());
 
