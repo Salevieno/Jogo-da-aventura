@@ -516,7 +516,7 @@ public class Game
 
 		for (GameButton button : GameButton.getALL())
 		{
-			if (button.isActive() && button.isSelected() && (button.isClicked(mousePos, action) || action.equals("Enter")))
+			if (button.isActive() && button.isSelected() && button.isClicked(mousePos, action)) //  || action.equals("Enter")
 			{	
 				button.act() ;
 				player.resetAction() ;
