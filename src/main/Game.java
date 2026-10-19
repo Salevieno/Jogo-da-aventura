@@ -38,6 +38,7 @@ import sidebar.SideBar;
 import simulations.EvolutionSimulation;
 import utilities.Util;
 import windows.BankWindow;
+import windows.GameWindow;
 import windows.ShopBag;
 
 public class Game
@@ -480,6 +481,7 @@ public class Game
 		GameButton.updateMouseCursor(GamePanel.getMousePos());
 		GameButton.updateSelected(GamePanel.getMousePos());
 		clickedButtonActs(GamePanel.getMousePos(), player.getCurrentAction()) ;
+        GameWindow.updateAll() ;
 
 		switch (state)
 		{

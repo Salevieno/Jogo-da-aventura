@@ -10,6 +10,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import NPC.NPCSeller;
 import UI.GameButton;
 import UI.GameTextButton;
 import animations.MessageAnimation;
@@ -95,6 +96,7 @@ public class ShopBag
     protected void close()
     {
         isOpen = false ;
+        cancelItems() ;
         deactivateButtons() ;
     }
 
@@ -106,15 +108,12 @@ public class ShopBag
         cancelButton.deactivate() ;
     }
 
+    public boolean isFull() { return MAX_ITEMS_DISPLAYED <= itemsInBag.size() ;}
+
     public void addItem(Item item)
     {
         if (item == null) { Log.warn("Trying to add null item to shop bag") ; return ;}
-
-        if (MAX_ITEMS_DISPLAYED <= itemsInBag.size())
-        {
-            MessageAnimation.start(Util.translate(topLeftPos, BAG_SIZE.width / 2, -30), "Sacola cheia", Palette.colors[0]) ;
-            return ;
-        }
+        if (isFull()) { return ;}
 
         itemsInBag.add(item) ;
         qtdItemsOnDisplay = Math.min(itemsInBag.size(), MAX_ITEMS_DISPLAYED) ;
@@ -135,6 +134,7 @@ public class ShopBag
     public void addItemIfDroppedOver(Item item)
     {
         if (!isHovered(GamePanel.getMousePos())) { return ;}
+        if (isFull()) { return ;}
 
         addItem(item) ;
         Game.getPlayer().getBag().remove(item, 1) ;
@@ -150,6 +150,14 @@ public class ShopBag
         if (itemsInBag.isEmpty()) { return ;}
 
         BagWindow bag = Game.getPlayer().getBag() ;
+
+        if (bag.getGold() < totalPrice)
+        {
+            actButton.deactivate() ;
+            priceColor = Palette.colors[6] ;
+            return ;
+        }
+
 		itemsInBag.forEach(item -> bag.add(item, 1));
 		bag.removeGold(totalPrice) ;
         MessageAnimation.start(Util.translate(topLeftPos, BAG_SIZE.width / 2, -30), "Itens comprados", Palette.colors[0]) ;
@@ -176,6 +184,13 @@ public class ShopBag
             {
                 Game.getPlayer().getBag().add(item, 1);
             }
+        }
+        else
+        {
+            NPCSeller seller = (NPCSeller) Game.getPlayer().getNPCInContact() ;
+            ShoppingWindow shoppingWindow = (ShoppingWindow) seller.getWindow() ;
+            itemsInBag.forEach(item -> shoppingWindow.addToStock(item)) ;
+            shoppingWindow.updatePage() ;
         }
         clear() ;
     }

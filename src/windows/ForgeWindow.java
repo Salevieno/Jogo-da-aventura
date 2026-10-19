@@ -79,6 +79,11 @@ public class ForgeWindow extends GameWindow
         this.bag = Game.getPlayer().getBag() ;
 		this.itemsOnPage = QTD_ITEMS_ON_PAGE <= itemsForForge.size() ? itemsForForge.subList(0, QTD_ITEMS_ON_PAGE) : itemsForForge ;
     }
+
+    protected void onUpdate()
+    {
+
+    }
 	
 	public void act(Player player, Point mousePos)
 	{

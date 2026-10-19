@@ -7,7 +7,9 @@ import java.awt.Image;
 import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import UI.ButtonFunction;
 import UI.GameButton;
@@ -68,6 +70,7 @@ public abstract class GameWindow
 	protected static final Image BTN_PAGE_DOWN_IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "moveDown.png") ;
 	protected static final Image SELECTED_BTN_PAGE_DOWN_IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "selectedMoveDownSprite.png") ;	
 	private static final Image ARROW_ICON = ImageLoader.loadImage(Path.WINDOWS_IMG + "ArrowIcon.png") ;
+    private static final Set<GameWindow> ALL = new HashSet<>() ;
 	
 	public GameWindow(String name, Point topLeftPos, Image image, int numberMenus, int numberTabs, int numberItems, int numberPages)
 	{
@@ -95,9 +98,11 @@ public abstract class GameWindow
 		this.stdReturn = "MouseRightClick" ;
 		this.stdExit = KeyEvent.getKeyText(KeyEvent.VK_ESCAPE) ;	
 		this.stdOpacity = 0.9 ;
+        ALL.add(this) ;
 	}
 
     protected abstract void onOpen() ;
+    protected abstract void onUpdate() ;
     public abstract void act(Player player, Point mousePos) ;
     protected abstract int itemHoveredID(Point mousePos) ;
     public void updateSelectedItemOnHover(Point mousePos)
@@ -149,6 +154,8 @@ public abstract class GameWindow
         onOpen() ;
         activateButtons() ;
     }
+
+    public void update() { onUpdate() ;}
 
     private void updateScale()
     {
@@ -247,6 +254,8 @@ public abstract class GameWindow
 		page = 0 ;
 		item = 0 ;
 	}
+
+    public static void updateAll() { ALL.forEach(GameWindow::update) ;}
 	
 	protected Color getTextColor(boolean isSelected) { return isSelected ? SELECTED_COLOR : STD_COLOR ;}
 

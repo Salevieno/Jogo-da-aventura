@@ -120,6 +120,11 @@ public class PauseWindow extends GameWindow
         menuButtons.get(menu).forEach(GameButton::activate) ;
     }
 
+    protected void onUpdate()
+    {
+
+    }
+
     public void act(Player player, Point mousePos)
     {
         

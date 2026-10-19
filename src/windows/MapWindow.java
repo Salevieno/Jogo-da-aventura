@@ -103,6 +103,11 @@ public class MapWindow extends GameWindow
         }
     }
 
+    protected void onUpdate()
+    {
+
+    }
+
     public void act(Player player, Point mousePos)
     {
         

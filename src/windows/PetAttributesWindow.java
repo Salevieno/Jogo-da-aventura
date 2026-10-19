@@ -70,6 +70,11 @@ public class PetAttributesWindow extends AttributesWindow
         this.pet = Game.getPet() ;
     }
 
+    protected void onUpdate()
+    {
+
+    }
+
     public void act(Player player, Point mousePos)
     {
         

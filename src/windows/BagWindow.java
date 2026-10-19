@@ -119,6 +119,11 @@ public class BagWindow extends GameWindow
         updatePage() ;
     }
 
+    protected void onUpdate()
+    {
+
+    }
+
 	public void updateRecentlyUsedItem(Item item)
 	{
         int itemMenu = -1 ;
@@ -218,14 +223,21 @@ public class BagWindow extends GameWindow
 
 		if (menu == 1 && ("Enter".equals(player.getCurrentAction()) || ("DoubleLeftClick".equals(player.getCurrentAction()) && itemHoveredID(mousePos) != -1)))
 		{
+            Item selectedItem = getSelectedItem() ;
+
+            if (selectedItem == null) { return ;}
+
             if (sellingMode)
             {
-                shopBag.addItem(getSelectedItem()) ;
-                remove(getSelectedItem(), 1) ;
+                if (!shopBag.isFull())
+                {
+                    shopBag.addItem(selectedItem) ;
+                    remove(selectedItem, 1) ;
+                }
             }
             else
             {
-                player.useItem(getSelectedItem()) ;
+                player.useItem(selectedItem) ;
             }
             updatePage() ;
 		}		

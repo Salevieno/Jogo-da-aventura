@@ -60,6 +60,11 @@ public class CreatureAttributesWindow extends AttributesWindow
         this.creatureType = Game.getPlayer().getOpponent().getType() ;
     }
 
+    protected void onUpdate()
+    {
+
+    }
+
     public void act(Player player, Point mousePos)
     {
         

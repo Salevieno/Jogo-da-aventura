@@ -30,9 +30,10 @@ public class ShoppingWindow extends GameWindow
     private GameTimer renewStockTimer ;
 	private Map<Item, Integer> stock ;
 	private Map<Item, Integer> itemsOnPage ;
-	private boolean buyMode ; // TODO fazer venda funcionar no shopping. Sell mode não abre shopping window
+	private boolean buyMode ;
     private final Point titlePos ;
-	private final List<Point> itemPos ;    
+	private final List<Point> itemPos ;
+	private final List<Point> amountPos ;
 	private final List<Point> namePos ;
 	private final List<Point> pricePos ;
     private final List<Point> coinPos ;
@@ -50,12 +51,14 @@ public class ShoppingWindow extends GameWindow
 		super("Shopping", Screen.getMe().pos(0.4, 0.2), IMAGE, 1, 1, Math.min(maxStock.size(), MAX_ITEMS_PER_PAGE), calcNumberPages(maxStock.size())) ;
         this.titlePos = Util.translate(topLeftPos, size.width / 2, 16) ;
         this.itemPos = new ArrayList<>() ;
+        this.amountPos = new ArrayList<>() ;
         this.namePos = new ArrayList<>() ;
         this.pricePos = new ArrayList<>() ;
         this.coinPos = new ArrayList<>() ;
         for (int i = 0 ; i <= MAX_ITEMS_PER_PAGE - 1 ; i += 1)
         {
             this.itemPos.add(Util.translate(topLeftPos, BORDER + PADDING - 20, BORDER + PADDING + 23 * i)) ;
+            this.amountPos.add(Util.translate(itemPos.get(i), BORDER + 4, 0)) ;
             this.namePos.add(Util.translate(itemPos.get(i), BORDER + 10, 0)) ;
             this.pricePos.add(Util.translate(namePos.get(i), size.width - BORDER - 60, 0)) ;
             this.coinPos.add(Util.translate(pricePos.get(i), 10, 0)) ;
@@ -63,7 +66,7 @@ public class ShoppingWindow extends GameWindow
 
         this.shopBag = new ShopBag(Util.translate(topLeftPos, 300, 200), false) ;
 		this.maxStock = maxStock ;
-        this.renewStockDuration = 10 ;
+        this.renewStockDuration = 1200 ;
         this.stock = calcNewStock();
 		this.itemsOnPage = calcItemsOnPage() ;
 		this.buyMode = true ;
@@ -76,6 +79,17 @@ public class ShoppingWindow extends GameWindow
     protected void onOpen()
     {
         
+    }
+
+    public void addToStock(Item item)
+    {
+        if (!stock.containsKey(item))
+        {
+            stock.put(item, 1) ;
+            return ;
+        }
+
+        stock.put(item, stock.get(item) + 1) ;
     }
 
     private Map<Item, Integer> calcNewStock()
@@ -113,9 +127,9 @@ public class ShoppingWindow extends GameWindow
         return newStock;
     }
 
-    public void update() // TODO update
+    protected void onUpdate()
     {
-        if (!renewStockTimer.hasFinished() || !buyMode) { return ;}
+        if (!renewStockTimer.hasFinished() || !buyMode || isOpen) { return ;}
 
         stock = calcNewStock();
         updateNumberPages();
@@ -141,11 +155,6 @@ public class ShoppingWindow extends GameWindow
         shopBag.open() ;
     }
 
-    protected void closeShopBag()
-    {
-        shopBag.deactivateButtons() ;
-    }
-
 	public void setIemsForSellingMode(BagWindow bag)
 	{
 		stock = bag.getAllItems() ;
@@ -155,7 +164,14 @@ public class ShoppingWindow extends GameWindow
 	
 	private static int calcNumberPages(int numberItems) { return (int) Math.ceil(numberItems / (double)MAX_ITEMS_PER_PAGE) ;}
 	
-	private void updateNumberPages() { numberPages = calcNumberPages(stock.size()) ;}
+	private void updateNumberPages()
+    {
+        numberPages = calcNumberPages(stock.size()) ;
+        if (numberPages <= page)
+        {
+            pageDown() ;
+        }
+    }
 	
 	public void navigate(String action)
 	{
@@ -178,17 +194,29 @@ public class ShoppingWindow extends GameWindow
 			itemUp() ;
 		}
 	}
-	
+
 	public void act(Player player, Point mousePos)
 	{
 		if (actionIsForward(player.getCurrentAction()))
 		{
 			if (buyMode)
 			{
+                if (shopBag.isFull()) { return ;}
+
 		        Item selectedItem = selectedItem() ;
-                if (selectedItem == null) { return ;}
+                if (selectedItem == null || stock.get(selectedItem) <= 0) { return ;}
 
                 shopBag.addItem(selectedItem) ;
+                if (stock.get(selectedItem) == 1)
+                {
+                    stock.remove(selectedItem) ;
+                }
+                else
+                {
+                    stock.put(selectedItem, stock.get(selectedItem) - 1) ;
+                }
+		        updatePage() ;
+                updateNumberPages() ;
 				return ;
 			}
 			
@@ -206,9 +234,10 @@ public class ShoppingWindow extends GameWindow
         return -1 ;
     }
 
-	private void updatePage()
+	public void updatePage()
 	{
 		item = 0 ;
+        updateNumberPages() ;
 		itemsOnPage = calcItemsOnPage() ;
 		numberItems = itemsOnPage.size() ;
 	}
@@ -236,15 +265,17 @@ public class ShoppingWindow extends GameWindow
 	public void display(Point mousePos)
 	{
 		GamePanel.getDP().drawImage(image, topLeftPos, Scale.unit, Align.topLeft, stdOpacity) ;		
-		GamePanel.getDP().drawText(titlePos, Align.center, name, TITLE_FONT, Palette.colors[0]) ;				
+		GamePanel.getDP().drawText(titlePos, Align.center, name, TITLE_FONT, Palette.colors[0]) ;
 
         int i = 0 ;
         for (Map.Entry<Item, Integer> entry : itemsOnPage.entrySet())
         {
             Item bagItem = entry.getKey();
+            int qtdInStock = entry.getValue() ;
 
             bagItem.displayInSlot(itemPos.get(i));
 			Color itemColor = this.item == i ? SELECTED_COLOR : STD_COLOR ;
+            GamePanel.getDP().drawText(amountPos.get(i), Align.topLeft, String.valueOf(qtdInStock), STD_FONT, itemColor);
 			GamePanel.getDP().drawText(namePos.get(i), Align.centerLeft, bagItem.getName(), STD_FONT, itemColor) ;            
 			GamePanel.getDP().drawText(pricePos.get(i), Align.centerRight, String.valueOf(bagItem.getPrice()), STD_FONT, Palette.colors[14]) ;
 			GamePanel.getDP().drawImage(SharedImages.getCoinImg(), coinPos.get(i), Align.center) ;
@@ -264,6 +295,7 @@ public class ShoppingWindow extends GameWindow
 
 	protected void onClose()
     {
-        closeShopBag() ;
+        isOpen = false ;
+        shopBag.close() ;
     }
 }

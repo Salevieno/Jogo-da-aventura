@@ -287,10 +287,13 @@ public abstract class NPC implements Interactable
 		
 			case itemsSeller:
 				itemIDs = new int[] {1329, 0, 1, 4, 5, 121, 122, 125, 130, 1301, 1305, 1702, 1708, 1710, 1713} ;
+				int[] qtdInStock = new int[] {20, 12, 12, 4, 4, 2, 6, 4, 2, 8, 1, 1, 2, 10, 13} ;
                 maxStock = new HashMap<>() ;
+                int i = 0 ;
                 for (int itemID : itemIDs)
                 {
-                    maxStock.put(Item.getAllItems().get(itemID), 1) ;
+                    maxStock.put(Item.getAllItems().get(itemID), qtdInStock[i]) ;
+                    i += 1 ;
                 }
 				return new NPCSeller(name, new Point(0, 0), menus, maxStock) ;
 

@@ -90,6 +90,11 @@ public class ElementalWindow extends GameWindow
 		this.numberItems = menu == 0 ? this.equipsOnPage.size() : (menu == 1 ? spheres.size() : 0) ;
 		this.numberPages = menu == 0 ? 1 + equipsForElemChange.size() / QTD_ITEMS_ON_PAGE : (menu == 1 ? spheres.size() : 1) ;
     }
+
+    protected void onUpdate()
+    {
+
+    }
 	
 	public void act(Player player, Point mousePos)
 	{

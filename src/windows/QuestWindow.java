@@ -76,6 +76,11 @@ public class QuestWindow extends GameWindow
         updatePage() ;
     }
 
+    protected void onUpdate()
+    {
+
+    }
+
     public void act(Player player, Point mousePos)
     {
         

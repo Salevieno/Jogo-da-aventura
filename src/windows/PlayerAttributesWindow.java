@@ -167,6 +167,11 @@ public class PlayerAttributesWindow extends AttributesWindow
         updateAttIncButtons() ;
     }
 
+    protected void onUpdate()
+    {
+
+    }
+
 	public void navigate(String action)
 	{
 		if (action.equals(stdMenuDown))

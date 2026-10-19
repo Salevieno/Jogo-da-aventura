@@ -50,6 +50,12 @@ public class CreatureInfoWindow extends GameWindow
     }
     protected void onOpen()
     {
+
+    }
+
+    protected void onUpdate()
+    {
+
     }
 
     protected void setCreatureType(CreatureType creatureType)
