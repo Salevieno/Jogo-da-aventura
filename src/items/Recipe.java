@@ -8,6 +8,7 @@ import java.util.Map;
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
+import main.Log;
 import main.Path;
 import utilities.Util;
 
@@ -27,6 +28,8 @@ public class Recipe
 	
 	public static void load(List<Item> allItems)
 	{
+        if (!ALL.isEmpty()) { Log.warn("Trying to load recipes twice") ; return ;}
+
 		JSONArray input = Util.readJsonArray(Path.DADOS + "craftRecipes.json") ;
 
 		for (int i = 0 ; i <= input.size() - 1 ; i += 1)

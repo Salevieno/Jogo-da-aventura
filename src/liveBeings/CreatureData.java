@@ -20,6 +20,8 @@ public abstract class CreatureData
 {
     public static void create(double diffMult)
     {
+        if (!CreatureType.getAll().isEmpty()) { Log.warn("Trying to create creature types twice") ; return ;}
+
         new CreatureType(0, "Criatura 1", 0, 60, 1, 2, new Elements[] {Elements.neutral}, 0.125, 1.25, 0.625, 0.625, 122.0, 140.0, 2.0, 100.0, 100.0, 8.0, 7.0, 8.0, 7.0, 26.0, 9.0, 0.13, 0.02, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.09, 10.0, List.of(104), Set.of(1313, 1700, 1703, 232, 233, 300, 301), 5, "circle", diffMult) ;
         new CreatureType(1, "Criatura 2", 1, 60, 1, 2, new Elements[] {Elements.plant}, 0.125, 1.25, 0.625, 0.625, 184.0, 178.0, 4.0, 100.0, 100.0, 9.0, 10.0, 10.0, 9.0, 25.0, 14.0, 0.13, 0.02, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.97, 10.0, List.of(104), Set.of(0, 1314, 232, 1800, 1723, 302, 303), 6, "circle", diffMult) ;
         new CreatureType(2, "Criatura 3", 2, 60, 1, 2, new Elements[] {Elements.neutral}, 0.125, 1.25, 0.625, 0.625, 207.0, 236.0, 15.0, 100.0, 100.0, 13.0, 13.0, 13.0, 12.0, 27.0, 13.0, 0.13, 0.02, 0.05, 0.0, 20.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.92, 10.0, List.of(104), Set.of(304, 1, 1315, 120, 1801, 1802, 1724), 9, "circle", diffMult) ;

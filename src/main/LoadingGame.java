@@ -33,6 +33,7 @@ import maps.SpecialMap;
 import music.MusicManager;
 import screen.Screen;
 import sidebar.SideBar;
+import spells.Buff;
 import spells.BuffData;
 import spells.Spell;
 import utilities.Util;
@@ -96,7 +97,10 @@ public abstract class LoadingGame
 			{
 				player.getBag().add(Arrow.getAll()[0], 100) ;
 			}
-			player.setMap(GameMap.getAllMaps().get(player.getJob())) ;
+			if (player.getMap() == null)
+			{
+				player.setMap(GameMap.getAllMaps().get(player.getJob())) ;
+			}
 			player.getMap().activateAnimations() ;
 			SideBar.initialize();
 
@@ -138,9 +142,18 @@ public abstract class LoadingGame
 				return;
 
 			case 2:
-				BuffData.createBuffs() ;
-				BuffData.createNerfs() ;
-				Spell.create(language) ;
+                if (Buff.getAllBuffs().isEmpty())
+                {
+                    BuffData.createBuffs() ;
+                }
+                if (Buff.getAllNerfs().isEmpty())
+                {
+                    BuffData.createNerfs() ;
+                }
+                if (Spell.getAll().isEmpty())
+                {
+                    Spell.create(language) ;
+                }
 				logInitializationTime("spells", initialStepLoadingTime);
 				return;
 

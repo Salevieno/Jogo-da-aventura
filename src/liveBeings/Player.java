@@ -1638,13 +1638,20 @@ public class Player extends LiveBeing
 		}
 		content.put("statistics", stats.toJson()) ;
 		
+        content.put("mapID", map != null ? map.getID() : job) ;
+        content.put("pos", List.of(pos.x, pos.y)) ;
+        content.put("dir", dir != null ? dir.name() : Directions.up.name()) ;
         content.put("PA", PA.toJsonObject()) ;
         content.put("BA", BA.toJsonObject()) ;
         for (Attributes att : Attributes.getSpecial())
         {
             content.put("status", status.get(att).toJsonObject());
         }
-        Util.writeJson(content, "save " + slot) ;
+        if (Game.getPet() != null)
+        {
+            content.put("pet", Game.getPet().toJson()) ;
+        }
+        Util.writeJson(content, "saves/save " + slot) ;
         
 		
 	}
@@ -1652,7 +1659,6 @@ public class Player extends LiveBeing
 	@SuppressWarnings("unchecked")
 	public static Player load(int slot)
 	{
-		
 		JSONObject jsonData = Util.readJsonObject("saves/save " + slot + ".json") ;
 		if (jsonData == null) { return null ;}
 
@@ -1681,6 +1687,8 @@ public class Player extends LiveBeing
 		JSONArray spellsData = (JSONArray) jsonData.get("spells") ;
 		Arrow equippedArrow = jsonData.get("equippedArrowID") != null ? Arrow.getAll()[(int) (long) jsonData.get("equippedArrowID")] : null ;
 		Statistics stats = Statistics.fromJson((JSONObject) jsonData.get("statistics")) ;
+		JSONArray posData = (JSONArray) jsonData.get("pos") ;
+		Directions savedDir = jsonData.get("dir") != null ? Directions.valueOf((String) jsonData.get("dir")) : Directions.up ;
 		
 		Player newPlayer = new Player(name, sex, job) ;
 		newPlayer.setLevel(level);
@@ -1705,12 +1713,13 @@ public class Player extends LiveBeing
 		newPlayer.setSpells(spellsData.stream().map(spellData -> Spell.fromJson((JSONObject) spellData)).toList()) ;
 		newPlayer.setPA(PersonalAttributes.fromJson(PAData));
 		newPlayer.setBA(BattleAttributes.fromJson(BAData));
+        newPlayer.setPos(new Point2D.Double(((Number) posData.get(0)).doubleValue(), ((Number) posData.get(1)).doubleValue())) ;
+		newPlayer.setDir(savedDir) ;
 
-//		Map<Attributes, LiveBeingStatus> status = new HashMap<>() ; 
-//		status = LiveBeingStatus.fromJson((JSONObject) jsonData.get("status")) ;
+        Pet newPet = jsonData.get("pet") != null ? Pet.fromJson((JSONObject) jsonData.get("pet")) : null ;
+        Game.setPet(newPet) ;
 		
 		return newPlayer ;
-		
 	}
 	
 	private void drawRange()
@@ -1732,7 +1741,6 @@ public class Player extends LiveBeing
 	
 	public void display(Point pos, Scale scale, Directions direction, boolean showRange)
 	{
-		displayAttributes(attributeBar.getStyle() == 1 ? Screen.getMe().pos(0.01, 0.02) : new Point(headPos().x - size.width / 2, headPos().y), true) ;
 		if (isRiding)
 		{
 			Point ridePos = Util.translate(pos, -TIGER_IMG.getWidth(null) / 2, TIGER_IMG.getHeight(null) / 2) ;
@@ -1754,11 +1762,11 @@ public class Player extends LiveBeing
 		{
 			movingAni.displayIdle(pos, Scale.unit, Align.bottomCenter) ;
 		}
-		if (questSkills.get(QuestSkills.dragonAura))
-		{
-//			Point auraPos = Util.translate(pos, -size.width / 2, 0) ; proTODO arte - dragon aura
-//			GamePanel.getDP().drawImage(DragonAuraImage, auraPos, angle, scale, false, false, Align.bottomLeft, 0.5) ;					
-		}
+        // proTODO arte - dragon aura
+		// if (questSkills.get(QuestSkills.dragonAura))
+		// {
+			
+		// }
 		if (showRange)
 		{
 			drawRange() ;
@@ -1783,6 +1791,7 @@ public class Player extends LiveBeing
 	
 	public void display()
 	{
+		displayAttributes(attributeBar.getStyle() == 1 ? Screen.getMe().pos(0.01, 0.02) : new Point(headPos().x - size.width / 2, headPos().y), true) ;
 		display(getPos(), Scale.unit, dir, Game.getSettings().getShowAtkRange()) ;
 	}
 

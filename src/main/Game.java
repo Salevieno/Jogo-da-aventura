@@ -98,7 +98,7 @@ public class Game
 		this.settings = new Settings(true, true, false, 1, 0) ;
 		this.difficultLevel = 0.7;
 		this.saveSlotInUse = -1;
-		this.state = GameStates.loading;
+		this.state = GameStates.opening;
 		this.dayTimer = new GameTimer(DAY_DURATION);
 		this.dt = System.nanoTime() ;
 	}
@@ -125,6 +125,7 @@ public class Game
 	public static int getSaveSlotInUse() { return game.saveSlotInUse ;}
 	public static void setSaveSlotInUse(int newSaveSlotInUse) { game.saveSlotInUse = newSaveSlotInUse ;}
 	public static void setPlayer(Player newPlayer) { game.player = newPlayer ;}
+	public static void setPet(Pet newPet) { game.pet = newPet ;}
 	public static void setState(GameStates newState) { game.state = newState ;}
 	public static GameTimer getDayTimer() { return game.dayTimer ;}
 

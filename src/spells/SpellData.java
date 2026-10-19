@@ -4,12 +4,15 @@ import java.util.Map;
 
 import attributes.Attributes;
 import main.Elements;
+import main.Log;
 import main.Path;
 
 public abstract class SpellData
 {
     public static void createSpells()
     {
+        if (!Spell.getAll().isEmpty()) { Log.warn("Trying to create spells twice") ; return ;}
+
         new Spell(0, "", "", "", SpellTypes.offensive, 80, -1, Elements.neutral, Path.SPELLS_IMG + "spellknight0.png", 5, 20, Map.of(), -1, -1, Map.of(Attributes.magAtk, new AttMod(0.02, 1.0))) ;
         new Spell(1, "", "", "", SpellTypes.passive, -1, -1, Elements.neutral, Path.SPELLS_IMG + "spellknight1.png", 5, -1, Map.of(0, 3), -1, -1, Map.of()) ;
         new Spell(2, "", "", "", SpellTypes.passive, -1, -1, Elements.neutral, Path.SPELLS_IMG + "spellknight2.png", 5, -1, Map.of(0, 3), -1, -1, Map.of()) ;

@@ -18,6 +18,7 @@ import graphics.UtilAlignment;
 import graphics2.Drawable;
 import main.Game;
 import main.GamePanel;
+import main.Log;
 import main.Palette;
 import main.Path;
 import maps.GameMap;
@@ -70,6 +71,8 @@ public class Building implements Drawable
 	@SuppressWarnings("unchecked")
 	public static void load()
 	{
+        if (!ALL.isEmpty()) { Log.warn("Trying to load buildings twice") ; return ;}
+
 		JSONArray jsonData = Util.readJsonArray(BUILDINGS_JSON_PATH) ;
 		for (Object buildingObj : jsonData)
 		{

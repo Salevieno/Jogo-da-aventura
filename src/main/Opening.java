@@ -18,12 +18,15 @@ import graphics.Align;
 import graphics.Scale;
 import graphics2.Draw;
 import graphics2.SpriteAnimation;
+import liveBeings.Pet;
 import liveBeings.Player;
 import music.GameMusic;
 import music.GameSound;
 import music.MusicManager;
 import screen.Screen;
+import spells.Buff;
 import spells.BuffData;
+import spells.Spell;
 import spells.SpellData;
 import utilities.Util;
 
@@ -155,13 +158,23 @@ public abstract class Opening
 		newGame = false ;
 		buttons.get(0).deactivate() ;
 		buttons.get(1).deactivate() ;
-		BuffData.createBuffs() ;
-		BuffData.createNerfs() ;
-		SpellData.createSpells() ;
-		// Spell.load("portugues", Buff.getAllBuffs(), Buff.getAllNerfs()) ;
+        // TODO remover necessidade das criações abaixo
+        if (Buff.getAllBuffs().isEmpty())
+        {
+            BuffData.createBuffs() ;
+        }
+        if (Buff.getAllNerfs().isEmpty())
+        {
+            BuffData.createNerfs() ;
+        }
+        if (Spell.getAll().isEmpty())
+        {
+            SpellData.createSpells() ;
+        }
         for (int i = 0 ; i <= QTD_LOAD_SLOTS - 1 ; i += 1)
         {
             Player playerLoaded = Player.load(i + 1) ;
+            Pet petLoaded = Game.getPet() ;
             if (playerLoaded == null)
             {
                 Log.warn("Save " + (i + 1) + " was not found or did not load corretly!") ;
@@ -169,7 +182,7 @@ public abstract class Opening
             }
 
             players.add(playerLoaded) ;
-            loadSlots.add(new LoadingSlot("Load slot " + (i + 1), new Point(96 + 384 * i, 240), playerLoaded)) ;
+            loadSlots.add(new LoadingSlot("Load slot " + (i + 1), new Point(96 + 544 * i, 240), playerLoaded, petLoaded)) ;
         }
 	}
 
@@ -183,11 +196,11 @@ public abstract class Opening
 	{
 		if (action == null) { return ;}
 
-		if (action.equals(KeyEvent.getKeyText(KeyEvent.VK_LEFT)) | action.equals("A"))
+		if (action.equals(KeyEvent.getKeyText(KeyEvent.VK_LEFT)) || action.equals("A"))
 		{
 			selectPreviousButton() ;
 		}
-		if (action.equals(KeyEvent.getKeyText(KeyEvent.VK_RIGHT)) | action.equals("D"))
+		if (action.equals(KeyEvent.getKeyText(KeyEvent.VK_RIGHT)) || action.equals("D"))
 		{
 			selectNextButton() ;
 		}
@@ -327,7 +340,6 @@ public abstract class Opening
 		if (isOver())
 		{
 			MusicManager.stopMusic(INTRO_MUSIC) ;
-			OPENING_ANI.deactivate();
 			if (newGame())
 			{
 				Game.setDifficultLevel(getChosenDifficultLevel()) ;

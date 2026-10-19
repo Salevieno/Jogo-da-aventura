@@ -23,6 +23,7 @@ import items.Fab;
 import items.GeneralItem;
 import main.ImageLoader;
 import main.Interactable;
+import main.Log;
 import main.Path;
 import music.MusicManager;
 import screen.Screen;
@@ -90,6 +91,8 @@ public class CityMap extends GameMap
 
 	public static void load()
 	{
+        if (!ALL.isEmpty()) { Log.warn("Trying to load city maps twice") ; return ;}
+
 		JSONArray input = Util.readJsonArray(DADOS_PATH + "mapsCity.json") ;
 		CityMap[] cityMaps = new CityMap[input.size()] ;
 

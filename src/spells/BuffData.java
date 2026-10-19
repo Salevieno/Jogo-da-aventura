@@ -3,11 +3,14 @@ package spells;
 import java.util.Map;
 
 import attributes.Attributes;
+import main.Log;
 
 public abstract class BuffData
 {
     public static void createBuffs()
     {
+        if (!Buff.getAllBuffs().isEmpty()) { Log.warn("Trying to create buffs twice") ; return ;}
+
         new Buff(true, 0, 1.0, Map.of(Attributes.life, new BuffPower(0.2, 0)));                                                                       
         new Buff(true, 1, 1.0, Map.of(Attributes.phyAtk, new BuffPower(0.1, 0), Attributes.phyDef, new BuffPower(-0.05, 0)));
         new Buff(true, 2, 1.0, Map.of(Attributes.phyDef, new BuffPower(0.04, 0), Attributes.magDef, new BuffPower(0.04, 0), Attributes.block, new BuffPower(0, 0.16)));
@@ -30,6 +33,8 @@ public abstract class BuffData
 
     public static void createNerfs()
     {
+        if (!Buff.getAllNerfs().isEmpty()) { Log.warn("Trying to create nerfs twice") ; return ;}
+
         new Buff(false, 0, 1.0, Map.of(Attributes.dex, new BuffPower(0.1, 0), Attributes.agi, new BuffPower(0.1, 0)));
         new Buff(false, 1, 1.0, Map.of(Attributes.agi, new BuffPower(0.04, 0)));
         new Buff(false, 2, 1.0, Map.of(Attributes.dex, new BuffPower(0.03, 0), Attributes.agi, new BuffPower(0.03, 0)));

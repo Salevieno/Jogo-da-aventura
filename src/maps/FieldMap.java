@@ -26,6 +26,7 @@ import liveBeings.CreatureType;
 import main.GameTimer;
 import main.ImageLoader;
 import main.Interactable;
+import main.Log;
 import main.Path;
 import screen.Screen;
 import screen.Sky;
@@ -59,6 +60,8 @@ public class FieldMap extends GameMap
 	@SuppressWarnings("unchecked")
 	public static void load()
 	{
+        if (!ALL_FIELD_MAPS.isEmpty()) { Log.warn("Trying to load field maps twice") ; return ;}
+
 		JSONArray input = Util.readJsonArray(JSON_PATH) ;
 		FieldMap[] fieldMaps = new FieldMap[input.size()] ;
 

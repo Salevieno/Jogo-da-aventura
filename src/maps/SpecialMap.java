@@ -15,6 +15,7 @@ import items.GeneralItem;
 import items.Item;
 import main.ImageLoader;
 import main.Interactable;
+import main.Log;
 import main.Path;
 import screen.Screen;
 import utilities.Util;
@@ -71,6 +72,8 @@ public class SpecialMap extends GameMap
 
 	public static void load(List<Item> allItems)
 	{
+        if (!ALL.isEmpty()) { Log.warn("Trying to load special maps twice") ; return ;}
+
 		List<String[]> input = Util.readcsvFile(DADOS_PATH + "MapsSpecial.csv") ;
 		SpecialMap[] specialMaps = new SpecialMap[input.size()] ;
 

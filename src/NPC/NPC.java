@@ -327,7 +327,9 @@ public abstract class NPC implements Interactable
 	@SuppressWarnings("unchecked")
 	public static void load(String language)
 	{
-		ALL.removeAll(ALL) ;
+        if (!ALL.isEmpty()) { Log.warn("Trying to load NPCs twice") ; return ;}
+
+		// ALL.removeAll(ALL) ;
 		List<JSONObject> npcList = (List<JSONObject>) Util.readJsonArray(Path.DADOS + language + "/NPCMenus.json");
 		List<NPC> npcs = new ArrayList<>();
 

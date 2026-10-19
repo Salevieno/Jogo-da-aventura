@@ -178,8 +178,11 @@ public class Spell
 
 	public static void create(String language)
 	{
-		SpellData.createSpells() ;
-		updateText(language) ;
+        if (ALL.isEmpty())
+        {
+		    SpellData.createSpells() ;
+        }
+        updateText(language) ;
 	}
 
 	public static void updateText(String language)

@@ -9,11 +9,16 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+
 import attributes.AttributeIncrease;
 import attributes.BasicAttribute;
 import attributes.BasicBattleAttribute;
+import attributes.BattleAttributes;
 import attributes.BattleSpecialAttribute;
 import attributes.BattleSpecialAttributeWithDamage;
+import attributes.PersonalAttributes;
 import battle.AtkEffects;
 import battle.AtkResults;
 import battle.AtkTypes;
@@ -75,7 +80,7 @@ public class Pet extends LiveBeing
 		Color[] colorPalette = Palette.colors ;
 		Color[] petColors = new Color[] {colorPalette[3], colorPalette[5], colorPalette[21], colorPalette[21]} ;
 		color = petColors[job] ;
-		this.spells = new ArrayList<Spell>() ;//InitializePetSpells();
+		this.spells = new ArrayList<Spell>() ;
 		this.spellPoints = 0 ;
 
 		startCounters() ;
@@ -454,9 +459,61 @@ public class Pet extends LiveBeing
 		return increase ;
 	}
 
-	public void Load(String[][] ReadFile)
+	@SuppressWarnings("unchecked")
+	public JSONObject toJson()
 	{
+		JSONObject content = new JSONObject() ;
+		content.put("job", job) ;
+		content.put("level", level) ;
+		content.put("spellPoints", spellPoints) ;
+		content.put("spells", spells.stream().map(Spell::toJson).toList()) ;
+		content.put("equipID", equip == null ? null : equip.getId()) ;
+		content.put("alchBuffId", alchBuffId) ;
+		content.put("pos", List.of(pos.x, pos.y)) ;
+		content.put("dir", dir.name()) ;
+		content.put("PA", PA.toJsonObject()) ;
+		content.put("BA", BA.toJsonObject()) ;
+		return content ;
 	}
+
+	public static Pet fromJson(JSONObject jsonData)
+	{
+		int job = ((Number) jsonData.get("job")).intValue() ;
+		Pet pet = new Pet(job) ;
+		pet.setLevel(((Number) jsonData.get("level")).intValue()) ;
+		pet.spellPoints = ((Number) jsonData.get("spellPoints")).intValue() ;
+		pet.spells = new ArrayList<>() ;
+		for (Object spellData : (JSONArray) jsonData.get("spells"))
+		{
+			pet.spells.add(Spell.fromJson((JSONObject) spellData)) ;
+		}
+
+		Object equipID = jsonData.get("equipID") ;
+		pet.equip = equipID == null ? null : PetItem.getAll()[((Number) equipID).intValue()] ;
+		Object alchBuffId = jsonData.get("alchBuffId") ;
+		pet.alchBuffId = alchBuffId == null ? -1 : ((Number) alchBuffId).intValue() ;
+
+		JSONArray posData = (JSONArray) jsonData.get("pos") ;
+		pet.setPos(new Point2D.Double(
+				((Number) posData.get(0)).doubleValue(),
+				((Number) posData.get(1)).doubleValue())) ;
+		pet.setDir(Directions.valueOf((String) jsonData.get("dir"))) ;
+		pet.setPA(PersonalAttributes.fromJson((JSONObject) jsonData.get("PA"))) ;
+		pet.setBA(BattleAttributes.fromJson((JSONObject) jsonData.get("BA"))) ;
+		return pet ;
+	}
+
+	public void save(int slot)
+	{
+		Util.writeJson(toJson(), "saves/pet " + slot) ;
+    }
+
+	public static Pet load(int slot)
+	{
+		JSONObject jsonData = Util.readJsonObject("saves/pet " + slot + ".json") ;
+		if (jsonData == null) { return null ;}
+		return fromJson(jsonData) ;
+    }
 	
 	public void display(Point pos, Scale scale)
 	{

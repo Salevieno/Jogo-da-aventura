@@ -2,10 +2,14 @@ package components;
 
 import java.util.Map;
 
+import main.Log;
+
 public abstract class QuestData
 {
     public static void create()
     {
+        if (!Quest.getAll().isEmpty()) { Log.warn("Trying to create quests twice") ; return ;}
+
         new Quest(0, true, Map.of(0, 10, 1, 5), Map.of(), 20, 150, Map.of());
         new Quest(1, true, Map.of(5, 10, 6, 5), Map.of(), 20, 150, Map.of());
         new Quest(2, true, Map.of(10, 10, 11, 5), Map.of(), 20, 150, Map.of());
