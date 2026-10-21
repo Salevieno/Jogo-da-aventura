@@ -54,7 +54,6 @@ public class LoadingSlot
         this.petJobPos = Util.translate(petTopLeftPos, 16, 45) ;
         this.petLevelPos = Util.translate(petTopLeftPos, 16, 60) ;
         this.petAttTopLeft = Util.translate(petTopLeftPos, 16, 82) ;
-
     }
 
 	private void loadGame(Player player, Pet pet, int slot)

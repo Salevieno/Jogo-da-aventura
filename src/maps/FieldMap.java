@@ -67,7 +67,6 @@ public class FieldMap extends GameMap
 
 		for (int id = 0 ; id <= input.size() - 1 ; id += 1)
 		{
-
 			JSONObject mapData = (JSONObject) input.get(id) ;
 
 			String name = (String) mapData.get("Name") ;
@@ -87,7 +86,7 @@ public class FieldMap extends GameMap
 				creatureIDs[i] = (int) (long) creatures.get(i) ;
 			}
 
-			List<NPC> npcs = FieldMap.createQuestNPCs(id) ;
+			List<NPC> npcs = loadNPCs(mapData) ;
 			List<GroundRegion> groundRegions = groundRegionsFromJson((JSONObject) mapData.get("GroundRegions")) ;
 			List<SpriteAnimation> animations = new ArrayList<>() ;
 
@@ -300,17 +299,6 @@ public class FieldMap extends GameMap
 			diggingItems.put(item, ALL_DIGGING_ITEMS.get(item)) ;
 		}
 		calcDigItemChances() ;
-	}
-	
-	public static List<NPC> createQuestNPCs(int mapID)
-	{
-		return List.of() ;
-		// if (npcTypes == null) { Log.error("Ao criar npcs de quest: tipos de npc nulo") ; return null ;}
-		// if (npcTypes.length <= 0) { Log.error("Ao criar npcs de quest: sem tipos de npc") ; return null ;}
-		
-		// NPC questExp = new NPCQuest(Screen.getMe().pos(0.27, 0.73)) ;
-		// NPC questItem = new NPCQuest(Screen.getMe().pos(0.87, 0.63)) ;
-		// return List.of(questExp, questItem) ;
 	}
 	
 	public boolean hasCreatures() { return creatures != null && !creatures.isEmpty() ;}

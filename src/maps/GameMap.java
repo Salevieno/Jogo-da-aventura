@@ -143,6 +143,30 @@ public abstract class GameMap
 	public void activateAnimations() { animations.forEach(SpriteAnimation::activate) ;}
 	public void deactivateAnimations() { animations.forEach(SpriteAnimation::deactivate) ;}
 
+
+	public int getID() {return id ;}
+	public String getName() {return name ;}
+	public Continents getContinent() {return continent ;}
+	public Image getimage() {return image ;}
+	public Clip getMusic() { return music ;}
+	public List<GroundRegion> getgroundTypes() {return groundRegions ;}
+	public int[] getConnections() {return connections ;}	
+	public List<MapElement> getMapElem() {return mapElems ;}
+	public List<NPC> getNPCs() {return npcs ;}
+	public List<Building> getBuildings() {return buildings ;}
+	public Map<Item, Double> getDiggingItems() { return diggingItems ;}
+	public static List<GameMap> getAllMaps() { return ALL ;}
+	public abstract Set<Interactable> getInteractables() ;
+	public List<NPC> getAllNPCs()
+	{ 
+		List<NPC> allNPCs = new ArrayList<>(npcs);
+		if (buildings != null)
+		{
+			allNPCs.addAll(buildings.stream().flatMap(building -> building.getNPCs().stream()).toList());
+		}
+		return allNPCs;
+	}
+
 	public boolean isCity() { return (this instanceof CityMap) ;}
 	public boolean isField() { return (this instanceof FieldMap) ;}
 	public boolean isSpecial() { return (this instanceof SpecialMap) ;}
@@ -318,6 +342,26 @@ public abstract class GameMap
 		return connectionIDs.stream().mapToInt(i -> ((Number) i).intValue()).toArray() ;
 	}
  	
+	protected static List<NPC> loadNPCs(JSONObject map)
+	{
+		JSONArray listNPCs = (JSONArray) map.get("NPCs") ;
+		List<NPC> npcs = new ArrayList<>() ;
+
+		for (Object npcObj : listNPCs)
+		{
+			JSONObject npcJson = (JSONObject) npcObj ;
+			int id = (int) (long) npcJson.get("id") ;
+			JSONObject posJson = (JSONObject) npcJson.get("pos") ;
+			double posX = (double) posJson.get("x") ;
+			double posY = (double) posJson.get("y") ;
+			NPC npc = NPC.getAll().get(id) ;
+			npc.setPos(Screen.getMe().getPointWithinBorders(posX, posY)) ;
+			npcs.add(npc) ;
+		}
+
+		return npcs ;
+	}
+
  	public void displayElements(Point playerPos)
  	{ 		
  		if (mapElems == null) { return ;}
@@ -429,31 +473,7 @@ public abstract class GameMap
  			GamePanel.getDP().drawImage(BOAT_IMAGE, Screen.getMe().pos(0.75, 0.8), Align.centerLeft) ;
  		}
  	}
-	
 
-	public int getID() {return id ;}
-	public String getName() {return name ;}
-	public Continents getContinent() {return continent ;}
-	public Image getimage() {return image ;}
-	public Clip getMusic() { return music ;}
-	public List<GroundRegion> getgroundTypes() {return groundRegions ;}
-	public int[] getConnections() {return connections ;}	
-	public List<MapElement> getMapElem() {return mapElems ;}
-	public List<NPC> getNPCs() {return npcs ;}
-	public List<Building> getBuildings() {return buildings ;}
-	public Map<Item, Double> getDiggingItems() { return diggingItems ;}
-	public static List<GameMap> getAllMaps() { return ALL ;}
-	public abstract Set<Interactable> getInteractables() ;
-	public List<NPC> getAllNPCs()
-	{ 
-		List<NPC> allNPCs = new ArrayList<>(npcs);
-		if (buildings != null)
-		{
-			allNPCs.addAll(buildings.stream().flatMap(building -> building.getNPCs().stream()).toList());
-		}
-		return allNPCs;
-	}
- 	
 	@Override
 	public String toString()
 	{

@@ -46,6 +46,7 @@ public abstract class NPC implements Interactable
 	protected Point pos ;
 	protected final Image desk ;
 	protected final List<NPCMenu> menus ;
+    protected final Map<NPCMenu, List<GameTextButton>> menuButtons ;
 	protected int currentMenuID ;
 	protected int selOption ;
 	protected GameWindow window ; // TODO passar window para o  player. Como fazer para a criação de NPCs não depender do player?
@@ -58,8 +59,8 @@ public abstract class NPC implements Interactable
 	protected static final Font STD_FONT = new Font(Game.getMainFontName(), Font.BOLD, 12) ;
 	protected static final Color STD_COLOR = Palette.colors[0] ;
 	protected static final Color STD_SELECTED_COLOR = Palette.colors[18] ;
+	protected static final Map<NPCJobs, List<NPCMenu>> JOB_MENUS = new HashMap<>() ;
 	private static final List<NPC> ALL = new ArrayList<>() ;
-
 	
 	public NPC(NPCJobs job, String name, Point pos, List<NPCMenu> menus, Image desk, GameWindow window)
 	{
@@ -72,6 +73,7 @@ public abstract class NPC implements Interactable
 		this.menus = menus ;
 		this.isInteracting = false ;
 		this.desk = desk ;
+		this.menuButtons = createMenuButtons(this, menus, job) ;
 		this.window = window ;
 		
 		this.hitbox = new HitboxRectangle(Util.translate(pos, 0, -job.getImage().getHeight(null) / 2), Util.getSize(job.getImage()), 0.8) ;
@@ -96,9 +98,9 @@ public abstract class NPC implements Interactable
 		this.pos = pos ;
 		for (NPCMenu menu : menus)
 		{
-			for (int i = 0 ; i <= menu.getOptions().size() - 1 ; i += 1)
+			for (int i = 0 ; i <= menuButtons.get(menu).size() - 1 ; i += 1)
 			{
-				GameTextButton button = menu.getOptions().get(i) ;
+				GameTextButton button = menuButtons.get(menu).get(i) ;
 				button.setTopLeftPos(Util.translate(pos, 20, (button.getSize().height + 6) * i)) ;
 			}
 		}
@@ -124,9 +126,9 @@ public abstract class NPC implements Interactable
 			return ;
 		}
 
-		menus.get(currentMenuID).getOptions().forEach(GameTextButton::deactivate) ;
+		menuButtons.get(menus.get(currentMenuID)).forEach(GameTextButton::deactivate) ;
 		currentMenuID = menuID ;
-		menus.get(currentMenuID).getOptions().forEach(GameTextButton::activate) ;
+		menuButtons.get(menus.get(currentMenuID)).forEach(GameTextButton::activate) ;
 	}
 	private void resetMenu() { goToMenu(0) ;}
 	public void startInteraction()
@@ -137,7 +139,7 @@ public abstract class NPC implements Interactable
 
 	public void endInteraction()
 	{
-		menus.get(currentMenuID).getOptions().forEach(GameTextButton::deactivate) ;
+		menuButtons.get(menus.get(currentMenuID)).forEach(GameTextButton::deactivate) ;
 		isInteracting = false ;
 		if (window != null && window.isOpen())
 		{
@@ -159,6 +161,7 @@ public abstract class NPC implements Interactable
 	}
 		
 	public static boolean actionIsForward(String action) { return action.equals("Enter") | action.equals("LeftClick") ;}
+    public static Map<NPCJobs, List<NPCMenu>> getJobMenus() { return JOB_MENUS ;}
 	public static List<NPC> getAll() { return ALL ;}
 	
 	public abstract void act(Player player, Pet pet, String action) ;
@@ -233,7 +236,7 @@ public abstract class NPC implements Interactable
 		if (menus.get(currentMenuID).getOptions() == null) { return ;}
 		if (menus.get(currentMenuID).getOptions().size() <= 0) { return ;}
 
-		menus.get(currentMenuID).getOptions().stream().filter(GameTextButton::isActive).forEach(GameTextButton::display) ;		
+		menuButtons.get(menus.get(currentMenuID)).stream().filter(GameTextButton::isActive).forEach(GameTextButton::display) ;		
 	}
 
 	public void display(Hitbox playerHitbox)
@@ -313,7 +316,7 @@ public abstract class NPC implements Interactable
 				return new NPCForger(name, new Point(0, 0), menus) ;
 
 			case questExp: case questItem:
-				return new NPCQuest(name, new Point(0, 0), menus) ;
+				return new NPCQuest(name, new Point(0, 0), menus, 0) ;
 
 			case saver:
 				return new NPCSaver(name, new Point(0, 0), menus) ;
@@ -325,13 +328,32 @@ public abstract class NPC implements Interactable
 	}
 
 	@SuppressWarnings("unchecked")
+	public static void loadJobMenus(String language)
+	{
+		List<JSONObject> jobMenus = (List<JSONObject>) Util.readJsonArray(Path.DADOS + language + "/NPCJobMenus.json") ;
+        for (JSONObject jobMenu : jobMenus)
+        {
+			int jobId = ((Long) jobMenu.get("job")).intValue();
+			List<JSONObject> menusData = (List<JSONObject>) jobMenu.get("menus");
+            List<NPCMenu> menus = new ArrayList<>() ;
+            for (JSONObject menuData : menusData)
+            {
+                String speech = (String) menuData.get("fala");
+                List<String> options = (List<String>) menuData.getOrDefault("opcoes", new ArrayList<>());
+                NPCMenu menu = new NPCMenu(speech, options);
+                menus.add(menu);
+            }
+            JOB_MENUS.put(NPCJobs.getByID(jobId), menus) ;
+        }
+    }
+
+	@SuppressWarnings("unchecked")
 	public static void load(String language)
 	{
         if (!ALL.isEmpty()) { Log.warn("Trying to load NPCs twice") ; return ;}
 
-		// ALL.removeAll(ALL) ;
-		List<JSONObject> npcList = (List<JSONObject>) Util.readJsonArray(Path.DADOS + language + "/NPCMenus.json");
-		List<NPC> npcs = new ArrayList<>();
+		List<JSONObject> npcList = (List<JSONObject>) Util.readJsonArray(Path.DADOS + language + "/NPCMenus.json") ;
+		List<NPC> npcs = new ArrayList<>() ;
 
 		for (JSONObject npcData : npcList)
 		{
@@ -340,42 +362,49 @@ public abstract class NPC implements Interactable
 			int jobId = ((Long) npcData.get("job")).intValue();
 			NPCJobs job = NPCJobs.getByID(jobId);
 
-			List<JSONObject> menusData = (List<JSONObject>) npcData.get("menus");
-			List<NPCMenu> menus = new ArrayList<>() ;
-
+            List<NPCMenu> menus = JOB_MENUS.getOrDefault(job, new ArrayList<>()) ;
+            if (menus.isEmpty())
+            {
+                Log.error("No menus found for job " + job + " while loading NPC " + name) ;
+            }
 			NPC newNPC = NPC.create(job, name, info, menus) ;
-			for (int i = 0 ; i <= menusData.size() - 1 ; i += 1)
-			{
-				JSONObject menu = menusData.get(i) ;
-				String speech = (String) menu.get("fala") ;
-				List<String> options = (List<String>) menu.get("opcoes") ;
-				if (options == null)
-				{
-					options = new ArrayList<>() ;
-				}
-				List<Integer> destinationMenus = job.getDestination().get(i) ;
-				List<GameTextButton> buttons = new ArrayList<>(options.size()) ;
-				for (int j = 0 ; j <= options.size() - 1 ; j += 1)
-				{
-					final int optionIndex = j;
-					int destinationMenu = destinationMenus.get(j) ;
-					String text = options.get(j) ;
-					GameTextButton button = new GameTextButton(new Point(0, 0), Align.topLeft, text, text, () -> {
-						newNPC.updateSelectedOption(optionIndex) ;
-						newNPC.act(Game.getPlayer(), Game.getPet(), Game.getPlayer().getCurrentAction());
-						newNPC.goToMenu(destinationMenu) ;
-					}) ;
-					Dimension textSize = GamePanel.calcTextSize(text, new Font(Game.getMainFontName(), Font.BOLD, 17)) ;
-					button.resize(textSize);
-					button.deactivate() ;
-					buttons.add(button) ;
-				}
-
-				menus.add(new NPCMenu(new Point(0, 0), job.getDestination().get(i), speech, buttons)) ;
-			}
 			npcs.add(newNPC);
 		}
 	}
+
+    private static GameTextButton createMenuButton(NPC npc, NPCMenu menu, int optionIndex, int destinationMenu)
+    {
+        String text = menu.getOptions().get(optionIndex) ;
+        GameTextButton button = new GameTextButton(new Point(0, 0), Align.topLeft, text, text, () -> {
+            npc.updateSelectedOption(optionIndex) ;
+            npc.act(Game.getPlayer(), Game.getPet(), Game.getPlayer().getCurrentAction());
+            npc.goToMenu(destinationMenu) ;
+        }) ;
+        Dimension textSize = GamePanel.calcTextSize(text, new Font(Game.getMainFontName(), Font.BOLD, 17)) ;
+        button.resize(textSize);
+        button.deactivate() ;
+        return button ;
+    }
+
+    private static Map<NPCMenu, List<GameTextButton>> createMenuButtons(NPC npc, List<NPCMenu> menus, NPCJobs job)
+    {
+        Map<NPCMenu, List<GameTextButton>> menuButtons = new HashMap<>() ;
+        for (int i = 0 ; i <= menus.size() - 1 ; i += 1)
+        {
+            List<Integer> destinationMenus = job.getDestination().get(i) ;
+            List<GameTextButton> buttons = new ArrayList<>(menus.get(i).getOptions().size()) ;
+            for (int j = 0 ; j <= menus.get(i).getOptions().size() - 1 ; j += 1)
+            {
+                final int optionIndex = j;
+                int destinationMenu = destinationMenus.get(j) ;
+                GameTextButton button = createMenuButton(npc, menus.get(i), optionIndex, destinationMenu);
+                buttons.add(button) ;
+            }
+            menuButtons.put(menus.get(i), buttons) ;
+        }
+
+        return menuButtons ;
+    } 
 
 	@SuppressWarnings("unchecked")
 	public static void updateText(String language)
@@ -392,10 +421,6 @@ public abstract class NPC implements Interactable
 				JSONObject menu = menusData.get(m) ;
 				npc.getMenus().get(m).setSpeech((String) menu.get("fala")) ;
 				npc.getMenus().get(m).setOptionsText((List<String>) menu.get("opcoes")) ;
-				if (npc.getMenus().get(m).getOptions() != null)
-				{
-					npc.getMenus().get(m).updateOptionDestination() ;
-				}
 			}
 		}
 	}

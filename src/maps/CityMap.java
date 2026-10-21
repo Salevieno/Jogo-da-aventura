@@ -50,26 +50,6 @@ public class CityMap extends GameMap
 		ALL.add(this) ;
 	}
 	
-	private static List<NPC> loadNPCs(JSONObject map)
-	{
-		JSONArray listNPCs = (JSONArray) map.get("NPCs") ;
-		List<NPC> npcs = new ArrayList<>() ;
-
-		for (Object npcObj : listNPCs)
-		{
-			JSONObject npcJson = (JSONObject) npcObj ;
-			int id = (int) (long) npcJson.get("id") ;
-			JSONObject posJson = (JSONObject) npcJson.get("pos") ;
-			double posX = (double) posJson.get("x") ;
-			double posY = (double) posJson.get("y") ;
-			NPC npc = NPC.getAll().get(id) ;
-			npc.setPos(Screen.getMe().getPointWithinBorders(posX, posY)) ;
-			npcs.add(npc) ;
-		}
-
-		return npcs ;
-	}
-	
 	private static List<Building> loadBuildings(JSONObject map)
 	{		
 		JSONArray listBuildingObjs = (JSONArray) map.get("Buildings") ;

@@ -11,6 +11,7 @@ import org.json.simple.JSONObject;
 
 import Buildings.Building;
 import NPC.NPC;
+import NPC.NPCData;
 import UI.ButtonFunction;
 import UI.GameButton;
 import UI.GameTextButton;
@@ -173,7 +174,9 @@ public abstract class LoadingGame
 				return;
 
 			case 6:
-				NPC.load(language) ;
+                NPC.loadJobMenus(language) ;
+                NPCData.createNPCs() ;
+				// NPC.load(language) ;
 				logInitializationTime("npc types", initialStepLoadingTime);
 				return;
 

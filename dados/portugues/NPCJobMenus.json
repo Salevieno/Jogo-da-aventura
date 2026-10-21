@@ -1,0 +1,434 @@
+[
+    {
+        "job": 0,
+        "menus": [
+            {
+                "fala": "Olá, quer fabricar poções com suas ervas?",
+                "opcoes": [
+                    "Sim",
+                    "Não"
+                ]
+            },
+            {
+                "fala": "Escolha a poção que quer fabricar:"
+            },
+            {
+                "fala": "Aqui está sua poção!"
+            },
+            {
+                "fala": "Você não tem os ingredientes necessários!"
+            },
+            {
+                "fala": "Obrigado por vir!",
+                "opcoes": [
+                    "Tchau"
+                ]
+            }
+        ]
+    },
+    {
+        "job": 1,
+        "menus": [
+            {
+                "fala": "Olá, gostaria de usar o banco?",
+                "opcoes": [
+                    "Guardar ouro",
+                    "Sacar ouro",
+                    "Investimento seguro",
+                    "Investimento arriscado",
+                    "Só estou passando"
+                ]
+            },
+            {
+                "fala": "Quanto gostaria de guardar?"
+            },
+            {
+                "fala": "Quanto gostaria de sacar?"
+            },
+            {
+                "fala": "Quanto gostaria de investir?"
+            },
+            {
+                "fala": "Por favor, informe um número:"
+            },
+            {
+                "fala": "Você não tem todo esse dinheiro!"
+            },
+            {
+                "fala": "Você não tem dinheiro para pagar a taxa de 1%!"
+            },
+            {
+                "fala": "Dinheiro guardado, até mais!",
+                "opcoes": [
+                    "Até mais"
+                ]
+            },
+            {
+                "fala": "Aqui está seu dinheiro, até mais!",
+                "opcoes": [
+                    "Até mais"
+                ]
+            },
+            {
+                "fala": "Obrigado por vir!",
+                "opcoes": [
+                    "Até mais"
+                ]
+            }
+        ]
+    },
+    {
+        "job": 2,
+        "menus": [
+            {
+                "fala": "Eu quero viajar para outras cidades e conhecer todo este mundo. Seria tão fácil se não fossem essas criaturas asquerosas!",
+                "opcoes": [
+                    "..."
+                ]
+            },
+            {
+                "fala": "Estes vermes vagam pela floresta agredindo aventureiros, saqueando cidadãos inocentes.",
+                "opcoes": [
+                    "..."
+                ]
+            },
+            {
+                "fala": "Malditas criaturas, podiam matar todas elas!",
+                "opcoes": [
+                    "..."
+                ]
+            }
+        ]
+    },
+    {
+        "job": 3,
+        "menus": [
+            {
+                "fala": "Olá, quer fabricar itens?",
+                "opcoes": [
+                    "Sim",
+                    "Não"
+                ]
+            },
+            {
+                "fala": "Escolha o item que quer fabricar:"
+            },
+            {
+                "fala": "Aqui está seu item!"
+            },
+            {
+                "fala": "Você não tem os materiais necessários!"
+            },
+            {
+                "fala": "Obrigado por vir!",
+                "opcoes": [
+                    "Tchau"
+                ]
+            },
+            {
+                "fala": "Quantos itens vc deseja fabricar?"
+            }
+        ]
+    },
+    {
+        "job": 4,
+        "menus": [
+            {
+                "fala": "Olá, gostaria de tratar esses ferimentos?",
+                "opcoes": [
+                    "Sim",
+                    "Não"
+                ]
+            },
+            {
+                "fala": "Você não está ferido!"
+            },
+            {
+                "fala": "Prontinho! Seu pet está melhor agora."
+            },
+            {
+                "fala": "Prontinho! Aproveite sua vida."
+            },
+            {
+                "fala": "Tenha um bom dia!",
+                "opcoes": [
+                    "Até mais"
+                ]
+            }
+        ]
+    },
+    {
+        "job": 5,
+        "menus": [
+            {
+                "fala": "Olá, quer mudar o elemento de seus equipamentos?",
+                "opcoes": [
+                    "Sim",
+                    "Não"
+                ]
+            },
+            {
+                "fala": "Obrigado e até mais!",
+                "opcoes": [
+                    "Tchau"
+                ]
+            }
+        ]
+    },
+    {
+        "job": 6,
+        "menus": [
+            {
+                "fala": "Os melhores equipamentos aqui! O que deseja?",
+                "opcoes": [
+                    "Comprar",
+                    "Vender"
+                ]
+            },
+            {
+                "fala": "Escolha seu equipamento!"
+            },
+            {
+                "fala": "Volte sempre!",
+                "opcoes": [
+                    "Até mais"
+                ]
+            }
+        ]
+    },
+    {
+        "job": 7,
+        "menus": [
+            {
+                "fala": "Itens em geral. Chegue pra loja! O que deseja?",
+                "opcoes": [
+                    "Comprar",
+                    "Vender"
+                ]
+            },
+            {
+                "fala": "O que deseja comprar?"
+            },
+            {
+                "fala": "Até mais!",
+                "opcoes": [
+                    "Até mais"
+                ]
+            }
+        ]
+    },
+    {
+        "job": 8,
+        "menus": [
+            {
+                "fala": "Itens especiais por preços exagerados. O que deseja?",
+                "opcoes": [
+                    "Comprar",
+                    "Vender"
+                ]
+            },
+            {
+                "fala": "O que deseja comprar?"
+            },
+            {
+                "fala": "Até mais!",
+                "opcoes": [
+                    "Até mais"
+                ]
+            }
+        ]
+    },
+    {
+        "job": 9,
+        "menus": [
+            {
+                "fala": "Olá, deseja aumentar suas habilidades?",
+                "opcoes": [
+                    "Sim",
+                    "Não"
+                ]
+            },
+            {
+                "fala": "Escolha uma habilidade."
+            },
+            {
+                "fala": "Uau, como vc cresceu! Está pronto para evoluir?",
+                "opcoes": [
+                    "Sim",
+                    "Não"
+                ]
+            },
+            {
+                "fala": "Para qual classe quer evoluir?"
+            },
+            {
+                "fala": "Parabéns! Agora vc é um:",
+                "opcoes": [
+                    "Até mais."
+                ]
+            },
+            {
+                "fala": "Neste caso, quer aumentar suas habilidades?",
+                "opcoes": [
+                    "Sim",
+                    "Não"
+                ]
+            },
+            {
+                "fala": "Até a proxima!",
+                "opcoes": [
+                    "Até mais"
+                ]
+            }
+        ]
+    },
+    {
+        "job": 10,
+        "menus": [
+            {
+                "fala": "Olá, quer trocar sua madeira em comida para pet?",
+                "opcoes": [
+                    "Sim",
+                    "Não"
+                ]
+            },
+            {
+                "fala": "Obrigado pela madeira!"
+            },
+            {
+                "fala": "Aqui está sua comida de pet!"
+            },
+            {
+                "fala": "Você nao tem madeira!"
+            },
+            {
+                "fala": "Te vejo por aí!",
+                "opcoes": [
+                    "Tchau"
+                ]
+            }
+        ]
+    },
+    {
+        "job": 11,
+        "menus": [
+            {
+                "fala": "Olá, vc deseja forjar seu equipamento?",
+                "opcoes": [
+                    "Sim",
+                    "Não"
+                ]
+            },
+            {
+                "fala": "Até a próxima!",
+                "opcoes": [
+                    "Até"
+                ]
+            }
+        ]
+    },
+    {
+        "job": 12,
+        "menus": [
+            {
+                "fala": "Olá, deseja salvar o jogo?",
+                "opcoes": [
+                    "Sim",
+                    "Não"
+                ]
+            },
+            {
+                "fala": "Em que slot gostaria de salvar?",
+                "opcoes": [
+                    "1",
+                    "2",
+                    "3"
+                ]
+            },
+            {
+                "fala": "Seu jogo está salvo!",
+                "opcoes": [
+                    "ok"
+                ]
+            },
+            {
+                "fala": "Até a próxima!",
+                "opcoes": [
+                    "Até"
+                ]
+            }
+        ]
+    },
+    {
+        "job": 13,
+        "menus": [
+            {
+                "fala": "Olá, vc pode se livrar de umas criaturas pra mim?",
+                "opcoes": [
+                    "Claro",
+                    "Agora não"
+                ]
+            },
+            {
+                "fala": "Ótimo! Veja no pergaminho de quests as criaturas que vc precisa caçar.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Por favor, preciso que vc cace mais criaturas.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Valeu! Aceite esta recompensa:",
+                "opcoes": [
+                    "Eba!"
+                ]
+            },
+            {
+                "fala": "Ok, até a próxima então.",
+                "opcoes": [
+                    "Até mais!"
+                ]
+            }
+        ]
+    },
+    {
+        "job": 14,
+        "menus": [
+            {
+                "fala": "Olá, vc pode pegar uns itens para que eu possa fabricar algo?",
+                "opcoes": [
+                    "Claro",
+                    "Agora não"
+                ]
+            },
+            {
+                "fala": "Ótimo! Veja no pergaminho de quests os itens que vc precisa pegar.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Por favor, ainda preciso de mais itens.",
+                "opcoes": [
+                    "Ok"
+                ]
+            },
+            {
+                "fala": "Valeu! Aqui, pode ficar com o que eu fabriquei:",
+                "opcoes": [
+                    "Eba!"
+                ]
+            },
+            {
+                "fala": "Ok, até a próxima então.",
+                "opcoes": [
+                    "Até mais!"
+                ]
+            }
+        ]
+    }
+]
