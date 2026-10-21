@@ -7,6 +7,7 @@ import java.util.Map;
 import items.Item;
 import liveBeings.Pet;
 import liveBeings.Player;
+import main.Game;
 import windows.ShoppingWindow;
 
 public class NPCSeller extends NPC
@@ -15,6 +16,14 @@ public class NPCSeller extends NPC
     {// TODO corrigir npcType
         super(NPCJobs.equipsSeller, name, pos, menus, new ShoppingWindow(maxStock)) ;
     }
+
+	protected void onEndInteraction()
+	{
+		if (selOption == 1)
+		{
+			Game.getPlayer().switchOpenClose(Game.getPlayer().getBag()) ;
+		}
+	}
 
 	public void act(Player player, Pet pet, String action)
 	{

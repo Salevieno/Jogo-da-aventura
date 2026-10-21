@@ -20,6 +20,8 @@ public class NPCQuest extends NPC
         this.questID = questID ;
     }
 
+	protected void onEndInteraction() { }
+
 	public void act(Player player, Pet pet, String action)
 	{
 		if (action == null) { return ;}

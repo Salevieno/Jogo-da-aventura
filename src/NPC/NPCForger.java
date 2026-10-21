@@ -20,6 +20,8 @@ public class NPCForger extends NPC
         super(NPCJobs.forger, name, pos, menus, FORGE_DESK_IMAGE, new ForgeWindow());
     }
 
+	protected void onEndInteraction() { }
+
 	public void act(Player player, Pet pet, String action)
 	{
 		if (action == null) { return ;}

@@ -14,6 +14,9 @@ public class NPCElemental extends NPC
     {
         super(NPCJobs.elemental, name, pos, menus, new ElementalWindow());
     }
+
+	protected void onEndInteraction() { }
+
 	// 			case elemental:
 // 			{
 // 				List<Equip> listEquips = new ArrayList<Equip> (playerBag.getEquip().keySet()) ;

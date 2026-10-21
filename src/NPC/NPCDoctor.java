@@ -13,6 +13,8 @@ public class NPCDoctor extends NPC
     {
         super(NPCJobs.doctor, name, pos, menus);
     }
+
+	protected void onEndInteraction() { }
 	
 	public void act(Player player, Pet pet, String action)
 	{

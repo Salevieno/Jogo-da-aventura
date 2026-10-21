@@ -5,6 +5,7 @@ import java.util.List;
 
 import liveBeings.Pet;
 import liveBeings.Player;
+import main.Game;
 
 public class NPCMaster extends NPC
 {
@@ -13,6 +14,11 @@ public class NPCMaster extends NPC
     {
         super(NPCJobs.master, name, pos, menus);
     }
+
+	protected void onEndInteraction()
+	{
+		Game.getPlayer().switchOpenClose(Game.getPlayer().getSpellsTreeWindow()) ;
+	}
 
 	public void act(Player player, Pet pet, String action)
 	{

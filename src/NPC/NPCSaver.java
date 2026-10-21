@@ -13,6 +13,8 @@ public class NPCSaver extends NPC
 	{
 		super(NPCJobs.saver, name, pos, menus);
     }
+
+	protected void onEndInteraction() { }
 	
 	public void act(Player player, Pet pet, String action)
 	{

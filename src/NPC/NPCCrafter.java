@@ -15,6 +15,8 @@ public class NPCCrafter extends NPC
     {
         super(NPCJobs.crafter, name, pos, menus, new CraftWindow(recipes));
     }
+
+	protected void onEndInteraction() { }
 	
 	public void act(Player player, Pet pet, String action)
 	{

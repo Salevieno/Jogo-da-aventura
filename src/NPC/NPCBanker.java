@@ -15,6 +15,8 @@ public class NPCBanker extends NPC
     {
         super(NPCJobs.banker, name, pos, menus, new BankWindow());
     }
+
+	protected void onEndInteraction() { }
     
 	public void act(Player player, Pet pet, String action)
 	{

@@ -13,5 +13,7 @@ public class NPCCitizen extends NPC
         super(NPCJobs.citizen, name, pos, menus) ;
     }
 
+	protected void onEndInteraction() { }
+
 	public void act(Player player, Pet pet, String action) { }    
 }

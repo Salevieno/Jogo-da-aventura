@@ -143,18 +143,7 @@ public abstract class NPC implements Interactable
 			Game.getPlayer().switchOpenClose(window) ;
 		}
 
-        // TODO consider abstract method onEndInteraction for each NPC
-        if (this instanceof NPCMaster)
-        {
-            Game.getPlayer().switchOpenClose(Game.getPlayer().getSpellsTreeWindow()) ;
-        }
-        if (this instanceof NPCSeller)
-        {
-            if (selOption == 1)
-            {
-                Game.getPlayer().switchOpenClose(Game.getPlayer().getBag()) ;
-            }
-        }
+		onEndInteraction() ;
 	}
 		
 	public static boolean actionIsForward(String action) { return action.equals("Enter") | action.equals("LeftClick") ;}
@@ -162,6 +151,7 @@ public abstract class NPC implements Interactable
 	public static List<NPC> getAll() { return ALL ;}
 	
 	public abstract void act(Player player, Pet pet, String action) ;
+	protected abstract void onEndInteraction() ;
 
 	public void navigate(String action)
 	{
