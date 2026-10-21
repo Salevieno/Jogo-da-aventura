@@ -26,8 +26,10 @@ public class CreatureType
 	private final int id;
 	private final String name;
 	private final int level;
+	private final Aggressiveness aggressiveness ;
 	private final Dimension size;
 	private final int range;
+	private final int vision;
 	private final int step;
 	private final Elements atkElem ;
 	private final double mpDuration;
@@ -66,7 +68,7 @@ public class CreatureType
 		ATT_WINDOW = new CreatureAttributesWindow();
 	}
 
-	public CreatureType(int id, String name, int level, int range, int step, int movePatternID, Elements[] elem,
+	public CreatureType(int id, String name, int level, Aggressiveness aggressiveness, int range, int vision, int step, int movePatternID, Elements[] elem,
 			double mpDuration, double satiationDuration, double actionDuration, double stepDuration,
 			double life, double mp, double exp, double satiation, double thirst, 
 			double phyAtk, double magAtk, double phyDef, double magDef, double dex, double agi, double critAtk, double critDef,
@@ -82,9 +84,11 @@ public class CreatureType
 		this.id = id;
 		this.name = name;
 		this.level = level;
+        this.aggressiveness = aggressiveness ;
 		this.movingAni = CreatureType.MOVE_ANIMATIONS.get(id % QTD_CREATURE_TYPES_IMAGES);
 		this.size = movingAni.spriteIdle.getFrameSize();
 		this.range = range;
+		this.vision = vision;
 		this.step = step;
 		this.atkElem = elem[0];
 		this.mpDuration = mpDuration;
@@ -123,7 +127,7 @@ public class CreatureType
 		ALL.add(this);
 	}
 
-	public CreatureType(int id, String name, int level, int range, int step, int movePatternID, Elements[] elem,
+	public CreatureType(int id, String name, int level, Aggressiveness aggressiveness, int range, int vision, int step, int movePatternID, Elements[] elem,
 			double mpDuration, double satiationDuration, double actionDuration, double stepDuration,
 			double life, double mp, double exp, double satiation, double thirst, 
 			double phyAtk, double magAtk, double phyDef, double magDef, double dex, double agi, double critAtk, double critDef,
@@ -136,7 +140,7 @@ public class CreatureType
 			List<Integer> spellIDs,
 			Set<Integer> itemIDs, int gold, String hitboxType, double diffMult)
 	{
-		this(id, name, level, range, step, movePatternID, elem,
+		this(id, name, level, aggressiveness, range, vision, step, movePatternID, elem,
 			mpDuration, satiationDuration, actionDuration, stepDuration,
 			life * diffMult, mp * diffMult, exp, satiation, thirst, 
 			phyAtk * diffMult, magAtk * diffMult, phyDef * diffMult, magDef * diffMult, dex * diffMult, agi * diffMult, critAtk * diffMult, critDef * diffMult,
@@ -153,7 +157,9 @@ public class CreatureType
 	public String getName() { return name ;}
 	public Dimension getSize() { return size ;}
 	public int getLevel() { return level ;}
+    public Aggressiveness getAggressiveness() { return aggressiveness ;}
 	public int getRange() { return range ;}
+    public int getVision() { return vision ;}
 	public int getStep() { return step ;}
 	public Elements getAtkElem() { return atkElem ;}
 	public double getMpTimerDuration() { return mpDuration ;}

@@ -22,7 +22,6 @@ import components.HitboxRectangle;
 import graphics.Align;
 import graphics.Scale;
 import items.Item;
-import main.Directions;
 import main.Elements;
 import main.Game;
 import main.GamePanel;
@@ -92,6 +91,8 @@ public class Creature extends LiveBeing
 	public Point center() { return new Point((int) pos.x, (int) pos.y) ;}
 
 	public Point headPos() { return new Point((int) (pos.x), (int) (pos.y - 0.5 * size.height)) ;}
+
+    public boolean playerIsInVisionRange() { return Game.getPlayer().isAlive() && Util.dist(Game.getPlayer().getPos(), getPos()) <= type.getVision() ;}
 	
 	public void leaveBattle()
 	{
@@ -127,28 +128,15 @@ public class Creature extends LiveBeing
 	}
 	
 	private void switchDirection() { setDir(randomNewDirection(dir)) ;}
-
-	public void updatePos(Directions dir, Point2D.Double CurrentPos, int step, double dt, double moveRate, GameMap map)
+    
+	private void move(GameMap playerMap, double dt)
 	{
-		Point2D.Double newPos = MovePattern.calcNewPos(type.getMovePattern(), dir, step, dt, CurrentPos, moveRate) ;
- 
+		Point2D.Double newPos = MovePattern.calcNewPos(type.getMovePattern(), dir, step, dt, pos, movingTimer.rate()) ;
+
 		if (!Screen.getMe().posIsWithinBorders(newPos)) { return ;}
 		if (!map.groundIsWalkable(new Point((int) newPos.x, (int) newPos.y), null)) { return ;}
 
 		setPos(newPos) ;
-	
-	}
-
-	private void move(GameMap playerMap, double dt)
-	{		
-		updatePos(dir, pos, step, dt, movingTimer.rate(), playerMap) ;
-
-		if (movingTimer.hasFinished())
-		{
-			setState(LiveBeingStates.idle) ;
-			switchDirection() ;
-			idleTimer.restart();
-		}
 	}
 
     public void makeMoveSound()
@@ -171,7 +159,6 @@ public class Creature extends LiveBeing
 		
 	public void chooseFightMove(String playerMove)
 	{
-		
 		if (Game.getState().equals(GameStates.simulation))
 		{
 			int qtdAvailableMoves = canUseSpell(spells.get(0)) ? 2 : 1 ;
@@ -292,6 +279,16 @@ public class Creature extends LiveBeing
 		switch (state)
 		{
 			case idle:
+                if (Aggressiveness.semiAggressive.equals(type.getAggressiveness()) && playerIsInVisionRange() && !Game.getPlayer().isFighting() && Util.chance(0.005))
+                {
+                    Game.getPlayer().engageInFight(this) ;
+                    return ;
+                }
+                if (Aggressiveness.aggressive.equals(type.getAggressiveness()) && playerIsInVisionRange() && !Game.getPlayer().isFighting())
+                {
+                    Game.getPlayer().engageInFight(this) ;
+                    return ;
+                }
 				if (idleTimer.hasFinished())
 				{
 					setState(LiveBeingStates.moving) ;
@@ -301,12 +298,21 @@ public class Creature extends LiveBeing
 
 				return ;
 
-			case moving: move(playerMap, dt) ; return;
+			case moving:
+                move(playerMap, dt) ;
+                if (movingTimer.hasFinished())
+                {
+                    setState(LiveBeingStates.idle) ;
+                    switchDirection() ;
+                    idleTimer.restart();
+                }
+                return;
+
 			case fighting:          
                 if (!isInRange(playerPosAsDouble))
                 {
                     Point2D.Double newPos = chase(pos, playerPosAsDouble, range) ;
-                    if (playerMap.groundIsWalkable(new Point((int)newPos.x, (int)newPos.y), null))
+                    if (Screen.getMe().posIsWithinBorders(newPos) && playerMap.groundIsWalkable(new Point((int)newPos.x, (int)newPos.y), null))
                     {
                         setPos(newPos) ;
                     }
@@ -316,6 +322,7 @@ public class Creature extends LiveBeing
                     doBattleAction() ;
                 }
                 return ;
+
 			default: return ;
 		}
 	}

@@ -42,7 +42,7 @@ public class GameTimer
 	private static double timeNowInSec() { return System.nanoTime() * Math.pow(10, -9) ;}
 	
 	public void start() { initialTime = timeNowInSec() ; active = true ;}
-	public void startAtRate(double rate) { elapsedTimeAtStop = -rate * duration ; initialTime = timeNowInSec() ; active = true ;} // TODO armengue
+	public void startAtRate(double rate) { elapsedTimeAtStop = -rate * duration ; initialTime = timeNowInSec() ; active = true ;}
 	public void stop() { active = false ;}
 	public void resume() { active = hasStarted() ;}
 	public void reset() { initialTime = timeNowInSec() ; elapsedTimeAtStop = 0 ; elapsedTime = 0 ; prevCounter = 0 ;}

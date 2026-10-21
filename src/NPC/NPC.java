@@ -56,7 +56,7 @@ public abstract class NPC implements Interactable
 	protected static final Font STD_FONT = new Font(Game.getMainFontName(), Font.BOLD, 12) ;
 	protected static final Color STD_COLOR = Palette.colors[0] ;
 	protected static final Color STD_SELECTED_COLOR = Palette.colors[18] ;
-	protected static final Map<NPCJobs, List<NPCMenu>> JOB_MENUS = new HashMap<>() ; // TODO passar para o enum?
+	protected static final Map<NPCJobs, List<NPCMenu>> JOB_MENUS = new HashMap<>() ;
 	private static final List<NPC> ALL = new ArrayList<>() ;
 	
 	public NPC(NPCJobs job, String name, Point pos, List<NPCMenu> menus, Image desk, GameWindow window)
