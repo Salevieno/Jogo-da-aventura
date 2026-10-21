@@ -794,7 +794,7 @@ public class Player extends LiveBeing
 				}
 				return ;
 
-			case bag: bag.setSellingMode(false) ; switchOpenClose(bag) ; return ;			
+			case bag: switchOpenClose(bag) ; return ;			
 			case attWindow: switchOpenClose(attWindow) ; return ;
 				
 			case interact:

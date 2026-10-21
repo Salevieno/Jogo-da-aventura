@@ -13,7 +13,7 @@ import windows.ShoppingWindow;
 public class NPCSeller extends NPC
 {
     public NPCSeller(String name, Point pos, List<NPCMenu> menus, Map<Item, Integer> maxStock)
-    {// TODO corrigir npcType
+    {// TODO criar super tipo para NPC, definindo acoes de interacao, e criar subtipos para cada tipo de NPC, para definir falas
         super(NPCJobs.equipsSeller, name, pos, menus, new ShoppingWindow(maxStock)) ;
     }
 

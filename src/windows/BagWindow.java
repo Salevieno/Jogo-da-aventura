@@ -599,12 +599,11 @@ public class BagWindow extends GameWindow
 
 	protected void onClose()
     {
-    // TODO condicionar a sellingMode = true e fazer a interação com vendedor finalizada fechar a bag
-        shopBag.close() ;
-        sellingMode = false ;
-        if (sellingMode)
+        if (sellingMode && shopBag.isOpen())
         {
+            shopBag.close() ;
         }
+        sellingMode = false ;
     }
 	
 	@Override
