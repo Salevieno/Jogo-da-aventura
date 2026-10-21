@@ -23,17 +23,7 @@ import utilities.Util;
 
 public class SpecialMap extends GameMap
 {
-	
-	private static final List<Image> IMAGES = new ArrayList<>() ;
 	private static final List<SpecialMap> ALL = new ArrayList<>() ;
-	
-	static
-	{
-		for (int i = 0 ; i <= 2 - 1 ; i += 1)
-		{
-			IMAGES.add(ImageLoader.loadImage(Path.MAPS_IMG+ "MapSpecial" + String.valueOf(i) + ".png")) ;
-		}
-	}
 	
 	public SpecialMap(int id, String Name, Continents Continent, int[] Connections, Image image, Clip music, List<TreasureChest> treasureChests, List<SpriteAnimation> animations)
 	{
@@ -88,7 +78,7 @@ public class SpecialMap extends GameMap
 												Integer.parseInt(input.get(id)[9]), Integer.parseInt(input.get(id)[2])
 											} ;
 
-			Image image = SpecialMap.IMAGES.get(id) ;
+			Image image = ImageLoader.loadImage(Path.MAPS_IMG+ "MapSpecial" + String.valueOf(id) + ".png") ;
 			Clip music = GameMap.MUSIC_FOREST ;
 			
 			// adding treasure chests
@@ -119,5 +109,5 @@ public class SpecialMap extends GameMap
 	
 	public Set<Interactable> getInteractables() { return new HashSet<>(npcs) ;}
 
-	public static List<SpecialMap> getAllSpecialMaps() { return ALL ;}
+	public static List<SpecialMap> getAll() { return ALL ;}
 }

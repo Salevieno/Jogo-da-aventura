@@ -176,7 +176,6 @@ public abstract class LoadingGame
 			case 6:
                 NPC.loadJobMenus(language) ;
                 NPCData.createNPCs() ;
-				// NPC.load(language) ;
 				logInitializationTime("npc types", initialStepLoadingTime);
 				return;
 

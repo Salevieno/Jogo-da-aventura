@@ -48,19 +48,19 @@ public class FieldMap extends GameMap
 	private static final Image GRASS_IMAGE2 = ImageLoader.loadImage(Path.MAP_ELEMENTS_IMG + "MapElem8_Grass2.png") ;
 	private static final Image ROCK_IMAGE = ImageLoader.loadImage(Path.MAP_ELEMENTS_IMG + "MapElem9_Rock.png") ;
 	private static final String JSON_PATH = DADOS_PATH + "mapsField.json" ;
-	private static final List<FieldMap> ALL_FIELD_MAPS = new ArrayList<>() ;
+	private static final List<FieldMap> ALL = new ArrayList<>() ;
 
 	private FieldMap(int id, String name, Continents continent, int[] connections, Image image, Clip music, int collectibleLevel, List<NPC> npcs, List<GroundRegion> groundRegions, List<SpriteAnimation> animations)
 	{
 		super(id, name, continent, connections, image, music, groundRegions, null, npcs, animations) ;
 		this.level = collectibleLevel ;
-		ALL_FIELD_MAPS.add(this) ;
+		ALL.add(this) ;
 	}
 
 	@SuppressWarnings("unchecked")
 	public static void load()
 	{
-        if (!ALL_FIELD_MAPS.isEmpty()) { Log.warn("Trying to load field maps twice") ; return ;}
+        if (!ALL.isEmpty()) { Log.warn("Trying to load field maps twice") ; return ;}
 
 		JSONArray input = Util.readJsonArray(JSON_PATH) ;
 		FieldMap[] fieldMaps = new FieldMap[input.size()] ;
@@ -383,7 +383,7 @@ public class FieldMap extends GameMap
 		return interactables ;
 	}
 	public void setCreatures(List<Creature> newValue) {creatures = newValue ;}
-	public static List<FieldMap> getAllFieldMaps() { return ALL_FIELD_MAPS ;}
+	public static List<FieldMap> getAll() { return ALL ;}
 	
 	@Override
 	public String toString()

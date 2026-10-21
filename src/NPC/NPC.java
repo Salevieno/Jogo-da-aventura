@@ -22,11 +22,8 @@ import graphics.DrawPrimitives;
 import graphics.Scale;
 import graphics.UtilAlignment;
 import graphics2.Draw;
-import items.Item;
-import items.Recipe;
 import liveBeings.Pet;
 import liveBeings.Player;
-import liveBeings.PlayerActions;
 import main.Game;
 import main.GamePanel;
 import main.ImageLoader;
@@ -59,7 +56,7 @@ public abstract class NPC implements Interactable
 	protected static final Font STD_FONT = new Font(Game.getMainFontName(), Font.BOLD, 12) ;
 	protected static final Color STD_COLOR = Palette.colors[0] ;
 	protected static final Color STD_SELECTED_COLOR = Palette.colors[18] ;
-	protected static final Map<NPCJobs, List<NPCMenu>> JOB_MENUS = new HashMap<>() ;
+	protected static final Map<NPCJobs, List<NPCMenu>> JOB_MENUS = new HashMap<>() ; // TODO passar para o enum?
 	private static final List<NPC> ALL = new ArrayList<>() ;
 	
 	public NPC(NPCJobs job, String name, Point pos, List<NPCMenu> menus, Image desk, GameWindow window)
@@ -185,24 +182,7 @@ public abstract class NPC implements Interactable
 	}
 
     private void updateSelectedOption(int index) { this.selOption = index ;}
-	
-	public void switchOption(String action)
-	{
-		if (menus.size() <= currentMenuID) { Log.warn("Trying to access position " + currentMenuID + " of menus with size " + menus.size() + " for npc " + name) ; return ;}
-		if (menus.get(currentMenuID).getOptions() == null) { Log.warn("Trying to access null options for menu " + currentMenuID + " and NPC " + name) ; return ;}
-		if (menus.get(currentMenuID).getOptions().isEmpty()) { Log.warn("Trying to access empty options for menu " + currentMenuID + " and NPC " + name) ; return ;}
-		if (menus.get(currentMenuID).getOptions().size() <= selOption) { Log.warn("Trying to access option out of bounds for menu " + currentMenuID + " and NPC " + name + "! Sel option id " + selOption + " and options size " + menus.get(currentMenuID).getOptions().size()) ; return ;}
-		
-		if (action.equals(PlayerActions.moveDown.getKey()) & selOption <= menus.get(currentMenuID).getOptions().size() - 2)
-		{
-			selOption += 1 ;
-		}
-		if (action.equals(PlayerActions.moveUp.getKey()) & 1 <= selOption)
-		{
-			selOption += -1 ;
-		}
-	}
-	
+
 	public void displaySpeech(Point pos)
 	{
 		if (menus == null) { Log.warn("Trying to display npc null speech") ; return ;}
@@ -255,78 +235,6 @@ public abstract class NPC implements Interactable
 		
 	}
 
-	private static NPC create(NPCJobs job, String name, String info, List<NPCMenu> menus)
-	{
-		switch (job) {
-			case citizen:
-				return new NPCCitizen(name, new Point(0, 0), menus) ;		
-		
-			case crafter:
-				return new NPCCrafter(name, new Point(0, 0), menus, Recipe.getAll().subList(58, Recipe.getAll().size())) ;
-		
-			case alchemist:
-				return new NPCCrafter(name, new Point(0, 0), menus, Recipe.getAll().subList(0, 40)) ;
-
-			case woodcrafter:
-				return new NPCCrafter(name, new Point(0, 0), menus, Recipe.getAll().subList(40, 58)) ;
-
-			case banker:
-				return new NPCBanker(name, new Point(0, 0), menus) ;
-
-			case doctor:
-				return new NPCDoctor(name, new Point(0, 0), menus) ;
-
-			case elemental:
-				return new NPCElemental(name, new Point(0, 0), menus) ;
-
-			case equipsSeller:
-				int[] itemIDs = new int[] {300, 305, 307, 309, 315, 322, 326, 328, 332, 336, 340, 344} ;
-                Map<Item, Integer> maxStock = new HashMap<>() ;
-                for (int itemID : itemIDs)
-                {
-                    maxStock.put(Item.getAllItems().get(itemID), 1) ; // TODO  + 200 * cityID
-                }
-				return new NPCSeller(name, new Point(0, 0), menus, maxStock) ;
-		
-			case itemsSeller:
-				itemIDs = new int[] {1329, 0, 1, 4, 5, 121, 122, 125, 130, 1301, 1305, 1702, 1708, 1710, 1713} ;
-				int[] qtdInStock = new int[] {20, 12, 12, 4, 4, 2, 6, 4, 2, 8, 1, 1, 2, 10, 13} ;
-                maxStock = new HashMap<>() ;
-                int i = 0 ;
-                for (int itemID : itemIDs)
-                {
-                    maxStock.put(Item.getAllItems().get(itemID), qtdInStock[i]) ;
-                    i += 1 ;
-                }
-				return new NPCSeller(name, new Point(0, 0), menus, maxStock) ;
-
-			case smuggleSeller:
-				itemIDs = new int[] {400, 402, 403, 406, 407, 410, 413, 415, 420, 421, 424, 426, 429, 430, 432, 436, 440} ;
-                maxStock = new HashMap<>() ;
-                for (int itemID : itemIDs)
-                {
-                    maxStock.put(Item.getAllItems().get(itemID), 1) ;
-                }
-				return new NPCSeller(name, new Point(0, 0), menus, maxStock) ;
-			
-			case master:
-				return new NPCMaster(name, new Point(0, 0), menus) ;
-
-			case forger:
-				return new NPCForger(name, new Point(0, 0), menus) ;
-
-			case questExp: case questItem:
-				return new NPCQuest(name, new Point(0, 0), menus, 0) ;
-
-			case saver:
-				return new NPCSaver(name, new Point(0, 0), menus) ;
-
-			default:
-				Log.warn("Criando NPC sem job definido") ;
-				return null ;
-		}
-	}
-
 	@SuppressWarnings("unchecked")
 	public static void loadJobMenus(String language)
 	{
@@ -346,31 +254,6 @@ public abstract class NPC implements Interactable
             JOB_MENUS.put(NPCJobs.getByID(jobId), menus) ;
         }
     }
-
-	@SuppressWarnings("unchecked")
-	public static void load(String language)
-	{
-        if (!ALL.isEmpty()) { Log.warn("Trying to load NPCs twice") ; return ;}
-
-		List<JSONObject> npcList = (List<JSONObject>) Util.readJsonArray(Path.DADOS + language + "/NPCMenus.json") ;
-		List<NPC> npcs = new ArrayList<>() ;
-
-		for (JSONObject npcData : npcList)
-		{
-			String name = (String) npcData.get("nome");
-			String info = (String) npcData.get("info");
-			int jobId = ((Long) npcData.get("job")).intValue();
-			NPCJobs job = NPCJobs.getByID(jobId);
-
-            List<NPCMenu> menus = JOB_MENUS.getOrDefault(job, new ArrayList<>()) ;
-            if (menus.isEmpty())
-            {
-                Log.error("No menus found for job " + job + " while loading NPC " + name) ;
-            }
-			NPC newNPC = NPC.create(job, name, info, menus) ;
-			npcs.add(newNPC);
-		}
-	}
 
     private static GameTextButton createMenuButton(NPC npc, NPCMenu menu, int optionIndex, int destinationMenu)
     {
@@ -430,6 +313,4 @@ public abstract class NPC implements Interactable
 	{
 		return "NPC [id=" + id + ", job=" + job + "]";
 	}
-
-	
 }

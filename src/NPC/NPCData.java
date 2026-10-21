@@ -9,35 +9,10 @@ import items.Recipe;
 import main.Log;
 
 public abstract class NPCData
-{
-    
+{    
     public static void createNPCs()
     {
         if (!NPC.getAll().isEmpty()) { Log.warn("Trying to create NPCs twice") ; return ;}
-
-        int[] itemIDs = new int[] {300, 305, 307, 309, 315, 322, 326, 328, 332, 336, 340, 344} ;
-        Map<Item, Integer> equipsStock = new HashMap<>() ;
-        for (int itemID : itemIDs)
-        {
-            equipsStock.put(Item.getAllItems().get(itemID), 1) ; // TODO  + 200 * cityID
-        }
-
-        itemIDs = new int[] {1329, 0, 1, 4, 5, 121, 122, 125, 130, 1301, 1305, 1702, 1708, 1710, 1713} ;
-        int[] qtdInStock = new int[] {20, 12, 12, 4, 4, 2, 6, 4, 2, 8, 1, 1, 2, 10, 13} ;
-        Map<Item, Integer> itemsStock = new HashMap<>() ;
-        int j = 0 ;
-        for (int itemID : itemIDs)
-        {
-            itemsStock.put(Item.getAllItems().get(itemID), qtdInStock[j]) ;
-            j += 1 ;
-        }
-
-        itemIDs = new int[] {400, 402, 403, 406, 407, 410, 413, 415, 420, 421, 424, 426, 429, 430, 432, 436, 440} ;
-        Map<Item, Integer> smuggleStock = new HashMap<>() ;
-        for (int itemID : itemIDs)
-        {
-            smuggleStock.put(Item.getAllItems().get(itemID), 1) ;
-        }
 
         // Creating city NPCs
         for (int i = 0 ; i <= 5 - 1 ; i += 1) // number cities
@@ -51,9 +26,9 @@ public abstract class NPCData
             new NPCCrafter(NPCJobs.crafter.toString(), new Point(0, 0), NPC.getJobMenus().get(NPCJobs.crafter), Recipe.getAll().subList(58, Recipe.getAll().size())) ;
             new NPCDoctor(NPCJobs.doctor.toString(), new Point(0, 0), NPC.getJobMenus().get(NPCJobs.doctor)) ;
             new NPCElemental(NPCJobs.elemental.toString(), new Point(0, 0), NPC.getJobMenus().get(NPCJobs.elemental)) ;
-            new NPCSeller(NPCJobs.equipsSeller.toString(), new Point(0, 0), NPC.getJobMenus().get(NPCJobs.equipsSeller), equipsStock) ;
-            new NPCSeller(NPCJobs.itemsSeller.toString(), new Point(0, 0), NPC.getJobMenus().get(NPCJobs.itemsSeller), itemsStock) ;
-            new NPCSeller(NPCJobs.smuggleSeller.toString(), new Point(0, 0), NPC.getJobMenus().get(NPCJobs.smuggleSeller), smuggleStock) ;
+            new NPCSeller(NPCJobs.equipsSeller.toString(), new Point(0, 0), NPC.getJobMenus().get(NPCJobs.equipsSeller), getEquipsStock(i)) ;
+            new NPCSeller(NPCJobs.itemsSeller.toString(), new Point(0, 0), NPC.getJobMenus().get(NPCJobs.itemsSeller), getItemsStock(i)) ;
+            new NPCSeller(NPCJobs.smuggleSeller.toString(), new Point(0, 0), NPC.getJobMenus().get(NPCJobs.smuggleSeller), getSmuggleStock(i)) ;
             new NPCMaster(NPCJobs.master.toString(), new Point(0, 0), NPC.getJobMenus().get(NPCJobs.master)) ;
             new NPCCrafter(NPCJobs.woodcrafter.toString(), new Point(0, 0), NPC.getJobMenus().get(NPCJobs.woodcrafter), Recipe.getAll().subList(40, 58)) ;
             new NPCForger(NPCJobs.forger.toString(), new Point(0, 0), NPC.getJobMenus().get(NPCJobs.forger)) ;
@@ -65,5 +40,68 @@ public abstract class NPCData
         {
             new NPCQuest(NPCJobs.questItem.toString(), new Point(0, 0), NPC.getJobMenus().get(NPCJobs.questItem), i + 5) ;
         }
+    }
+    private static Map<Item, Integer> getEquipsStock(int cityID)
+    {
+        Map<Item, Integer> equipsStock = new HashMap<>() ;
+        equipsStock.put(Item.getAllItems().get(300 + 200 * cityID), 1) ;
+        equipsStock.put(Item.getAllItems().get(305 + 200 * cityID), 1) ;
+        equipsStock.put(Item.getAllItems().get(307 + 200 * cityID), 1) ;
+        equipsStock.put(Item.getAllItems().get(309 + 200 * cityID), 1) ;
+        equipsStock.put(Item.getAllItems().get(315 + 200 * cityID), 1) ;
+        equipsStock.put(Item.getAllItems().get(322 + 200 * cityID), 1) ;
+        equipsStock.put(Item.getAllItems().get(326 + 200 * cityID), 1) ;
+        equipsStock.put(Item.getAllItems().get(328 + 200 * cityID), 1) ;
+        equipsStock.put(Item.getAllItems().get(332 + 200 * cityID), 1) ;
+        equipsStock.put(Item.getAllItems().get(336 + 200 * cityID), 1) ;
+        equipsStock.put(Item.getAllItems().get(340 + 200 * cityID), 1) ;
+        equipsStock.put(Item.getAllItems().get(344 + 200 * cityID), 1) ;
+
+        return equipsStock ;
+    }
+
+    private static Map<Item, Integer> getItemsStock(int cityID)
+    {
+        Map<Item, Integer> itemsStock = new HashMap<>() ;
+        itemsStock.put(Item.getAllItems().get(0), 12) ;
+        itemsStock.put(Item.getAllItems().get(1), 12) ;
+        itemsStock.put(Item.getAllItems().get(4), 4) ;
+        itemsStock.put(Item.getAllItems().get(5), 4) ;
+        itemsStock.put(Item.getAllItems().get(121), 2) ;
+        itemsStock.put(Item.getAllItems().get(122), 6) ;
+        itemsStock.put(Item.getAllItems().get(125), 4) ;
+        itemsStock.put(Item.getAllItems().get(130), 2) ;
+        itemsStock.put(Item.getAllItems().get(1301), 8) ;
+        itemsStock.put(Item.getAllItems().get(1305), 1) ;
+        itemsStock.put(Item.getAllItems().get(1702), 1) ;
+        itemsStock.put(Item.getAllItems().get(1708), 2) ;
+        itemsStock.put(Item.getAllItems().get(1710), 10) ;
+        itemsStock.put(Item.getAllItems().get(1713), 13) ;
+
+        return itemsStock ;
+    }
+
+    private static Map<Item, Integer> getSmuggleStock(int cityID)
+    {
+        Map<Item, Integer> smuggleStock = new HashMap<>() ;
+        smuggleStock.put(Item.getAllItems().get(400), 1) ;
+        smuggleStock.put(Item.getAllItems().get(402), 1) ;
+        smuggleStock.put(Item.getAllItems().get(403), 1) ;
+        smuggleStock.put(Item.getAllItems().get(406), 1) ;
+        smuggleStock.put(Item.getAllItems().get(407), 1) ;
+        smuggleStock.put(Item.getAllItems().get(410), 1) ;
+        smuggleStock.put(Item.getAllItems().get(413), 1) ;
+        smuggleStock.put(Item.getAllItems().get(415), 1) ;
+        smuggleStock.put(Item.getAllItems().get(420), 1) ;
+        smuggleStock.put(Item.getAllItems().get(421), 1) ;
+        smuggleStock.put(Item.getAllItems().get(424), 1) ;
+        smuggleStock.put(Item.getAllItems().get(426), 1) ;
+        smuggleStock.put(Item.getAllItems().get(429), 1) ;
+        smuggleStock.put(Item.getAllItems().get(430), 1) ;
+        smuggleStock.put(Item.getAllItems().get(432), 1) ;
+        smuggleStock.put(Item.getAllItems().get(436), 1) ;
+        smuggleStock.put(Item.getAllItems().get(440), 1) ;
+
+        return smuggleStock ;
     }
 }

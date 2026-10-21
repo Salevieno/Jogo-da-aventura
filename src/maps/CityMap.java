@@ -88,7 +88,6 @@ public class CityMap extends GameMap
 			List<Building> buildings = loadBuildings(mapData) ;
 			List<NPC> npcs = loadNPCs(mapData) ;
 			Point signPos = Screen.getMe().getPointWithinBorders((Double) ((JSONObject) mapData.get("signPos")).get("x"), (Double) ((JSONObject) mapData.get("signPos")).get("y")) ;
-			// Point forgePos =Screen.getMe().getPointWithinBorders((Double) ((JSONObject) mapData.get("forgePos")).get("x"), (Double) ((JSONObject) mapData.get("forgePos")).get("y")) ;
 			List<GroundRegion> groundRegions = groundRegionsFromJson((JSONObject) mapData.get("GroundRegions")) ;
 			List<SpriteAnimation> animations = new ArrayList<>() ;
 			if ("City of the archers".equals(name))
