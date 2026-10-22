@@ -37,14 +37,21 @@ public class Spell
 	private final int nerfID;
 	private final AttackModifiers atkMod ;
 	private final Map<Attributes, AttMod> attMods ;
-	// private final Map<Attributes, Double> attModPerc ;
-	// private final Map<Attributes, Double> attModValue ;
 	private final Elements elem ;
 	
 	private static final List<Spell> ALL = new ArrayList<>() ;
 
+    // TODO A aplicação de efeitos de status em ataques mágicos está incompleta e usa valores incorretos.
+    // O cálculo mágico passa a Battle.calcStatus apenas spell.getSpecialAtt() (LiveBeing.java), sem as chances-base do atacante. Além disso, Spell.getSpecialAtt multiplica o valor por nível duas vezes; se houver modificador configurado, o crescimento fica quadrático. Na aplicação, LiveBeing.inflictStatus atribui intensidade zero e usa a duração de stun para todos os status. Isso compromete especialmente sangramento e veneno, cujos efeitos dependem de intensidade.
+
+    // TODO Os nerfs definidos não são aplicados por nenhuma magia utilizável atualmente. Verificar tb a desativação
+    // A lista de nerfs tem efeitos configurados em BuffData.java, mas o único spell com nerfID não negativo que encontrei é o ID 147, definido como passive em SpellData.java. Magias passivas não entram no caminho normal de uso. Portanto, a infraestrutura de nerfs existe, mas não encontrei um uso ativo no conjunto atual. Ao conectar nerfs a magias ofensivas, também convém aplicar o efeito somente se o ataque acertar: hoje o efeito de magia ofensiva é aplicado antes de o combate descartar resultados de erro/bloqueio.
+
+    // TODO A remoção de buff depende de um novo sorteio.
+    // Buff.apply sorteia a chance tanto ao aplicar quanto ao remover. Com chances abaixo de 100%, o buff pode ser aplicado e depois não ser removido, ou ser removido sem ter sido aplicado. As definições atuais usam chance 100%, então é um risco latente para novas configurações; o próprio arquivo sinaliza a necessidade de remover o valor exato aplicado.
+
 	
-	
+	// optionalTODO separar spell type de spell
 	protected Spell(int id, String name, String info, String description, SpellTypes type, int cooldown, int duration,
 			Elements elem, String imagePath, int maxLevel, int mpCost, Map<Integer, Integer> preRequisites,
 			int buffID, int nerfID, Map<Attributes, AttMod> attMods)
@@ -60,10 +67,7 @@ public class Spell
 		this.buffID = buffID;
 		this.nerfID = nerfID;
 		this.attMods = attMods ;
-		// this.attModPerc = attModPerc ;
-		// this.attModValue = attModValue ;
 		this.atkMod = new AttackModifiers() ;
-		// this.atkMod = new AttackModifiers(atkMod, defMod, dexMod, agiMod, atkCritMod, defCritMod, stunMod, blockMod, bloodMod, poisonMod, silenceMod) ;
 		this.isActive = false;
 		this.cooldownCounter = new GameTimer(cooldown / 80.0) ;
 		this.effectCounter = new GameTimer(duration / 1.0) ;
@@ -78,7 +82,7 @@ public class Spell
 		this.id = spell.id ;
 		this.name = spell.name;
 		this.image = spell.image;
-		this.level = spell.level;
+		this.level = 0;
 		this.maxLevel = spell.maxLevel;
 		this.mpCost = spell.mpCost;
 		this.type = spell.type;
@@ -88,8 +92,8 @@ public class Spell
 		this.attMods = spell.getAttMods() ;
 		this.atkMod = new AttackModifiers(spell.atkMod.getAtkMod(), spell.atkMod.getDefMod(), spell.atkMod.getDexMod(), spell.atkMod.getAgiMod(), spell.atkMod.getAtkCritMod(), spell.atkMod.getDefCritMod(), spell.atkMod.getStunMod(), spell.atkMod.getBlockMod(), spell.atkMod.getBloodMod(), spell.atkMod.getPoisonMod(), spell.atkMod.getSilenceMod()) ;
 		this.isActive = false;
-		this.cooldownCounter = new GameTimer(spell.cooldownCounter.getDuration() / 80.0) ;
-		this.effectCounter = new GameTimer(spell.effectCounter.getDuration() / 1.0) ;
+		this.cooldownCounter = new GameTimer(spell.cooldownCounter.getDuration()) ;
+		this.effectCounter = new GameTimer(spell.effectCounter.getDuration()) ;
 		this.elem = spell.elem;
 		this.effect = spell.effect;
 		this.description = spell.description;
@@ -221,7 +225,7 @@ public class Spell
 		GameTimer cooldownCounter = GameTimer.fromJson(cooldownData);
 		GameTimer effectCounter = GameTimer.fromJson(effectData);
 
-		Spell spell = ALL.get(id) ;
+		Spell spell = new Spell(ALL.get(id)) ;
 		spell.level = level;
 		spell.isActive = isActive;
 		spell.mpCost = mpCost ;

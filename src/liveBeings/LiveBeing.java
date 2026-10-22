@@ -661,16 +661,7 @@ public abstract class LiveBeing implements Drawable
 		
 		return true ;
 	}
-	public boolean canUseSpell(Spell spell)
-	{
-
-		if (isSilent()) { return false ;}
-		if (!spell.isReady()) { return false ;}
-		if (!hasEnoughMP(spell)) { return false ;}
-		
-		return 1 <= spell.getLevel() ;
-		
-	}
+	public boolean canUseSpell(Spell spell) { return !isSilent() && spell.isReady() && hasEnoughMP(spell) && 1 <= spell.getLevel() ;}
 	public boolean usedPhysicalAtk() {return BATTLE_KEYS[0].equals(currentAction) ;}
 	public boolean usedDef() {return BATTLE_KEYS[1].equals(currentAction) ;}
 	public boolean actionIsArrowAtk()

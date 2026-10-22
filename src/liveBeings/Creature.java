@@ -194,6 +194,7 @@ public class Creature extends LiveBeing
 			{
 				int spellID = Player.SPELL_KEYS.indexOf(currentAction) ;
 				Spell spell = getActiveSpells().get(spellID) ;
+		        if (spell == null) { Log.error(name + " tentando usar magia nula") ;}
 				if (canUseSpell(spell))
 				{
 					return useSpell(spell, receiver);
@@ -380,19 +381,20 @@ public class Creature extends LiveBeing
 	
 	public AtkResults useSpell(Spell spell, LiveBeing receiver)
 	{
-		if (spell == null) { return null ;}
-		if (receiver == null) { return null ;}
-		if (!hasEnoughMP(spell)) { return new AtkResults() ;}
+		if (receiver == null) { Log.warn(name + " tentando usar magia em ninguém") ;}
+
+		Log.debug("using spell: " + spell.getName()) ;
+		spell.getCooldownCounter().start() ;
 
 		BufferedTextAnimation.start(new Point((int) pos.x, (int) (pos.y - size.height - 10)), spell.getName(), Palette.colors[5]) ;
-		PA.getMp().decTotalValue(spell.getMpCost()) ;
+		spell.activate() ;
+        PA.getMp().decTotalValue(spell.getMpCost()) ;
 		switch (spell.getType())
 		{
 			case support : useSupportSpell(spell, receiver) ; return new AtkResults(AtkTypes.magical) ;
 			case offensive : return useOffensiveSpell(spell, receiver) ;
 			default : return new AtkResults(AtkTypes.magical) ;
 		}
-		
 	}
 	
 	public void displayName(Point pos, Align alignment, Color color)

@@ -232,7 +232,7 @@ public class Player extends LiveBeing
 		{
     		int spellID = CUM_QTD_SPELLS_PER_JOB[job] + i ;
     		
-			spells.add(Spell.getAll().get(spellID)) ;
+			spells.add(new Spell(Spell.getAll().get(spellID))) ;
 		}
     	
 		spells.get(0).incLevel(1) ;
@@ -318,7 +318,8 @@ public class Player extends LiveBeing
 	{
 		int firstSpellID = spells.size() + CUM_QTD_SPELLS_PER_JOB[job] ;
 		firstSpellID += proJob == 1 ? 0 : 10 ;
-		spells.addAll(Spell.getAll().subList(firstSpellID - 1, firstSpellID + 10)) ;
+        List<Spell> spellsToAdd = Spell.getAll().subList(firstSpellID - 1, firstSpellID + 10) ;
+        spellsToAdd.forEach(spell -> spells.add(new Spell(spell))) ;
 	}
 	public void learnSpell(Spell spell)
 	{
@@ -1156,6 +1157,7 @@ public class Player extends LiveBeing
 		BufferedTextAnimation.start(new Point((int) pos.x, (int) (pos.y - size.height - 10)), spell.getName(), Palette.colors[5]) ;
 		spell.activate() ;
 		PA.getMp().decTotalValue(spell.getMpCost()) ;
+
 		if (job == 1 & 1 <= spells.get(8).getLevel())
 		{
 			useAutoSpell(true, spells.get(8)) ;
