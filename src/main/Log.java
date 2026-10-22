@@ -12,7 +12,7 @@ public abstract class Log
     public static void debug(String message)
     {
         if (!Game.DEBUG_MODE) { return ;}
-        System.out.println(WHITE + "Debug: " + message + RESET);
+        System.out.println(WHITE +message + RESET);
     }
 
     public static void info(String message)

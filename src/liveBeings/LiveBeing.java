@@ -162,10 +162,13 @@ public abstract class LiveBeing implements Drawable
 		double defAgi = receiver.getBA().getAgi().totalModified(spell.getAttMod(Attributes.agi)) ;		
 		double atkCrit = BA.getCritAtk().totalModified(spell.getAttMod(Attributes.critAtk)) ;
 		double defCrit = receiver.getBA().getCritDef().totalModified(spell.getAttMod(Attributes.critDef)) ;
-		double receiverElemMod = 1 ;
+		double receiverElemMod = BA.getElemResistanceMult().get(receiver.defElems()[0]) ;
+
+        Elements[] atkElems = atkElems() ;
+        atkElems[0] = spell.getElem() ;
 
 		AtkEffects effect = Battle.calcEffect(atkDex, defAgi, atkCrit, defCrit, receiver.getBA().getBlock().totalDefChance()) ;
-		int damage = Battle.calcDamage(effect, basicAtk, basicDef, atkElems(), receiver.defElems(), receiverElemMod) ;
+		int damage = Battle.calcDamage(effect, basicAtk, basicDef, atkElems, receiver.defElems(), receiverElemMod) ;
 		Map<Attributes, Double> inflictedStatus = Battle.calcStatus(spell.getSpecialAtt(), receiver.getBA().baseDefChances(), BA.baseDurations()) ;				
 		
 		spell.applyBuffs(true, this) ;
@@ -259,7 +262,7 @@ public abstract class LiveBeing implements Drawable
 	public void moveIfWalkable(Point2D.Double dist)
 	{
 		Point2D.Double newPos = new Point2D.Double(pos.x + dist.x, pos.y + dist.y) ;
-		Elements superElem = this instanceof Player ? ((Player) this).getSuperElem() : null ;
+		Elements superElem = this instanceof Player ? ((Player) this).getSuperElem() : Elements.neutral ;
 
 		if (pathIsWalkable(pos, newPos, superElem))
 		{

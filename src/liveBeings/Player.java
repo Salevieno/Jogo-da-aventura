@@ -173,6 +173,7 @@ public class Player extends LiveBeing
 		this.hearingRange = PlayerData.getHearingRange().get(job) ;
 		this.step = PlayerData.getStep().get(job);
 	    this.atkElem = Elements.neutral ;
+        this.superElem = Elements.neutral ;
         this.attributeBar = new AttributeBar(Game.getSettings().getAttDisplay(), Screen.getMe().pos(0.01, 0.02)) ;
 		// optionalTODO - passar counters para dentro dos atributos com counter increment e counter deplete
 		this.satiationCounter = new GameTimer(PlayerData.getSatiationcounterduration().get(job)) ;
@@ -218,8 +219,7 @@ public class Player extends LiveBeing
 	    this.npcInContact = null ;
 	    this.currentCollectible = null ;
 	    this.currentChest = null ;
-        System.out.println("Player " + name + " created with job " + PlayerJobs.getJobs()[job] + " and sex " + sex + " and spells " + spells.stream().map(spell -> spell.getName()).collect(Collectors.joining(", "))) ;
-	}
+    }
 	
 	public static List<Spell> jobSpells(int job)
 	{
@@ -356,8 +356,8 @@ public class Player extends LiveBeing
 	}
 	public boolean hasWindowOpen() { return focusWindow != null && focusWindow.isOpen() ;}
 
-	public Elements[] atkElems() { return new Elements[] {atkElem, equips[0] != null ? equips[0].getElem() : null, superElem} ;}
-	public Elements[] defElems() { return new Elements[] {equips[1] != null ? equips[1].getElem() : null, equips[2] != null ? equips[2].getElem() : null} ;}
+	public Elements[] atkElems() { return new Elements[] {atkElem, equips[0] != null ? equips[0].getElem() : Elements.neutral, superElem} ;}
+	public Elements[] defElems() { return new Elements[] {equips[1] != null ? equips[1].getElem() : Elements.neutral, equips[2] != null ? equips[2].getElem() : Elements.neutral} ;}
 	public void updateSuperElem()
 	{
 		superElem = hasSuperElement() ? equips[0].getElem() : Elements.neutral ;
@@ -898,7 +898,7 @@ public class Player extends LiveBeing
 				}
 				else
 				{
-					Log.warn(name + " trying to use spell. But no can use, baby!") ;		
+					Log.debug(name + " trying to use spell" + spell.getName() + ". But no can use, baby!") ;		
 					return new AtkResults();
 				}				
 			}
@@ -916,10 +916,9 @@ public class Player extends LiveBeing
 	{
 		AtkResults atkResults = calcAtkResults(atkType, receiver) ;		
 		
-		Log.debug(name + " performed " + atkType + " on " + receiver.getName() +
-							"\n with effect " + atkResults.getEffect() +
-							"\n and damage " + atkResults.getDamage() +
-							"\n and status " + atkResults.getStatus()) ;
+		Log.debug(  "\n with effect " + atkResults.getEffect() +
+                    "\n and damage " + atkResults.getDamage() +
+                    "\n and status " + atkResults.getStatus()) ;
 							
 		checkSpendArrow() ;
 		
@@ -958,7 +957,7 @@ public class Player extends LiveBeing
 		{
 			EvolutionSimulation.updateBattleStats(this, opponent, atkResults) ;
 		}
-		Log.debug("=======================================================") ;
+		Log.debug("=======================================================\n") ;
 	}
 
 	public void act(Pet pet, Point mousePos)
@@ -1148,7 +1147,8 @@ public class Player extends LiveBeing
 	public AtkResults useSpell(Spell spell, LiveBeing receiver)
 	{
 		if (!canUseSpell(spell)) { return null ;}
-		
+
+		Log.debug("using spell: " + spell.getName()) ;
 		spell.getCooldownCounter().start() ;
 		trainOffensive(new AtkResults(AtkTypes.magical)) ;
 		stats.incNumberMagAtk() ;

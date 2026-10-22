@@ -12,6 +12,7 @@ import liveBeings.Player;
 import main.Elements;
 import main.Game;
 import main.GameStates;
+import main.Log;
 import simulations.EvolutionSimulation;
 import spells.Spell;
 import utilities.Util;
@@ -32,7 +33,7 @@ public abstract class Battle
 
 	private static boolean criticalAtk(double critAtk, double critDef) {return Util.chance(critAtk - critDef) ;}
 		
-	private static double calcElemMult(Elements atk, Elements weapon, Elements armor, Elements shield, Elements superElem)
+	private static double calcElemMult(Elements atk, Elements weapon, Elements superElem, Elements armor, Elements shield)
 	{
 		double mult = 1 ;
 		mult *= atk != null && armor != null ? atk.getMultToElem(armor) : 1 ;
@@ -41,6 +42,7 @@ public abstract class Battle
 		mult *= weapon != null && shield != null ? weapon.getMultToElem(shield) : 1 ;
 		mult *= superElem != null && armor != null ? superElem.getMultToElem(armor) : 1 ;
 		mult *= superElem != null && shield != null ? superElem.getMultToElem(shield) : 1 ;
+        mult = Math.sqrt(mult) ;
 		return mult ;
 	}
 
@@ -99,7 +101,8 @@ public abstract class Battle
 		};
 		
 		double randomMult = Util.randomMult(randomAmp) ;
-		double elemMult = calcElemMult(atkElems[0], atkElems[1], defElems[0], defElems[0], atkElems[2]) ;
+		double elemMult = calcElemMult(atkElems[0], atkElems[1], atkElems[2], defElems[0], defElems[1]) ;
+        Log.debug("Elem Mult: " + elemMult + ". " + atkElems[0] + " | " + atkElems[1] + " & super " + atkElems[2] + " vs " + defElems[0] + " | " + defElems[1]) ;
 		return (int) Util.round(randomMult * elemMult * elemMod * baseDamage, 0) ;
 	}
 

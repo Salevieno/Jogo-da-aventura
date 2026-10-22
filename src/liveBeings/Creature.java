@@ -218,10 +218,9 @@ public class Creature extends LiveBeing
 	{
 		AtkResults atkResults = calcAtkResults(atkType, receiver) ;
 
-		Log.debug(name + " performed " + atkType + " on " + receiver.getName() +
-							"\n with effect " + atkResults.getEffect() +
-							"\n and damage " + atkResults.getDamage() +
-							"\n and status " + atkResults.getStatus()) ;
+		Log.debug(  "\n with effect " + atkResults.getEffect() +
+                    "\n and damage " + atkResults.getDamage() +
+                    "\n and status " + atkResults.getStatus()) ;
 
 		AtkEffects effect = atkResults.getEffect() ;
 		receiver.displayDamageTaken(atkResults) ;
@@ -268,7 +267,7 @@ public class Creature extends LiveBeing
 		{
 			EvolutionSimulation.updateBattleStats(this, creatureTarget, atkResults) ;
 		}
-		Log.debug("=======================================================") ;
+		Log.debug("=======================================================\n") ;
 	}
 	
     public void restartIdleCounter() { idleTimer.restartAtRate(Math.random()) ;}

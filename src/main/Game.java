@@ -97,7 +97,7 @@ public class Game
 		this.settings = new Settings(true, true, false, 1, 0) ;
 		this.difficultLevel = 0.7;
 		this.saveSlotInUse = -1;
-		this.state = GameStates.opening;
+		this.state = GameStates.loading;
 		this.dayTimer = new GameTimer(DAY_DURATION);
 		this.dt = System.nanoTime() ;
 	}
@@ -105,7 +105,7 @@ public class Game
 	protected static void create()
 	{
 		game = new Game() ;
-		game.player = new Player("", "", 0);
+		game.player = new Player("Player", "", 1);
 		game.player.setPos(Screen.getMe().getCenterAsDouble());
 	}
 
