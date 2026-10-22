@@ -42,7 +42,7 @@ public class Spell
 	private static final List<Spell> ALL = new ArrayList<>() ;
 
     // TODO Os nerfs definidos não são aplicados por nenhuma magia utilizável atualmente. Verificar tb a desativação
-    // A lista de nerfs tem efeitos configurados em BuffData.java, mas o único spell com nerfID não negativo que encontrei é o ID 147, definido como passive em SpellData.java. Magias passivas não entram no caminho normal de uso. Portanto, a infraestrutura de nerfs existe, mas não encontrei um uso ativo no conjunto atual. Ao conectar nerfs a magias ofensivas, também convém aplicar o efeito somente se o ataque acertar: hoje o efeito de magia ofensiva é aplicado antes de o combate descartar resultados de erro/bloqueio.
+    // A lista de nerfs tem efeitos configurados em BuffData.java. Magias passivas não entram no caminho normal de uso. Portanto, a infraestrutura de nerfs existe, mas não encontrei um uso ativo no conjunto atual. Ao conectar nerfs a magias ofensivas, também convém aplicar o efeito somente se o ataque acertar: hoje o efeito de magia ofensiva é aplicado antes de o combate descartar resultados de erro/bloqueio.
 
     // TODO A remoção de buff depende de um novo sorteio.
     // Buff.apply sorteia a chance tanto ao aplicar quanto ao remover. Com chances abaixo de 100%, o buff pode ser aplicado e depois não ser removido, ou ser removido sem ter sido aplicado. As definições atuais usam chance 100%, então é um risco latente para novas configurações; o próprio arquivo sinaliza a necessidade de remover o valor exato aplicado.
@@ -171,10 +171,12 @@ public class Spell
 
 	public void applyNerfs(boolean activate, LiveBeing receiver)
 	{
+        System.out.println(activate ? "Applying nerf" : "Removing nerf");
 		if (nerfID < 0 || Buff.getAllNerfs().size() <= nerfID) { return ;}
 
 		int mult = activate ? -1 : 1 ;		
 		Buff.getAllNerfs().get(nerfID).apply(mult, level, receiver) ;
+        System.out.println(receiver.getName() + "phy def bonus after nerf: " + receiver.getBA().getPhyDef().getBonus());
 	}
 
 	public static void create(String language)

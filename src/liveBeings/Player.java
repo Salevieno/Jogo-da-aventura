@@ -196,7 +196,7 @@ public class Player extends LiveBeing
 		this.pauseWindow = new PauseWindow();
 		this.equips = new Equip[4] ;
 		this.equippedArrow = null ;
-		this.spellPoints = 10 ;
+		this.spellPoints = 0 ;
         this.expToGain = 0 ;
     	
 		this.collectLevel = new ArrayList<>(List.of(0.0, 0.0, 0.0));

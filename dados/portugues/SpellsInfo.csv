@@ -133,3 +133,41 @@ ID,nome,descricao,efeito
 131,Selvageria,Descrição.,Efeito.
 132,Fúria,Descrição.,Ganha um bônus de ataque físico por um curto período após ser atacado.
 133,Empurrãozinho,Descrição.,Se a criatura estiver com a vida abaixo de 30%, os ataques físicos e mágicos do Selvagem aumentam em 30%.
+134,Ataque intenso,Efeito.,Descrição.
+135,Grande instinto de sobrevivência,Efeito.,Descrição.
+136,Ataque natural,Efeito.,Descrição.
+137,Lua cheia,Efeito.,Um lobisomem nasce durante a lua cheia!
+138,Ataque furtivo,Ataque físico com dano adicional de até 5 e destreza adicional de 2.,Ataque às escondidas com mais chance de acertar.
+139,Rapidez,Aumento permanente na agilidade de até 5.,Treino de agilidade.
+140,Ataque pelas costas,Ataque com destreza aumentada em até 5 e chance de crítico aumentada em até 25%.,Ataque pelas costas do inimigo com mais chance de acertar e causar crítico.
+141,Roubo,Rouba um item aleatório da criatura. Níveis mais altos aumentam a chance de roubar itens raros. Só pode ser usado uma vez em cada criatura.,Um ladrão não é um ladrão se não roubar
+142,Prática de combate,Aumento permanente no ataque físico de até 15 e na destreza de até 5.,Treino em combate físico.
+143,Golpe certeiro,Ataque físico com dano adicional de até 15% destreza adicional de até 10 e chance adicional de causar envenenamento de até 15%.,Um golpe ceeeeeeerteiro!
+144,Bolada,Aumenta em até 20% a chance de obter itens raros na escavação.,Aumenta em até 20% a chance de obter itens raros na escavação.
+145,Arranhão nos olhos,Ataque que reduz temporariamente a defesa física e agilidade do inimigo em até 15%.,O assassino arranha os olhos do inimigo fazendo com que ele baixe a guarda e tenha dificuldade em se desviar dos ataques.
+146,Armas cotidianas,Permite o uso de certos itens (como facas) para causar dano físico adicional durante a batalha. Níveis maiores de habilidade permitem usar itens mais poderosos.,Permite o uso de itens cotidianos e até caseiros como armas.
+147,Poção venenosa,Permite a fabricação de poções venenosas. A chance de envenenamento depende das agilidades do assassino e da criatura. A letalidade da poção aumenta com o nível da habilidade.,Conhecimento sobre preparação e efeitos de venenos que permite ao assassino criar poções para envenenar seus inimigos.
+148,Esquiva,Aumento temporário de defesa física de até 15% e de agilidade de até 25%.,O assassino foca em evitar os ataques ou defendê-los.
+149,Ataque surpresa,Chance permanente de até 100% de contra-atacar automaticamente ao receber dano crítico causando dano crítico de até 200% do dano básico.,Ao receber um ataque poderoso o assassino surpreende o inimigo com um contra-ataque que fura suas defesas.
+150,Saboroso,Ataque com chance de até 20% de causar sangramento. Se causar sangramento o assassino recupera o dano causado como vida.,Um ataque que faz a vítima sangrar para que o assassino beba seu sangue e recupere sua vida.
+151,Duro de matar,Reduz permanentemente o dano recebido por envenenamento em até 5.,O assassino usa seus conhecimentos de veneno para canalizar sua energia mística de modo a reduzir os efeitos venenosos em seu corpo.
+152,Treinamento do mercenário,Aumenta permanentemente a vida o ataque físico a defesa física a destreza e a agi em até 50 30 30 15 e 50,Descrição.
+153,Ataque instantâneo,Chance de até 30% de atacar sem usar o turno,Descrição.
+154,Caçador de tesouros,Aumenta permanentemente a chance de obter itens em até 20% (120% da chance original).,Descrição.
+155,Frenesi,Chance permanente de até 30% de poder atacar de novo logo após finalizar o ataque.,Descrição.
+156,Armor penetration,Reduz permanentemente a chance de ser atordoado em até 50%.,Descrição.
+157,Aura vampírica,Aumenta em até (30 + 0.01*agi)% a chance de causar sangramento. Até 10% do dano causado pelo sangramento é convertido em vida.,O mercenário ganha poderes vampíricos que o permitem sugar o sangue das criaturas.
+158,Confusão,Deixa o alvo confuso, sem saber para onde ir ou quem atacar.,Confuses the target, leaving it without direction or attack target.
+159,Nome,Efeito.,Descrição.
+160,Nome,Efeito.,Descrição.
+161,Nome,Efeito.,Descrição.
+162,Treinamento do assassino,Aumenta permanentemente a vida o ataque físico a defesa física a destreza e a agi em até 80 15 15 25 e 30.,Descrição.
+163,Ambição,Aumenta permanentemente o ganho de ouro em até 20%.,Descrição.
+164,Poisoning atk,Efeito.,Descrição.
+165,Sangue venenoso,Até 50% do dano do envenenamento recebido é convertido em vida.,Descrição.
+166,Golpe baixo,Efeito.,Descrição.
+167,Poção letal,Efeito.,Descrição.
+168,Vantagem aleatória,Aumenta o multiplicador aleatório de ataque em 5%.,Aumenta a chance aleatória de beneficiar seu ataque.
+169,Crime que compensa,Efeito.,Descrição.
+170,Dados do destino,Lança dois dados e multiplica e divide seus resultados pelo dano respectivamente.,Lança dois dados para mudar o destino de seu ataque.
+171,Assassinato,Ataque com chance de até 10% de matar instantaneamente o inimigo. A chance aumenta com a destreza do assassino e diminui com a agilidade do inimigo.,Ataque com o objetivo de finalizar a vítima de uma vez. Totalmente letal quando aplicado corretamente.

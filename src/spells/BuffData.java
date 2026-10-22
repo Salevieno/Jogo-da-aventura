@@ -35,8 +35,6 @@ public abstract class BuffData
     {
         if (!Buff.getAllNerfs().isEmpty()) { Log.warn("Trying to create nerfs twice") ; return ;}
 
-        new Buff(false, 0, 1.0, Map.of(Attributes.dex, new BuffPower(0.1, 0), Attributes.agi, new BuffPower(0.1, 0)));
-        new Buff(false, 1, 1.0, Map.of(Attributes.agi, new BuffPower(0.04, 0)));
-        new Buff(false, 2, 1.0, Map.of(Attributes.dex, new BuffPower(0.03, 0), Attributes.agi, new BuffPower(0.03, 0)));
+        new Buff(false, 0, 1.0, Map.of(Attributes.phyDef, new BuffPower(0.03, 0), Attributes.agi, new BuffPower(0.03, 0)));
     }
 }

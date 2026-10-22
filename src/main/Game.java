@@ -105,7 +105,7 @@ public class Game
 	protected static void create()
 	{
 		game = new Game() ;
-		game.player = new Player("Player", "", 1);
+		game.player = new Player("Player", "", 4);
 		game.player.setPos(Screen.getMe().getCenterAsDouble());
 	}
 

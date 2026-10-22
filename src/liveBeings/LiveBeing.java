@@ -484,10 +484,7 @@ public abstract class LiveBeing implements Drawable
 	{
 		for (Spell spell : spells)
 		{
-			if (spell.getDurationCounter().getDuration() <= 0 | !spell.getDurationCounter().hasFinished())
-			{
-				continue ;
-			}
+			if (!spell.getDurationCounter().hasFinished()) { continue ;}
 			
 			if (this instanceof Player & job == 3 & spell.getId() == 114)
 			{
@@ -499,6 +496,7 @@ public abstract class LiveBeing implements Drawable
 			}
 			spell.getDurationCounter().reset() ;
 			spell.applyBuffs(false, this) ;
+			spell.applyNerfs(false, this) ;
 			spell.deactivate() ;
 		}
 	}

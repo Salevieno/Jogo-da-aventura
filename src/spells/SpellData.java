@@ -158,9 +158,9 @@ public abstract class SpellData
         new Spell(142, "", "", "", SpellTypes.passive, -1, -1, Elements.neutral, Path.SPELLS_IMG + "spellthief142.png", 5, -1, Map.of(139, 3), -1, -1, Map.of()) ;
         new Spell(143, "", "", "", SpellTypes.offensive, 30, -1, Elements.neutral, Path.SPELLS_IMG + "spellthief143.png", 5, 50, Map.of(140, 3), -1, -1, Map.of(Attributes.magAtk, new AttMod(0.03, 0.0), Attributes.dex, new AttMod(0.0, 2.0))) ;
         new Spell(144, "", "", "", SpellTypes.passive, 500, -1, Elements.neutral, Path.SPELLS_IMG + "spellthief144.png", 5, -1, Map.of(147, 3), -1, -1, Map.of()) ;
-        new Spell(145, "", "", "", SpellTypes.offensive, 150, 150, Elements.neutral, Path.SPELLS_IMG + "spellthief145.png", 5, 1, Map.of(142, 3), 16, 1, Map.of()) ;
+        new Spell(145, "", "", "", SpellTypes.offensive, 150, 5, Elements.neutral, Path.SPELLS_IMG + "spellthief145.png", 5, 1, Map.of(142, 3), 16, 0, Map.of()) ;
         new Spell(146, "", "", "", SpellTypes.passive, -1, -1, Elements.neutral, Path.SPELLS_IMG + "spellthief146.png", 5, -1, Map.of(143, 3), -1, -1, Map.of()) ;
-        new Spell(147, "", "", "", SpellTypes.passive, -1, -1, Elements.neutral, Path.SPELLS_IMG + "spellthief147.png", 5, -1, Map.of(144, 3), -1, 2, Map.of()) ;
+        new Spell(147, "", "", "", SpellTypes.passive, -1, -1, Elements.neutral, Path.SPELLS_IMG + "spellthief147.png", 5, -1, Map.of(144, 3), -1, -1, Map.of()) ;
         new Spell(148, "", "", "", SpellTypes.support, 150, 150, Elements.neutral, Path.SPELLS_IMG + "spellthief148.png", 5, 70, Map.of(145, 3), 17, -1, Map.of()) ;
         new Spell(149, "", "", "", SpellTypes.auto, -1, -1, Elements.neutral, Path.SPELLS_IMG + "spellthief149.png", 5, -1, Map.of(146, 3), -1, -1, Map.of()) ;
         new Spell(150, "", "", "", SpellTypes.offensive, 50, -1, Elements.neutral, Path.SPELLS_IMG + "spellthief150.png", 5, 50, Map.of(141, 3), 15, -1, Map.of()) ;

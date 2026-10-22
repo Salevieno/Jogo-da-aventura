@@ -36,6 +36,7 @@ public class Buff
 	public void apply(int mult, int level, LiveBeing receiver)
 	{
 		if (receiver == null) { Log.warn("Tentando usar buffs de magia em ninguém!") ; return ;}
+        System.out.println(chance);
         if (!Util.chance(chance)) { return ;}
 
 		for (Attributes att : power.keySet())
@@ -52,7 +53,9 @@ public class Buff
 			BasicBattleAttribute battleAttribute = receiver.getBA().mapAttributes(att) ;
 			if (battleAttribute != null)
 			{
+                System.out.println("Applying buff/nerf to " + receiver.getName() + ": attribute=" + att + " power=" + power.get(att) + ", level=" + level + ", mult=" + mult);
 				double increment = battleAttribute.getBaseValue() * power.get(att).getPercentIncrease() + power.get(att).getValueIncrease() ;
+                System.out.println("Increment calculated: " + increment);
 				battleAttribute.incBonus(increment * level * mult);
 
 				continue ;

@@ -14,6 +14,7 @@ import liveBeings.Player;
 import main.Game;
 import main.GamePanel;
 import main.ImageLoader;
+import main.Log;
 import main.Palette;
 import main.Path;
 import main.TextCategories;
@@ -80,6 +81,7 @@ public class CreatureAttributesWindow extends AttributesWindow
 
 	public void display()
 	{
+        if (creatureType == null) { Log.warn("Tentando desenhar janela de atributos da criatura com type null") ; return ;}
 		GamePanel.getDP().drawImage(image, topLeftPos, Align.topLeft) ;
 
 		SpriteAnimation userImage = creatureType.getMovingAnimations().spriteIdle ;
