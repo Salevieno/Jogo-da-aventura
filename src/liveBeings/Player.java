@@ -195,7 +195,7 @@ public class Player extends LiveBeing
 		this.pauseWindow = new PauseWindow();
 		this.equips = new Equip[4] ;
 		this.equippedArrow = null ;
-		this.spellPoints = 0 ;
+		this.spellPoints = 10 ;
         this.expToGain = 0 ;
     	
 		this.collectLevel = new ArrayList<>(List.of(0.0, 0.0, 0.0));
@@ -218,6 +218,7 @@ public class Player extends LiveBeing
 	    this.npcInContact = null ;
 	    this.currentCollectible = null ;
 	    this.currentChest = null ;
+        System.out.println("Player " + name + " created with job " + PlayerJobs.getJobs()[job] + " and sex " + sex + " and spells " + spells.stream().map(spell -> spell.getName()).collect(Collectors.joining(", "))) ;
 	}
 	
 	public static List<Spell> jobSpells(int job)
@@ -237,6 +238,11 @@ public class Player extends LiveBeing
 		spells.get(0).incLevel(1) ;
 		
 		return spells ;
+	}
+
+	public static void displayPreview(Point pos)
+	{
+		MOVING_ANI.displayIdle(pos, Scale.unit, Align.bottomCenter) ;
 	}
 	
 	private static AttributeIncrease calcAttributeIncrease(int job, int proJob)

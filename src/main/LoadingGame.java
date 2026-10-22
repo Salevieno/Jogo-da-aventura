@@ -34,7 +34,6 @@ import maps.SpecialMap;
 import music.MusicManager;
 import screen.Screen;
 import sidebar.SideBar;
-import spells.Buff;
 import spells.BuffData;
 import spells.Spell;
 import utilities.Util;
@@ -89,6 +88,11 @@ public abstract class LoadingGame
 		
 		if (isOver() && !startButton.isActive())
 		{
+            if (!Opening.isNewGame())
+            {
+                Game.setPlayer(Player.load(Game.getSaveSlotInUse())) ;
+                player = Game.getPlayer() ;
+            }
 			if (player.getSpells().isEmpty())
 			{
 				player.setSpells(Player.jobSpells(player.getJob()));
@@ -143,18 +147,9 @@ public abstract class LoadingGame
 				return;
 
 			case 2:
-                if (Buff.getAllBuffs().isEmpty())
-                {
-                    BuffData.createBuffs() ;
-                }
-                if (Buff.getAllNerfs().isEmpty())
-                {
-                    BuffData.createNerfs() ;
-                }
-                if (Spell.getAll().isEmpty())
-                {
-                    Spell.create(language) ;
-                }
+                BuffData.createBuffs() ;
+                BuffData.createNerfs() ;
+                Spell.create(language) ;
 				logInitializationTime("spells", initialStepLoadingTime);
 				return;
 
@@ -185,7 +180,6 @@ public abstract class LoadingGame
 				return;
 
 			case 8:
-				// Quest.load(language, player.getJob(), CreatureType.getAll(), Item.getAllItems()) ;
 				Quest.create(language) ;
 				logInitializationTime("quests", initialStepLoadingTime);
 				return;

@@ -17,7 +17,7 @@ import utilities.Util;
 public class LoadingSlot
 {
     private final Point topLeftPos ;
-    private final Player player ;
+    private final PlayerPreview playerPreview ;
     private final Pet pet ;
     private final GameButton loadButton ;
 	private final Point playerPos ;
@@ -36,13 +36,13 @@ public class LoadingSlot
     private static final Image PET_IMAGE = ImageLoader.loadImage(Path.OPENING_IMG + "PetLoadingSlot.png") ;
     private static final Font SMALL_FONT = new Font(Game.getMainFontName(), Font.BOLD, 13) ;
 
-    protected LoadingSlot(String name, Point topLeftPos, Player player, Pet pet)
+    protected LoadingSlot(String name, Point topLeftPos, PlayerPreview playerPreview, Pet pet, int slot)
     {
         this.topLeftPos = topLeftPos ;
-        this.player = player ;
+        this.playerPreview = playerPreview ;
         this.pet = pet ;
         Dimension windowSize = Util.getSize(IMAGE) ;
-        this.loadButton = new GameTextButton(Util.translate(topLeftPos, windowSize.width / 2, windowSize.height - 100), Align.center, name, () -> { loadGame(player, pet, 0) ;}) ;
+        this.loadButton = new GameTextButton(Util.translate(topLeftPos, windowSize.width / 2, windowSize.height - 100), Align.center, name, () -> { startLoadingGame(slot) ;}) ;
 	    this.playerPos = Util.translate(topLeftPos, 160, 96) ;
         this.namePos = Util.translate(topLeftPos, 160, 30) ;
 	    this.jobPos = Util.translate(topLeftPos, 16, 45) ;
@@ -56,14 +56,8 @@ public class LoadingSlot
         this.petAttTopLeft = Util.translate(petTopLeftPos, 16, 82) ;
     }
 
-	private void loadGame(Player player, Pet pet, int slot)
+	private void startLoadingGame(int slot)
 	{
-		Game.setPlayer(player) ;
-        if (pet != null)
-        {
-            System.out.println("Loading pet: " + pet.getName() + " with job: " + pet.getJob()) ;
-            Game.setPet(pet) ;
-        }
         Game.setSaveSlotInUse(slot) ;
 	    Opening.finish() ;
     }
@@ -83,11 +77,11 @@ public class LoadingSlot
     protected void display(Point mousePos)
     {
         GamePanel.getDP().drawImage(IMAGE, topLeftPos, Align.topLeft) ;
-		GamePanel.getDP().drawText(namePos, Align.center, player.getName(), SMALL_FONT, Palette.colors[0]) ;
-		GamePanel.getDP().drawText(jobPos, Align.centerLeft, PlayerJobs.getJobs()[player.getJob()].toString(), SMALL_FONT, Palette.colors[0]) ;
-		GamePanel.getDP().drawText(levelPos, Align.centerLeft, "Nível: " + player.getLevel(), SMALL_FONT, Palette.colors[0]) ;
-        player.getPA().display(attTopLeft, new Dimension(80, 16)) ;
-        player.display(playerPos, Scale.unit, Directions.down, false) ;
+		GamePanel.getDP().drawText(namePos, Align.center, playerPreview.getName(), SMALL_FONT, Palette.colors[0]) ;
+		GamePanel.getDP().drawText(jobPos, Align.centerLeft, PlayerJobs.getJobs()[playerPreview.getJob()].toString(), SMALL_FONT, Palette.colors[0]) ;
+		GamePanel.getDP().drawText(levelPos, Align.centerLeft, "Nível: " + playerPreview.getLevel(), SMALL_FONT, Palette.colors[0]) ;
+        playerPreview.getPA().display(attTopLeft, new Dimension(80, 16)) ;
+        Player.displayPreview(playerPos) ;
         if (pet != null)
         {
             displayPetWindow() ;

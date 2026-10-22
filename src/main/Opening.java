@@ -10,6 +10,8 @@ import java.util.List;
 
 import javax.sound.sampled.Clip;
 
+import org.json.simple.JSONObject;
+
 import UI.ButtonFunction;
 import UI.GameButton;
 import UI.GameIconButton;
@@ -24,10 +26,6 @@ import music.GameMusic;
 import music.GameSound;
 import music.MusicManager;
 import screen.Screen;
-import spells.Buff;
-import spells.BuffData;
-import spells.Spell;
-import spells.SpellData;
 import utilities.Util;
 
 
@@ -37,7 +35,6 @@ public abstract class Opening
     private static List<List<GameButton>> buttonsInStep = new ArrayList<>() ;
     private static List<GameButton> languageButtons = new ArrayList<>() ;
     private static List<LoadingSlot> loadSlots = new ArrayList<>() ;
-	private static List<Player> players ;
     private static String[] stepMessage ;
     private static String[] jobDescription ;
     private static int step = 0;
@@ -153,36 +150,21 @@ public abstract class Opening
 
 	private static void switchToLoadGameScreen()
 	{		
-		players = new ArrayList<>(QTD_LOAD_SLOTS) ;
-
 		newGame = false ;
 		buttons.get(0).deactivate() ;
 		buttons.get(1).deactivate() ;
-        // TODO remover necessidade das criações abaixo
-        if (Buff.getAllBuffs().isEmpty())
-        {
-            BuffData.createBuffs() ;
-        }
-        if (Buff.getAllNerfs().isEmpty())
-        {
-            BuffData.createNerfs() ;
-        }
-        if (Spell.getAll().isEmpty())
-        {
-            SpellData.createSpells() ;
-        }
         for (int i = 0 ; i <= QTD_LOAD_SLOTS - 1 ; i += 1)
         {
-            Player playerLoaded = Player.load(i + 1) ;
-            Pet petLoaded = Game.getPet() ;
-            if (playerLoaded == null)
+            JSONObject saveData = Util.readJsonObject("saves/save " + (i + 1) + ".json") ;
+            if (saveData == null)
             {
-                Log.warn("Save " + (i + 1) + " was not found or did not load corretly!") ;
+                Log.warn("Save " + (i + 1) + " was not found or did not load correctly!") ;
                 continue ;
             }
 
-            players.add(playerLoaded) ;
-            loadSlots.add(new LoadingSlot("Load slot " + (i + 1), new Point(96 + 544 * i, 240), playerLoaded, petLoaded)) ;
+            PlayerPreview playerPreview = PlayerPreview.fromJson(saveData) ;
+            Pet petLoaded = saveData.get("pet") == null ? null : Pet.fromJson((JSONObject) saveData.get("pet")) ;
+            loadSlots.add(new LoadingSlot("Load slot " + (i + 1), new Point(96 + 544 * i, 240), playerPreview, petLoaded, i + 1)) ;
         }
 	}
 
@@ -340,7 +322,7 @@ public abstract class Opening
 		if (isOver())
 		{
 			MusicManager.stopMusic(INTRO_MUSIC) ;
-			if (newGame())
+			if (isNewGame())
 			{
 				Game.setDifficultLevel(getChosenDifficultLevel()) ;
 				Game.setPlayer(getChosenPlayer()) ;
@@ -350,7 +332,7 @@ public abstract class Opening
 
 	}
 	
-	public static boolean newGame() { return newGame ;}
+	public static boolean isNewGame() { return newGame ;}
 	public static boolean isOver() { return isOver ;}
 	
 }
