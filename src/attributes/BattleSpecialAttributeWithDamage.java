@@ -30,13 +30,13 @@ public class BattleSpecialAttributeWithDamage extends BattleSpecialAttribute
 		this.basicDefBonus = basicDefBonus ;
 	}
 	
-	public BattleSpecialAttributeWithDamage(BattleSpecialAttributeWithDamage battleSAWD)
+	public BattleSpecialAttributeWithDamage(BattleSpecialAttributeWithDamage att)
 	{
-		super(battleSAWD.getBasicAtkChance(), battleSAWD.getBasicAtkChanceBonus(), battleSAWD.getBasicDefChance(), battleSAWD.getBasicDefChanceBonus(), battleSAWD.getDuration()) ;
-		this.basicAtk = battleSAWD.getBasicAtk() ;
-		this.basicAtkBonus = battleSAWD.getBasicAtkBonus() ;
-		this.basicDef = battleSAWD.getBasicDef() ;
-		this.basicDefBonus = battleSAWD.getBasicDefBonus() ;
+		super(att.getBasicAtkChance(), att.getBasicAtkChanceBonus(), att.getBasicDefChance(), att.getBasicDefChanceBonus(), att.getDuration()) ;
+		this.basicAtk = att.getBasicAtk() ;
+		this.basicAtkBonus = att.getBasicAtkBonus() ;
+		this.basicDef = att.getBasicDef() ;
+		this.basicDefBonus = att.getBasicDefBonus() ;
 	}
 		
 	public double getBasicAtk()
@@ -59,8 +59,6 @@ public class BattleSpecialAttributeWithDamage extends BattleSpecialAttribute
 		return basicDefBonus;
 	}
 
-	public double[] attributes() { return new double[] {basicAtkChance, basicAtk, basicDefChance, basicDef, duration} ;}
-	public double[] bonuses() { return new double[] {basicAtkChanceBonus, basicAtkBonus, basicDefChanceBonus, basicDefBonus} ;}
 	public String textAtkChance() { return (int) (100 * basicAtkChance) + "% + " + (int) (100 * basicAtkChanceBonus) + "%" ;}
 	public String textAtk() { return Util.round(basicAtk, 2) + " + " + Util.round(basicAtkBonus, 2) ;}
 	public String textDefChance() { return (int) (100 * basicDefChance) + "% + " + (int) (100 * basicDefChanceBonus) + "%" ;}

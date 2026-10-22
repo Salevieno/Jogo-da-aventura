@@ -113,7 +113,10 @@ public abstract class Battle
 		double blood = 0 ;
 		double poison = 0 ;
 		double silence = 0 ;
-		if (Util.chance(atkChances[1] - defChances[1])) {block = durations[1] ;}
+		if (Util.chance(atkChances[1] - defChances[1]))
+        {
+            block = durations[1] ;
+        }
 		if (0 < block) 
 		{
 			return Map.of(

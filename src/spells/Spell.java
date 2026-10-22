@@ -41,9 +41,6 @@ public class Spell
 	
 	private static final List<Spell> ALL = new ArrayList<>() ;
 
-    // TODO A aplicação de efeitos de status em ataques mágicos está incompleta e usa valores incorretos.
-    // O cálculo mágico passa a Battle.calcStatus apenas spell.getSpecialAtt() (LiveBeing.java), sem as chances-base do atacante. Além disso, Spell.getSpecialAtt multiplica o valor por nível duas vezes; se houver modificador configurado, o crescimento fica quadrático. Na aplicação, LiveBeing.inflictStatus atribui intensidade zero e usa a duração de stun para todos os status. Isso compromete especialmente sangramento e veneno, cujos efeitos dependem de intensidade.
-
     // TODO Os nerfs definidos não são aplicados por nenhuma magia utilizável atualmente. Verificar tb a desativação
     // A lista de nerfs tem efeitos configurados em BuffData.java, mas o único spell com nerfID não negativo que encontrei é o ID 147, definido como passive em SpellData.java. Magias passivas não entram no caminho normal de uso. Portanto, a infraestrutura de nerfs existe, mas não encontrei um uso ativo no conjunto atual. Ao conectar nerfs a magias ofensivas, também convém aplicar o efeito somente se o ataque acertar: hoje o efeito de magia ofensiva é aplicado antes de o combate descartar resultados de erro/bloqueio.
 
@@ -114,11 +111,11 @@ public class Spell
 		return new AttMod(attMods.get(att).getPercentualIncrease() * level, attMods.get(att).getValueIncrease() * level ) ;
 	}
 	public double[] getSpecialAtt() { return new double[] {
-		getAttMod(Attributes.stun).getValueIncrease() * level,
-		getAttMod(Attributes.block).getValueIncrease() * level,
-		getAttMod(Attributes.blood).getValueIncrease() * level,
-		getAttMod(Attributes.poison).getValueIncrease() * level,
-		getAttMod(Attributes.silence).getValueIncrease() * level
+		getAttMod(Attributes.stun).getValueIncrease(),
+		getAttMod(Attributes.block).getValueIncrease(),
+		getAttMod(Attributes.blood).getValueIncrease(),
+		getAttMod(Attributes.poison).getValueIncrease(),
+		getAttMod(Attributes.silence).getValueIncrease()
 	} ;}
 	public Elements getElem() {return elem ;}
 	public GameTimer getCooldownCounter() {return cooldownCounter ;}

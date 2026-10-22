@@ -169,6 +169,7 @@ public abstract class LiveBeing implements Drawable
 
 		AtkEffects effect = Battle.calcEffect(atkDex, defAgi, atkCrit, defCrit, receiver.getBA().getBlock().totalDefChance()) ;
 		int damage = Battle.calcDamage(effect, basicAtk, basicDef, atkElems, receiver.defElems(), receiverElemMod) ;
+        // TODO são consideradas apenas as chances da magia de aplicar status, deve considerar também as chances-base do atacante
 		Map<Attributes, Double> inflictedStatus = Battle.calcStatus(spell.getSpecialAtt(), receiver.getBA().baseDefChances(), BA.baseDurations()) ;				
 		
 		spell.applyBuffs(true, this) ;
@@ -702,29 +703,26 @@ public abstract class LiveBeing implements Drawable
 
 	protected void inflictStatus(AtkResults atkResults, LiveBeing receiver)
 	{
-		for (Attributes att : Attributes.getSpecial())
-		{// TODO add blood and poison intensity
-			if (0 < atkResults.getStatus().get(att))
-			{
-				receiver.getStatus().get(att).inflictStatus(0, BA.getStun().getDuration()) ;
-			}
-		}
-		// if (0 < atkResults.getStatus().get(receiver))
-		// {
-		// 	receiver.getStatus().get(Attributes.block).inflictStatus(0, BA.getBlock().getDuration()) ;
-		// }
-		// if (0 < atkResults.getStatus()[2])
-		// {
-		// 	receiver.getStatus().get(Attributes.blood).inflictStatus(Math.max(BA.getBlood().TotalAtk() - receiver.getBA().getBlood().TotalDef(), 0), BA.getBlood().getDuration()) ;
-		// }
-		// if (0 < atkResults.getStatus()[3])
-		// {
-		// 	receiver.getStatus().get(Attributes.poison).inflictStatus(Math.max(BA.getPoison().TotalAtk() - receiver.getBA().getPoison().TotalDef(), 0), BA.getPoison().getDuration()) ;
-		// }
-		// if (0 < atkResults.getStatus()[4])
-		// {
-		// 	receiver.getStatus().get(Attributes.silence).inflictStatus(0, BA.getSilence().getDuration()) ;
-		// }
+        if (0 < atkResults.getStatus().get(Attributes.stun))
+        {
+            receiver.getStatus().get(Attributes.stun).inflictStatus(0, BA.getStun().getDuration()) ;
+        }
+        if (0 < atkResults.getStatus().get(Attributes.block))
+        {
+            receiver.getStatus().get(Attributes.block).inflictStatus(0, BA.getBlock().getDuration()) ;
+        }
+        if (0 < atkResults.getStatus().get(Attributes.blood))
+        {
+            receiver.getStatus().get(Attributes.blood).inflictStatus(Math.max(BA.getBlood().TotalAtk() - receiver.getBA().getBlood().TotalDef(), 0), BA.getBlood().getDuration()) ;
+        }
+        if (0 < atkResults.getStatus().get(Attributes.poison))
+        {
+            receiver.getStatus().get(Attributes.poison).inflictStatus(Math.max(BA.getPoison().TotalAtk() - receiver.getBA().getPoison().TotalDef(), 0), BA.getPoison().getDuration()) ;
+        }
+        if (0 < atkResults.getStatus().get(Attributes.silence))
+        {
+            receiver.getStatus().get(Attributes.silence).inflictStatus(0, BA.getSilence().getDuration()) ;
+        }
 	}
 
 	protected AtkTypes atkTypeFromAction()
