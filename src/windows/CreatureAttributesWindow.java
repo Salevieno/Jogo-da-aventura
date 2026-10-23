@@ -62,8 +62,8 @@ public class CreatureAttributesWindow extends AttributesWindow
     }
 
     protected void onUpdate()
-    {
-
+    {if (Game.getPlayer().getOpponent() == null) { return ;}
+        this.creatureType = Game.getPlayer().getOpponent().getType() ;
     }
 
     public void act(Player player, Point mousePos)

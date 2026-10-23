@@ -36,6 +36,7 @@ import screen.Screen;
 import sidebar.HotKeysBar;
 import sidebar.SideBar;
 import simulations.EvolutionSimulation;
+import spells.Spell;
 import utilities.Util;
 import windows.BankWindow;
 import windows.GameWindow;
@@ -207,18 +208,19 @@ public class Game
 			dayTimer.restart();
 			// NPC.renewStocks();
 		}
-		player.activateSpellCounters();
+        Spell.getAllActiveInstances().forEach(spell -> spell.deactivateWhenDone()) ;
+		// player.activateSpellCounters();
 
-		if (pet != null)
-		{
-			pet.activateSpellCounters();
-		}
+		// if (pet != null)
+		// {
+		// 	pet.activateSpellCounters();
+		// }
 
-		if (player.getMap().isField())
-		{
-			FieldMap fm = (FieldMap) player.getMap();
-			fm.getCreatures().forEach(Creature::activateSpellCounters);
-		}
+		// if (player.getMap().isField())
+		// {
+		// 	FieldMap fm = (FieldMap) player.getMap();
+		// 	fm.getCreatures().forEach(Creature::activateSpellCounters);
+		// }
 
 		for (CityMap city : CityMap.getAllCityMaps())
 		{

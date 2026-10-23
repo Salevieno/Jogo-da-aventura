@@ -1335,8 +1335,8 @@ public class Player extends LiveBeing
 			if (job == 3 & 0 < spells.get(10).getLevel() & !spells.get(10).isActive())
 			{
 				int alchBuffId = Alchemy.isHerb(alch.getId()) ? 10 : Alchemy.isWood(alch.getId()) ? 11 : 12 ;
-				Buff alchBuff = Buff.getAllBuffs().get(alchBuffId) ;
-				alchBuff.apply(1, spells.get(10).getLevel(), Game.getPet());
+				Buff alchBuff = new Buff(Buff.getAllBuffs().get(alchBuffId)) ;
+				alchBuff.applyBuff(spells.get(10).getLevel(), Game.getPet());
 				spells.get(10).activate();
 				Game.getPet().setAlchBuffId(alchBuffId) ;
 			}

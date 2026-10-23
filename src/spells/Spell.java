@@ -4,6 +4,7 @@ import java.awt.Image;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.json.simple.JSONObject;
 
@@ -35,18 +36,14 @@ public class Spell
 	private final Map<Integer, Integer> preRequisites ;
 	private final int buffID;
 	private final int nerfID;
+    private Buff buff ;
+    private Buff nerf ;
 	private final AttackModifiers atkMod ;
 	private final Map<Attributes, AttMod> attMods ;
 	private final Elements elem ;
 	
 	private static final List<Spell> ALL = new ArrayList<>() ;
-
-    // TODO Os nerfs definidos não são aplicados por nenhuma magia utilizável atualmente. Verificar tb a desativação
-    // A lista de nerfs tem efeitos configurados em BuffData.java. Magias passivas não entram no caminho normal de uso. Portanto, a infraestrutura de nerfs existe, mas não encontrei um uso ativo no conjunto atual. Ao conectar nerfs a magias ofensivas, também convém aplicar o efeito somente se o ataque acertar: hoje o efeito de magia ofensiva é aplicado antes de o combate descartar resultados de erro/bloqueio.
-
-    // TODO A remoção de buff depende de um novo sorteio.
-    // Buff.apply sorteia a chance tanto ao aplicar quanto ao remover. Com chances abaixo de 100%, o buff pode ser aplicado e depois não ser removido, ou ser removido sem ter sido aplicado. As definições atuais usam chance 100%, então é um risco latente para novas configurações; o próprio arquivo sinaliza a necessidade de remover o valor exato aplicado.
-
+	private static final List<Spell> ALL_INSTANCES = new ArrayList<>() ;
 	
 	// optionalTODO separar spell type de spell
 	protected Spell(int id, String name, String info, String description, SpellTypes type, int cooldown, int duration,
@@ -63,6 +60,8 @@ public class Spell
 		this.preRequisites = preRequisites;
 		this.buffID = buffID;
 		this.nerfID = nerfID;
+        this.buff = null ;
+        this.nerf = null ;
 		this.attMods = attMods ;
 		this.atkMod = new AttackModifiers() ;
 		this.isActive = false;
@@ -86,7 +85,15 @@ public class Spell
 		this.preRequisites = spell.preRequisites;
 		this.buffID = spell.buffID;
 		this.nerfID = spell.nerfID;
-		this.attMods = spell.getAttMods() ;
+        if (0 <= this.buffID)
+        {
+            this.buff = new Buff(Buff.getAllBuffs().get(buffID)) ;
+        }
+        if (0 <= this.nerfID)
+        {
+            this.nerf = new Buff(Buff.getAllNerfs().get(nerfID)) ;
+        }
+        this.attMods = spell.getAttMods() ;
 		this.atkMod = new AttackModifiers(spell.atkMod.getAtkMod(), spell.atkMod.getDefMod(), spell.atkMod.getDexMod(), spell.atkMod.getAgiMod(), spell.atkMod.getAtkCritMod(), spell.atkMod.getDefCritMod(), spell.atkMod.getStunMod(), spell.atkMod.getBlockMod(), spell.atkMod.getBloodMod(), spell.atkMod.getPoisonMod(), spell.atkMod.getSilenceMod()) ;
 		this.isActive = false;
 		this.cooldownCounter = new GameTimer(spell.cooldownCounter.getDuration()) ;
@@ -94,6 +101,7 @@ public class Spell
 		this.elem = spell.elem;
 		this.effect = spell.effect;
 		this.description = spell.description;
+        ALL_INSTANCES.add(this) ;
 	}
 
 	public int getId() {return id ;}
@@ -160,13 +168,31 @@ public class Spell
 		
 		return true ;
 	}
+
+    public static List<Spell> getAllActiveInstances() { return ALL_INSTANCES.stream().filter(Spell::isActive).collect(Collectors.toList()) ;}
+
+    public void deactivateWhenDone()
+    {
+        if (this.getDurationCounter().getDuration() <= 0 || !this.getDurationCounter().hasFinished()) { return ;}
+			
+        // if (spellUser instanceof Player && job == 3 && this.getId() == 114 &&
+        //     10 <= Game.getPet().getAlchBuffId() && Game.getPet().getAlchBuffId() <= 12)
+        // {
+        //     Buff.getAllBuffs().get(Game.getPet().getAlchBuffId()).apply(-1, spellUser.get(10).getLevel(), Game.getPet()) ;
+        //     Game.getPet().setAlchBuffId(-1) ;
+        // }
+        
+        this.removeBuffs() ;
+        this.removeNerfs() ;
+        this.getDurationCounter().reset() ;
+        this.deactivate() ;
+    }
 	
 	public void applyBuffs(boolean activate, LiveBeing receiver)
 	{
 		if (buffID < 0 || Buff.getAllBuffs().size() <= buffID) { return ;}
-		
-		int mult = activate ? 1 : -1 ;
-		Buff.getAllBuffs().get(buffID).apply(mult, level, receiver) ;
+
+		buff.applyBuff(level, receiver) ;
 	}
 
 	public void applyNerfs(boolean activate, LiveBeing receiver)
@@ -174,9 +200,23 @@ public class Spell
         System.out.println(activate ? "Applying nerf" : "Removing nerf");
 		if (nerfID < 0 || Buff.getAllNerfs().size() <= nerfID) { return ;}
 
-		int mult = activate ? -1 : 1 ;		
-		Buff.getAllNerfs().get(nerfID).apply(mult, level, receiver) ;
+		nerf.applyNerf(level, receiver) ;
         System.out.println(receiver.getName() + "phy def bonus after nerf: " + receiver.getBA().getPhyDef().getBonus());
+	}
+	
+	public void removeBuffs()
+	{
+		if (buffID < 0 || Buff.getAllBuffs().size() <= buffID) { return ;}
+
+		buff.removeBuff(level) ;
+	}
+
+	public void removeNerfs()
+	{
+		if (nerfID < 0 || Buff.getAllNerfs().size() <= nerfID) { return ;}
+        System.out.println("Removing nerf");
+
+		nerf.removeNerf(level) ;
 	}
 
 	public static void create(String language)

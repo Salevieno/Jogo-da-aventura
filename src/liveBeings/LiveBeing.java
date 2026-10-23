@@ -484,19 +484,18 @@ public abstract class LiveBeing implements Drawable
 	{
 		for (Spell spell : spells)
 		{
-			if (!spell.getDurationCounter().hasFinished()) { continue ;}
+			if (spell.getDurationCounter().getDuration() <= 0 || !spell.getDurationCounter().hasFinished()) { continue ;}
 			
-			if (this instanceof Player & job == 3 & spell.getId() == 114)
-			{
-				if (10 <= Game.getPet().getAlchBuffId() & Game.getPet().getAlchBuffId() <= 12)
-				{
-					Buff.getAllBuffs().get(Game.getPet().getAlchBuffId()).apply(-1, spells.get(10).getLevel(), Game.getPet()) ;
-					Game.getPet().setAlchBuffId(-1) ;
-				}
-			}
+			if (this instanceof Player && job == 3 && spell.getId() == 114 &&
+			    10 <= Game.getPet().getAlchBuffId() && Game.getPet().getAlchBuffId() <= 12)
+            {
+                Buff.getAllBuffs().get(Game.getPet().getAlchBuffId()).applyBuff(spells.get(10).getLevel(), Game.getPet()) ;
+                Game.getPet().setAlchBuffId(-1) ;
+            }
+			
 			spell.getDurationCounter().reset() ;
-			spell.applyBuffs(false, this) ;
-			spell.applyNerfs(false, this) ;
+			spell.removeBuffs() ;
+			spell.removeNerfs() ;
 			spell.deactivate() ;
 		}
 	}
