@@ -9,7 +9,7 @@ import attributes.BasicBattleAttribute;
 import graphics.Align;
 import graphics.Scale;
 import graphics2.SpriteAnimation;
-import liveBeings.CreatureType;
+import liveBeings.Creature;
 import liveBeings.Player;
 import main.Game;
 import main.GamePanel;
@@ -30,11 +30,14 @@ public class CreatureAttributesWindow extends AttributesWindow
 	private final Point lifePos ;
 	private final Point mpPos ;
 	private final Point initialAttPos ;
+    private final List<Point> attIconPos ;
     private final List<Point> attPos ;
+	private final Point critIconPos ;
 	private final Point critPos ;
 	private final Font namefont ;
 	private final Font font ;
-    private CreatureType creatureType ;
+    private Creature creature ;
+    private Scale imageScale ;
 
 	public CreatureAttributesWindow()
 	{
@@ -42,28 +45,34 @@ public class CreatureAttributesWindow extends AttributesWindow
 	    this.userPos = Util.translate(topLeftPos, size.width / 2, 60) ;	
 	    this.namePos = Util.translate(topLeftPos, size.width / 2, 14) ;
 	    this.levelPos = Util.translate(topLeftPos, size.width / 2, 30) ;
-	    this.lifePos = Util.translate(topLeftPos, 20, BORDER + PADDING + 37) ;
-	    this.mpPos = Util.translate(topLeftPos, 20, BORDER + PADDING + 37 + 26) ;
-	    this.initialAttPos = Util.translate(topLeftPos, BORDER + PADDING + 34, 124) ;
+	    this.lifePos = Util.translate(topLeftPos, 20, 46) ;
+	    this.mpPos = Util.translate(topLeftPos, 20, 71) ;
+	    this.initialAttPos = Util.translate(topLeftPos, 29, 124) ;
+        this.attIconPos = new ArrayList<>() ;
         this.attPos = new ArrayList<>() ;
         for (int i = 0 ; i <= ATT_ICONS.length - 1 ; i += 1)
         {
-            this.attPos.add(Util.translate(initialAttPos, 117 * (i / 3), (i % 3) * 22)) ;
+            this.attIconPos.add(Util.translate(initialAttPos, 117 * (i / 3), (i % 3) * 22)) ;
+            this.attPos.add(Util.translate(initialAttPos, 13 + 117 * (i / 3), (i % 3) * 22)) ;
         }
-	    this.critPos = Util.translate(initialAttPos, 0, 71) ;
+        this.critIconPos = Util.translate(initialAttPos, 0, 71) ;
+	    this.critPos = Util.translate(initialAttPos, 13, 71) ;
         this.namefont = new Font(Game.getMainFontName(), Font.BOLD, 13) ;
         this.font = new Font(Game.getMainFontName(), Font.BOLD, 11) ;
-        this.creatureType = null ;
+        this.creature = null ;
+        this.imageScale = Scale.unit ;
 	}
 
     protected void onOpen()
     {
-        this.creatureType = Game.getPlayer().getOpponent().getType() ;
+        this.creature = Game.getPlayer().getOpponent() ;
+        double maxScaleFactor = Math.max(32.0 / this.creature.getType().getSize().width, 32.0 / this.creature.getType().getSize().height) ;
+        this.imageScale = new Scale(maxScaleFactor, maxScaleFactor) ;
     }
 
     protected void onUpdate()
-    {if (Game.getPlayer().getOpponent() == null) { return ;}
-        this.creatureType = Game.getPlayer().getOpponent().getType() ;
+    {
+
     }
 
     public void act(Player player, Point mousePos)
@@ -81,32 +90,32 @@ public class CreatureAttributesWindow extends AttributesWindow
 
 	public void display()
 	{
-        if (creatureType == null) { Log.warn("Tentando desenhar janela de atributos da criatura com type null") ; return ;}
+        if (creature == null) { Log.warn("Tentando desenhar janela de atributos da criatura com type null") ; return ;}
 		GamePanel.getDP().drawImage(image, topLeftPos, Align.topLeft) ;
 
-		SpriteAnimation userImage = creatureType.getMovingAnimations().spriteIdle ;
-		userImage.display(GamePanel.getDP(), userPos, Align.center) ;
+		SpriteAnimation userImage = creature.getType().getMovingAnimations().spriteIdle ;
+		userImage.display(GamePanel.getDP(), userPos, Align.center, imageScale) ;
 
 		String[] attText = Game.getAllText().get(TextCategories.attributes) ;
-		GamePanel.getDP().drawText(namePos, Align.center, creatureType.getName(), namefont, Palette.colors[0]) ;		
-		GamePanel.getDP().drawText(levelPos, Align.center, attText[0] + ": " + creatureType.getLevel(), font, Palette.colors[6]) ;
+		GamePanel.getDP().drawText(namePos, Align.center, creature.getName(), namefont, Palette.colors[0]) ;		
+		GamePanel.getDP().drawText(levelPos, Align.center, attText[0] + ": " + creature.getLevel(), font, Palette.colors[6]) ;
 		
 		// attributes
-		String lifeText = attText[1] + ": " + Util.round(creatureType.getPA().getLife().getCurrentValue(), 1) ;
-		String mpText = attText[2] + ": " + Util.round(creatureType.getPA().getMp().getCurrentValue(), 1) ;
+		String lifeText = attText[1] + ": " + Util.round(creature.getPA().getLife().getCurrentValue(), 1) ;
+		String mpText = attText[2] + ": " + Util.round(creature.getPA().getMp().getCurrentValue(), 1) ;
 		GamePanel.getDP().drawText(lifePos, Align.centerLeft, lifeText, font, Palette.colors[6]) ;
 		GamePanel.getDP().drawText(mpPos, Align.centerLeft, mpText, font, Palette.colors[5]) ;
 				
-		BasicBattleAttribute[] attributes = creatureType.getBA().basicAttributes() ;
+		BasicBattleAttribute[] attributes = creature.getBA().basicAttributes() ;
 		for (int i = 0; i <= ATT_ICONS.length - 1; i += 1)
 		{
 			String attValue = Util.round(attributes[i].getBaseValue(), 1) + " + " + Util.round(attributes[i].getBonus(), 1) + " + " + Util.round(attributes[i].getTrain(), 1) ;
 			
-			GamePanel.getDP().drawImage(ATT_ICONS[i], Util.translate(attPos.get(i), -15, 0), Scale.unit, Align.center) ;
+			GamePanel.getDP().drawImage(ATT_ICONS[i], attIconPos.get(i), Scale.unit, Align.center) ;
 			GamePanel.getDP().drawText(attPos.get(i), Align.centerLeft, attValue, font, Palette.colors[0]) ;
 		}
-		String critValue = attText[9] + ": " + Util.round(100 * creatureType.getBA().TotalCritAtkChance(), 1) + "%" ;
-		GamePanel.getDP().drawImage(CRIT_ICON, Util.translate(initialAttPos, -15, 72), Scale.unit, Align.center) ;
+		String critValue = Util.round(100 * creature.getBA().TotalCritAtkChance(), 1) + "%" ;
+		GamePanel.getDP().drawImage(CRIT_ICON, critIconPos, Scale.unit, Align.center) ;
 		GamePanel.getDP().drawText(critPos, Align.centerLeft, critValue, font, Palette.colors[6]) ;
 	}
 
