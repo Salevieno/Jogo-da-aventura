@@ -13,7 +13,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import Buildings.Building;
 import UI.GameButton;
 import UI.GameTextButton;
 import animations.Animation;
@@ -37,7 +36,6 @@ import sidebar.SideBar;
 import simulations.EvolutionSimulation;
 import spells.Spell;
 import utilities.Util;
-import windows.BankWindow;
 import windows.GameWindow;
 import windows.ShopBag;
 
@@ -209,19 +207,6 @@ public class Game
 		}
         Spell.getAllActiveInstances().forEach(spell -> spell.deactivateWhenDone()) ;
 
-		for (CityMap city : CityMap.getAllCityMaps()) // TODO mover para update windows?
-		{
-			Building bank = city.getBank();
-
-			if (!bank.hasNPCs()) { continue ;}
-
-			BankWindow bankWindow = (BankWindow) bank.getNPCs().get(0).getWindow();
-			if (bankWindow != null && bankWindow.hasInvestment() && bankWindow.investmentIsComplete())
-			{
-				bankWindow.completeInvestment();
-			}
-		}
-
 		player.applyCounterActions();
 
 		if (pet != null)
@@ -307,7 +292,7 @@ public class Game
 		}
 
 		playerActs(dt);
-        player.updateWindows(pet, GamePanel.getMousePos()) ;
+        player.updateFocusWindow(pet, GamePanel.getMousePos()) ;
 
 		player.checkMeet(GamePanel.getMousePos());
 

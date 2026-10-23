@@ -63,7 +63,16 @@ public class BankWindow extends GameWindow
 
     protected void onUpdate()
     {
-
+        if (hasInvestement && investmentIsComplete())
+        {
+            double rate = investmentRisk.equals(INVESTMENT_RISK_LEVELS[0]) ? Math.random() <= 0.95 ? 1.05 : 0.95 : Math.random() <= 0.6 ? 1.2 : 0.9 ;
+            
+            investedAmount = (int) (investedAmount * rate) ;
+            balance += investedAmount ;
+            investedAmount = 0 ;
+            investmentCounter.reset() ;
+            hasInvestement = false ;
+        }
     }
 	
 	public void act(Player player, Point mousePos)
@@ -101,19 +110,8 @@ public class BankWindow extends GameWindow
 	public void setMode(BankAction mode) { this.mode = mode ;}
 	
 	private boolean isReadingInput() { return mode.equals(BankAction.deposit) || mode.equals(BankAction.withdraw) || mode.equals(BankAction.investmentLowRisk) || mode.equals(BankAction.investmentHighRisk) ;}
-	public boolean hasInvestment() { return hasInvestement;}
-	public boolean investmentIsComplete() { return investmentCounter.hasFinished() ;}
-	
-	public void completeInvestment()
-	{
-		double rate = investmentRisk.equals(INVESTMENT_RISK_LEVELS[0]) ? Math.random() <= 0.95 ? 1.05 : 0.95 : Math.random() <= 0.6 ? 1.2 : 0.9 ;
-		
-		investedAmount = (int) (investedAmount * rate) ;
-		balance += investedAmount ;
-		investedAmount = 0 ;
-		investmentCounter.reset() ;
-		hasInvestement = false ;
-	}
+
+	private boolean investmentIsComplete() { return investmentCounter.hasFinished() ;}
 	
 	public void navigate(String action)
 	{

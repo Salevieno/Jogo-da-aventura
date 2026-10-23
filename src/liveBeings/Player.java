@@ -1289,7 +1289,7 @@ public class Player extends LiveBeing
 		setFocusWindow(win) ;
 	}	
 	
-	public void updateWindows(Pet pet, Point mousePos)
+	public void updateFocusWindow(Pet pet, Point mousePos)
 	{
         if (focusWindow == null) { return ;}
         if (!focusWindow.isOpen()) { return ;}
