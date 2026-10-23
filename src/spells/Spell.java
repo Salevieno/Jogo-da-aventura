@@ -108,7 +108,6 @@ public class Spell
 	public String getName() {return name ;}
 	public Image getImage() {return image ;}
 	public int getLevel() {return level ;}
-	public int getMaxLevel() {return maxLevel ;}
 	public int getMpCost() {return mpCost ;}
 	public SpellTypes getType() {return type ;}
 	public Map<Attributes, AttMod> getAttMods() { return attMods ;}
@@ -138,7 +137,7 @@ public class Spell
 	public boolean isReady() { return cooldownCounter.hasFinished() ;}
 	public boolean isActive() { return isActive ;}
 	public boolean isMaxed() { return level == maxLevel ;}
-	public boolean isUsable() { return !type.equals(SpellTypes.passive) & !type.equals(SpellTypes.auto) & 0 < level ;}
+	public boolean isUsable() { return !type.equals(SpellTypes.passive) && !type.equals(SpellTypes.auto) && 0 < level ;}
 	public void activate() {isActive = true ; effectCounter.start() ;}
 	public void deactivate() {isActive = false ; effectCounter.stop() ; effectCounter.reset() ;}
 	
@@ -193,7 +192,7 @@ public class Spell
 		if (buffID < 0 || Buff.getAllBuffs().size() <= buffID) { return ;}
         if (isActive)
         {
-            activate() ;
+            effectCounter.start() ;
             return ;
         }
 
@@ -206,7 +205,7 @@ public class Spell
 
         if (isActive)
         {
-            activate() ;
+            effectCounter.start() ;
             return ;
         }
 

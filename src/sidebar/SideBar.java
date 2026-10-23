@@ -51,7 +51,7 @@ public abstract class SideBar
 	public static void initialize()
 	{
 		Player player = Game.getPlayer() ;
-		SpellsBar.updateSpells(player.getActiveSpells()) ;  
+		SpellsBar.updateSpells(player.getUsableSpells()) ;  
 
 		Point iconPos = Util.translate(BAR_POS, SIZE.width / 2, 45) ;
 		Image playerImage = player.getMovingAni().spriteIdle.getCurrentFrame() ;

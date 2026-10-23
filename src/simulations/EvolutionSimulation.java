@@ -670,7 +670,7 @@ public abstract class EvolutionSimulation
 		
 		if (!player.isAlive()) { return ;}
 		
-		int spell = Util.randomInt(0, player.getActiveSpells().size() - 1) ;
+		int spell = Util.randomInt(0, player.getUsableSpells().size() - 1) ;
 		int qtdAvailableMoves = player.canUseSpell(player.getSpells().get(spell)) ? 2 : 1 ;
 
 		int move = Util.randomInt(0, qtdAvailableMoves) ;

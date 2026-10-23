@@ -205,23 +205,10 @@ public class Game
 		if (dayTimer.hasFinished())
 		{
 			dayTimer.restart();
-			// NPC.renewStocks();
 		}
         Spell.getAllActiveInstances().forEach(spell -> spell.deactivateWhenDone()) ;
-		// player.activateSpellCounters();
 
-		// if (pet != null)
-		// {
-		// 	pet.activateSpellCounters();
-		// }
-
-		// if (player.getMap().isField())
-		// {
-		// 	FieldMap fm = (FieldMap) player.getMap();
-		// 	fm.getCreatures().forEach(Creature::activateSpellCounters);
-		// }
-
-		for (CityMap city : CityMap.getAllCityMaps())
+		for (CityMap city : CityMap.getAllCityMaps()) // TODO mover para update windows?
 		{
 			Building bank = city.getBank();
 
@@ -249,7 +236,6 @@ public class Game
 		FieldMap fm = (FieldMap) player.getMap();
 		fm.getCreatures().forEach(Creature::applyCounterActions);
 		fm.activateCollectiblesCounter();
-
 	}
 
 	private void creaturesAct(double dt)

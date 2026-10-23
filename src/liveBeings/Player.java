@@ -17,7 +17,6 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 
 import NPC.NPC;
-import animations.BufferedTextAnimation;
 import animations.GainAttributeAnimation;
 import animations.MessageAnimation;
 import animations.ObtainedItemAnimation;
@@ -196,7 +195,7 @@ public class Player extends LiveBeing
 		this.pauseWindow = new PauseWindow();
 		this.equips = new Equip[4] ;
 		this.equippedArrow = null ;
-		this.spellPoints = 100 ;
+		this.spellPoints = 0 ;
         this.expToGain = 0 ;
     	
 		this.collectLevel = new ArrayList<>(List.of(0.0, 0.0, 0.0));
@@ -327,7 +326,7 @@ public class Player extends LiveBeing
 		if (spell.getLevel() != 0) { Log.warn("Trying to learn a spell whose level is not 0"); return ;}
 		
 		spell.incLevel(1) ;
-    	SpellsBar.updateSpells(getActiveSpells()) ;
+    	SpellsBar.updateSpells(getUsableSpells()) ;
 	}
 	
 	public boolean isInContactWithNPC() { return npcInContact != null ;}
@@ -881,61 +880,6 @@ public class Player extends LiveBeing
 		}
 	}
 
-
-	private AtkResults calcAtkResults(AtkTypes atkType, LiveBeing receiver)
-	{
-		switch (atkType)
-		{
-			case physical: return Battle.calcPhysicalAtk(this, receiver) ;
-				
-			case magical:
-			{
-				int spellID = Player.SPELL_KEYS.indexOf(currentAction) ;
-				Spell spell = getActiveSpells().get(spellID) ;
-				if (canUseSpell(spell))
-				{
-					return useSpell(spell, receiver);
-					// this.displayUsedSpellMessage(spell, Util.translate(this.getPos(), 0, -50), Palette.colors[5]) ;
-				}
-				else
-				{
-					Log.debug(name + " trying to use spell" + spell.getName() + ". But no can use, baby!") ;		
-					return new AtkResults();
-				}				
-			}
-			case physicalMagical: return new AtkResults();
-			case defense:
-			{
-	 			activateDef() ;
-	 			return new AtkResults(AtkTypes.defense , AtkEffects.none, 0, null);
-			}
-			default: return new AtkResults() ;
-		}
-	}
-
-	private AtkResults performAtk(AtkTypes atkType, LiveBeing receiver)
-	{
-		AtkResults atkResults = calcAtkResults(atkType, receiver) ;		
-		
-		Log.debug(  "\n with effect " + atkResults.getEffect() +
-                    "\n and damage " + atkResults.getDamage() +
-                    "\n and status " + atkResults.getStatus()) ;
-							
-		checkSpendArrow() ;
-		
-		AtkEffects effect = atkResults.getEffect() ;
-		receiver.displayDamageTaken(atkResults) ;
-		if (!effect.equals(AtkEffects.hit) & !effect.equals(AtkEffects.crit)) { return atkResults ;}
-
-		receiver.takeDamage(atkResults.getDamage()) ;
-		Point2D.Double knockedDist = Battle.knockback(pos, receiver.getPosAsDouble(), BA.getKnockbackPower().getTotal()) ;
-		receiver.moveIfWalkable(knockedDist) ;
-		inflictStatus(atkResults, receiver) ;
-		stats.updateInflicedStatus(atkResults.getStatus());
-
-		return atkResults ;
-	}
-
 	private void doBattleAction()
 	{
 		if (!isAlive()) { return ;}
@@ -947,9 +891,27 @@ public class Player extends LiveBeing
 		
 		if (atkType == null) { return ;}
 		
-		Log.debug("\n============ " + name + " performing " + atkType + " ============") ;
 		setCurrentAtkType(atkType) ;
 		AtkResults atkResults = performAtk(atkType, opponent) ;
+        if (atkType.equals(AtkTypes.magical))
+        {
+            int spellID = Player.SPELL_KEYS.indexOf(currentAction) ;
+            Spell spell = getUsableSpells().get(spellID) ;
+            if (canUseSpell(spell))
+            {
+                trainOffensive(new AtkResults(AtkTypes.magical)) ;
+                stats.incNumberMagAtk() ;
+                if (job == 1 && 1 <= spells.get(8).getLevel())
+                {
+                    useAutoSpell(true, spells.get(8)) ;
+                }
+            }
+        }
+		checkSpendArrow() ;        
+		if (atkResults.getEffect().equals(AtkEffects.hit) || atkResults.getEffect().equals(AtkEffects.crit))
+        {
+		    stats.updateInflicedStatus(atkResults.getStatus());
+        }
 		trainOffensive(atkResults) ;
 		stats.updateOffensive(atkResults) ;
 		battleActionCounter.restart() ;
@@ -968,11 +930,17 @@ public class Player extends LiveBeing
 		performKeyboardAction(pet) ;		
 		
 		// using spells
-		if (actionIsSpell() & !isFighting())
+		if (actionIsSpell() && !isFighting())
 		{
-			Spell spell = getActiveSpells().get(SPELL_KEYS.indexOf(currentAction));
-			if (canUseSpell(spell))
+			Spell spell = getUsableSpells().get(SPELL_KEYS.indexOf(currentAction));
+			if (spell.getType().equals(SpellTypes.support) && canUseSpell(spell))
 			{
+                trainOffensive(new AtkResults(AtkTypes.magical)) ;
+                stats.incNumberMagAtk() ;
+                if (job == 1 && 1 <= spells.get(8).getLevel())
+                {
+                    useAutoSpell(true, spells.get(8)) ;
+                }
 				useSpell(spell, this) ;
 			}
 		}
@@ -1145,32 +1113,6 @@ public class Player extends LiveBeing
 		meetWithNPCs(mousePos) ;
 	}
 
-	public AtkResults useSpell(Spell spell, LiveBeing receiver)
-	{
-		if (!canUseSpell(spell)) { return null ;}
-
-		Log.debug("using spell: " + spell.getName()) ;
-		spell.getCooldownCounter().start() ;
-		trainOffensive(new AtkResults(AtkTypes.magical)) ;
-		stats.incNumberMagAtk() ;
-		
-		BufferedTextAnimation.start(new Point((int) pos.x, (int) (pos.y - size.height - 10)), spell.getName(), Palette.colors[5]) ;
-		PA.getMp().decTotalValue(spell.getMpCost()) ;
-
-		if (job == 1 & 1 <= spells.get(8).getLevel())
-		{
-			useAutoSpell(true, spells.get(8)) ;
-		}
-		
-		switch (spell.getType())
-		{
-			case support : useSupportSpell(spell, receiver) ; return new AtkResults(AtkTypes.magical) ;
-			case offensive : return useOffensiveSpell(spell, receiver) ;
-			default : return new AtkResults(AtkTypes.magical) ;
-		}
-		
-	}
-	
 	public void applyPassiveSpell(Spell spell)
 	{
 		switch (spell.getId())
@@ -1263,7 +1205,7 @@ public class Player extends LiveBeing
 		{
 			case 42:
 				if (Util.chance(0.5)) { return ;}
-				Spell lastSpellUsed = getActiveSpells().get(SPELL_KEYS.indexOf(currentAction)) ;
+				Spell lastSpellUsed = getUsableSpells().get(SPELL_KEYS.indexOf(currentAction)) ;
                 int increase = (int) (0.04 * spell.getLevel() * lastSpellUsed.getMpCost()) ;
                 GainAttributeAnimation.start(headPos(), increase, Palette.colors[19]) ;
                 incPersonalAttribute(PA.getMp(), increase, true) ;

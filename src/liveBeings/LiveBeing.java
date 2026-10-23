@@ -17,6 +17,7 @@ import java.util.stream.Collectors;
 
 import javax.sound.sampled.Clip;
 
+import animations.BufferedTextAnimation;
 import animations.DamageAnimation;
 import animations.ObtainedItemAnimation;
 import attributes.Attributes;
@@ -113,9 +114,61 @@ public abstract class LiveBeing implements Drawable
 
 	public abstract Point center() ;
 	public abstract Point headPos() ;
-	public abstract AtkResults useSpell(Spell spell, LiveBeing receiver) ;
+
+    private AtkResults calcAtkResults(AtkTypes atkType, LiveBeing receiver)
+	{
+		switch (atkType)
+		{
+			case physical: return Battle.calcPhysicalAtk(this, receiver) ;
+				
+			case magical:
+			{
+				int spellID = Player.SPELL_KEYS.indexOf(currentAction) ;
+				Spell spell = getUsableSpells().get(spellID) ;
+		        if (spell == null) { Log.error(name + " tentando usar magia nula") ;}
+				if (canUseSpell(spell))
+				{
+					return useSpell(spell, receiver);
+				}
+				else
+				{
+					Log.debug(name + " trying to use spell" + spell.getName() + ". But no can use, baby!") ;		
+					return new AtkResults();
+				}				
+			}
+			case physicalMagical: return new AtkResults();
+			case defense:
+			{
+	 			activateDef() ;
+	 			return new AtkResults(AtkTypes.defense , AtkEffects.none, 0, null);
+			}
+			default: return new AtkResults() ;
+		}
+	}
+
+	protected AtkResults performAtk(AtkTypes atkType, LiveBeing receiver)
+	{
+		Log.debug("\n============ " + name + " performing " + atkType + " ============") ;
+		AtkResults atkResults = calcAtkResults(atkType, receiver) ;
+
+		Log.debug(  "\n with effect " + atkResults.getEffect() +
+                    "\n and damage " + atkResults.getDamage() +
+                    "\n and status " + atkResults.getStatus()) ;
+
+		AtkEffects effect = atkResults.getEffect() ;
+		receiver.displayDamageTaken(atkResults) ;
+
+		if (!effect.equals(AtkEffects.hit) & !effect.equals(AtkEffects.crit)) { return atkResults ;}
+
+		receiver.takeDamage(atkResults.getDamage()) ;
+		Point2D.Double knockedDist = Battle.knockback(pos, receiver.getPosAsDouble(), BA.getKnockbackPower().getTotal()) ;
+		receiver.moveIfWalkable(knockedDist) ;		
+		inflictStatus(atkResults, receiver) ;
+
+		return atkResults ;
+	}
+
 	public abstract void applyPassiveSpell(Spell spell) ;
-	
 
 	protected void useSupportSpell(Spell spell, LiveBeing receiver)
 	{
@@ -633,10 +686,10 @@ public abstract class LiveBeing implements Drawable
 		}
 	}
 	
-	public List<Spell> getActiveSpells() { return spells.stream().filter(Spell::isUsable).collect(Collectors.toList()) ;}
+	public List<Spell> getUsableSpells() { return spells.stream().filter(Spell::isUsable).collect(Collectors.toList()) ;}
 	
 	public boolean isAlive() { return 0 < PA.getLife().getTotalValue() ;}
-	public boolean hasTheSpell(String action) {return Player.SPELL_KEYS.indexOf(action) < getActiveSpells().size() ;}
+	public boolean hasTheSpell(String action) {return Player.SPELL_KEYS.indexOf(action) < getUsableSpells().size() ;}
 	public boolean hasEnoughMP(Spell spell)	{return (spell.getMpCost() <= PA.getMp().getCurrentValue()) ;}
 	public boolean hasActed() {return currentAction != null ;}
 	public boolean actionIsSpell()
@@ -647,7 +700,7 @@ public abstract class LiveBeing implements Drawable
 		
 		int spellID = SPELL_KEYS.indexOf(currentAction) ;
 		
-		if (getActiveSpells().size() <= spellID) { return false ;}
+		if (getUsableSpells().size() <= spellID) { return false ;}
 		
 		return true ;
 	}
@@ -656,7 +709,7 @@ public abstract class LiveBeing implements Drawable
 		if (!actionIsSpell()) { return false ;}
 
 		int spellID = SPELL_KEYS.indexOf(currentAction) ;
-		Spell spell = getActiveSpells().get(spellID);
+		Spell spell = getUsableSpells().get(spellID);
 		
 		if (!canUseSpell(spell)) { return false ;}
 		
@@ -798,6 +851,22 @@ public abstract class LiveBeing implements Drawable
 	{
 		BA.getPhyDef().incBonus(-BA.getPhyDef().getBaseValue()) ;
 		BA.getMagDef().incBonus(-BA.getMagDef().getBaseValue()) ;
+	}
+	protected AtkResults useSpell(Spell spell, LiveBeing receiver)
+	{
+		if (receiver == null) { Log.warn(name + " tentando usar magia em ninguém") ;}
+
+		Log.debug("using spell: " + spell.getName()) ;
+		spell.getCooldownCounter().start() ;
+        PA.getMp().decTotalValue(spell.getMpCost()) ;
+
+		BufferedTextAnimation.start(new Point((int) pos.x, (int) (pos.y - size.height - 10)), spell.getName(), Palette.colors[5]) ;
+		switch (spell.getType())
+		{
+			case support : useSupportSpell(spell, receiver) ; return new AtkResults(AtkTypes.magical) ;
+			case offensive : return useOffensiveSpell(spell, receiver) ;
+			default : return new AtkResults(AtkTypes.magical) ;
+		}
 	}
 	public void trainOffensive(AtkResults atkResults)
 	{

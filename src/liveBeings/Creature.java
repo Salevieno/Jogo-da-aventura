@@ -9,14 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import animations.BufferedTextAnimation;
 import attributes.BasicAttribute;
 import attributes.BattleAttributes;
 import attributes.PersonalAttributes;
-import battle.AtkEffects;
 import battle.AtkResults;
 import battle.AtkTypes;
-import battle.Battle;
 import components.HitboxCircle;
 import components.HitboxRectangle;
 import graphics.Align;
@@ -28,14 +25,12 @@ import main.GamePanel;
 import main.GameStates;
 import main.GameTimer;
 import main.Log;
-import main.Palette;
 import maps.GameMap;
 import screen.Screen;
 import screen.Sky;
 import simulations.EvolutionSimulation;
 import spells.Spell;
 import utilities.Util;
-import windows.CreatureAttributesWindow;
 
 public class Creature extends LiveBeing
 {
@@ -184,57 +179,6 @@ public class Creature extends LiveBeing
 		}
 
 	}
-	
-	private AtkResults calcAtkResults(AtkTypes atkType, LiveBeing receiver)
-	{
-		switch (atkType)
-		{
-			case physical: return Battle.calcPhysicalAtk(this, receiver) ;
-				
-			case magical:
-			{
-				int spellID = Player.SPELL_KEYS.indexOf(currentAction) ;
-				Spell spell = getActiveSpells().get(spellID) ;
-		        if (spell == null) { Log.error(name + " tentando usar magia nula") ;}
-				if (canUseSpell(spell))
-				{
-					return useSpell(spell, receiver);
-				}
-				else
-				{
-					Log.warn(name + " trying to use spell. But no can use, baby!") ;		
-					return new AtkResults();
-				}				
-			}
-			case physicalMagical: return new AtkResults();
-			case defense:
-			{
-	 			activateDef() ;
-	 			return new AtkResults(AtkTypes.defense , AtkEffects.none, 0, null);
-			}
-			default: return new AtkResults() ;
-		}
-	}
-
-	private AtkResults performAtk(AtkTypes atkType, LiveBeing receiver)
-	{
-		AtkResults atkResults = calcAtkResults(atkType, receiver) ;
-
-		Log.debug(  "\n with effect " + atkResults.getEffect() +
-                    "\n and damage " + atkResults.getDamage() +
-                    "\n and status " + atkResults.getStatus()) ;
-
-		AtkEffects effect = atkResults.getEffect() ;
-		receiver.displayDamageTaken(atkResults) ;
-		if (!effect.equals(AtkEffects.hit) & !effect.equals(AtkEffects.crit)) { return atkResults ;}
-
-		receiver.takeDamage(atkResults.getDamage()) ;
-		Point2D.Double knockedDist = Battle.knockback(pos, receiver.getPosAsDouble(), BA.getKnockbackPower().getTotal()) ;
-		receiver.moveIfWalkable(knockedDist) ;		
-		inflictStatus(atkResults, receiver) ;
-
-		return atkResults ;
-	}
 
 	private void doBattleAction()
 	{		
@@ -249,11 +193,10 @@ public class Creature extends LiveBeing
 
 		if (!hasActed()) { return ;}
 
-		AtkTypes atkType = atkTypeFromAction() ;
+        AtkTypes atkType = atkTypeFromAction() ;
 		
 		if (atkType == null) { return ;}
 
-		Log.debug("\n============ " + name + " performing " + atkType + " ============") ;
 		setCurrentAtkType(atkType) ;
 		AtkResults atkResults = performAtk(atkType, creatureTarget) ;
 		creatureTarget.trainDefensive(atkResults) ;
@@ -380,23 +323,6 @@ public class Creature extends LiveBeing
 	// 	return new AtkResults(AtkTypes.magical, effect, damage, inflictedStatus) ;
 	// }
 	
-	public AtkResults useSpell(Spell spell, LiveBeing receiver)
-	{
-		if (receiver == null) { Log.warn(name + " tentando usar magia em ninguém") ;}
-
-		Log.debug("using spell: " + spell.getName()) ;
-		spell.getCooldownCounter().start() ;
-
-		BufferedTextAnimation.start(new Point((int) pos.x, (int) (pos.y - size.height - 10)), spell.getName(), Palette.colors[5]) ;
-        PA.getMp().decTotalValue(spell.getMpCost()) ;
-		switch (spell.getType())
-		{
-			case support : useSupportSpell(spell, receiver) ; return new AtkResults(AtkTypes.magical) ;
-			case offensive : return useOffensiveSpell(spell, receiver) ;
-			default : return new AtkResults(AtkTypes.magical) ;
-		}
-	}
-	
 	public void displayName(Point pos, Align alignment, Color color)
 	{
 		Font font = new Font(Game.getMainFontName(), Font.BOLD, 13) ;
@@ -429,9 +355,6 @@ public class Creature extends LiveBeing
 		if (isFighting())
 		{
 			displayAttributes(new Point(headPos().x - size.width / 2, headPos().y), false) ;
-            ((CreatureAttributesWindow) attWindow).open() ;
-            ((CreatureAttributesWindow) attWindow).update() ;
-            ((CreatureAttributesWindow) attWindow).display() ;
 		}
         GamePanel.getDP().drawText(Util.translate(pos, 0, -20), Align.bottomCenter, name + ": " + type.getMovePattern().toString(), Color.black) ;
 		if (Game.DEBUG_MODE)

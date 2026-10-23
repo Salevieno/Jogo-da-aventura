@@ -19,10 +19,8 @@ import attributes.BattleAttributes;
 import attributes.BattleSpecialAttribute;
 import attributes.BattleSpecialAttributeWithDamage;
 import attributes.PersonalAttributes;
-import battle.AtkEffects;
 import battle.AtkResults;
 import battle.AtkTypes;
-import battle.Battle;
 import components.HitboxRectangle;
 import graphics.Align;
 import graphics.Scale;
@@ -219,53 +217,6 @@ public class Pet extends LiveBeing
 			restartMoving() ;
 			return ;
 		}
-		
-	}
-	
-	private AtkResults calcAtkResults(AtkTypes atkType, LiveBeing receiver)
-	{
-		switch (atkType)
-		{
-			case physical: return Battle.calcPhysicalAtk(this, receiver) ;
-				
-			case magical:
-			{
-				int spellID = Player.SPELL_KEYS.indexOf(currentAction) ;
-				Spell spell = getActiveSpells().get(spellID) ;
-				if (canUseSpell(spell))
-				{
-					return useSpell(spell, receiver);
-					// this.displayUsedSpellMessage(spell, Util.translate(this.getPos(), 0, -50), Palette.colors[5]) ;
-				}
-				else
-				{
-					Log.warn(name + " trying to use spell. But no can use, baby!") ;		
-					return new AtkResults();
-				}				
-			}
-			case physicalMagical: return new AtkResults();
-			case defense:
-			{
-	 			activateDef() ;
-	 			return new AtkResults(AtkTypes.defense , AtkEffects.none, 0, null);
-			}
-			default: return new AtkResults() ;
-		}
-	}
-
-	private AtkResults performAtk(AtkTypes atkType, LiveBeing receiver)
-	{
-		AtkResults atkResults = calcAtkResults(atkType, receiver) ;
-		
-		AtkEffects effect = atkResults.getEffect() ;
-		if (!effect.equals(AtkEffects.hit) & !effect.equals(AtkEffects.crit)) { return atkResults ;}
-
-		receiver.takeDamage(atkResults.getDamage()) ;
-		Point2D.Double knockedDist = Battle.knockback(pos, receiver.getPosAsDouble(), BA.getKnockbackPower().getTotal()) ;
-		receiver.moveIfWalkable(knockedDist) ;
-		inflictStatus(atkResults, receiver) ;
-
-		return atkResults ;
 	}
 
 	private void doBattleAction()
@@ -288,6 +239,7 @@ public class Pet extends LiveBeing
 		{
 			EvolutionSimulation.updateBattleStats(this, Game.getPlayer().getOpponent(), atkResults) ;
 		}
+		Log.debug("=======================================================\n") ;
 	}
 
 	public void act(Player player, double dt)
@@ -324,7 +276,7 @@ public class Pet extends LiveBeing
 	
 	public void chooseFightMove()
 	{
-		int move = Util.randomInt(0, 1 + getActiveSpells().size()) ;
+		int move = Util.randomInt(0, 1 + getUsableSpells().size()) ;
 		switch (move)
 		{
 			case 0: currentAction = BATTLE_KEYS[0] ; return ;
@@ -365,12 +317,6 @@ public class Pet extends LiveBeing
 	public void useAutoSpell(boolean activate, Spell spell)
 	{
 		
-	}
-	
-	public AtkResults useSpell(Spell spell, LiveBeing receiver)
-	{
-        // TODO reabilitar magia do pet
-		return new AtkResults() ;
 	}
 	
 	public void win(Creature creature)
