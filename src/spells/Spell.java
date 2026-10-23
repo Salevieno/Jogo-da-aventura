@@ -188,20 +188,29 @@ public class Spell
         this.deactivate() ;
     }
 	
-	public void applyBuffs(boolean activate, LiveBeing receiver)
+	public void applyBuffs(LiveBeing receiver)
 	{
 		if (buffID < 0 || Buff.getAllBuffs().size() <= buffID) { return ;}
+        if (isActive)
+        {
+            activate() ;
+            return ;
+        }
 
 		buff.applyBuff(level, receiver) ;
 	}
 
-	public void applyNerfs(boolean activate, LiveBeing receiver)
+	public void applyNerfs(LiveBeing receiver)
 	{
-        System.out.println(activate ? "Applying nerf" : "Removing nerf");
 		if (nerfID < 0 || Buff.getAllNerfs().size() <= nerfID) { return ;}
 
+        if (isActive)
+        {
+            activate() ;
+            return ;
+        }
+
 		nerf.applyNerf(level, receiver) ;
-        System.out.println(receiver.getName() + "phy def bonus after nerf: " + receiver.getBA().getPhyDef().getBonus());
 	}
 	
 	public void removeBuffs()
@@ -214,7 +223,6 @@ public class Spell
 	public void removeNerfs()
 	{
 		if (nerfID < 0 || Buff.getAllNerfs().size() <= nerfID) { return ;}
-        System.out.println("Removing nerf");
 
 		nerf.removeNerf(level) ;
 	}

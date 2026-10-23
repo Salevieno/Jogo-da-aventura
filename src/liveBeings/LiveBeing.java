@@ -143,12 +143,14 @@ public abstract class LiveBeing implements Drawable
 		}
 
 		
-		spell.applyBuffs(true, this) ;
+		spell.applyBuffs(this) ;
 		
-		if (receiver == null) { return ;}
-		
-		spell.applyNerfs(true, receiver) ;
-		
+		if (receiver != null)
+        {
+            spell.applyNerfs(receiver) ;
+        }
+				
+        spell.activate() ;
 	}
 
 	protected AtkResults useOffensiveSpell(Spell spell, LiveBeing receiver)
@@ -172,8 +174,9 @@ public abstract class LiveBeing implements Drawable
         // TODO são consideradas apenas as chances da magia de aplicar status, deve considerar também as chances-base do atacante
 		Map<Attributes, Double> inflictedStatus = Battle.calcStatus(spell.getSpecialAtt(), receiver.getBA().baseDefChances(), BA.baseDurations()) ;				
 		
-		spell.applyBuffs(true, this) ;
-		spell.applyNerfs(true, receiver) ;
+		spell.applyBuffs(this) ;
+		spell.applyNerfs(receiver) ;
+        spell.activate() ;
 		return new AtkResults(AtkTypes.magical, effect, damage, inflictedStatus) ;
 		
 	}

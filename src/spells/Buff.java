@@ -66,10 +66,8 @@ public class Buff
 			BasicBattleAttribute battleAttribute = receiver.getBA().mapAttributes(att) ;
 			if (battleAttribute != null)
 			{
-                System.out.println("Applying buff/nerf to " + receiver.getName() + ": attribute=" + att + " power=" + power.get(att) + ", level=" + level + ", mult=" + mult);
-				double increment = battleAttribute.getBaseValue() * power.get(att).getPercentIncrease() + power.get(att).getValueIncrease() ;
-                System.out.println("Increment calculated: " + increment);
-				battleAttribute.incBonus(increment * level * mult);
+                double increment = battleAttribute.getBaseValue() * power.get(att).getPercentIncrease() + power.get(att).getValueIncrease() ;
+                battleAttribute.incBonus(increment * level * mult);
                 incApplied.put(att, increment * level * mult) ;
 
 				continue ;
@@ -118,28 +116,24 @@ public class Buff
 
     public void applyBuff(int level, LiveBeing receiver)
 	{
-        // System.out.println("\nApplying buff to " + receiver.getName() + ": level=" + level) ;
         target = receiver ;
         apply(1, level, target) ;
     }
 
     public void applyNerf(int level, LiveBeing receiver)
 	{
-        System.out.println("\nApplying nerf to " + receiver.getName() + ": level=" + level) ;
         target = receiver ;
         apply(-1, level, target) ;
     }
 
     public void removeBuff(int level)
 	{
-        // System.out.println("\nRemoving buff from " + target.getName() + ": level=" + level) ;
         remove(level, target) ;
         target = null ;
     }
 
     public void removeNerf(int level)
 	{
-        System.out.println("\nRemoving nerf from " + target.getName() + ": level=" + level) ;
         remove(level, target) ;
         target = null ;
     }

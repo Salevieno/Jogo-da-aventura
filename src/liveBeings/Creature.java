@@ -35,6 +35,7 @@ import screen.Sky;
 import simulations.EvolutionSimulation;
 import spells.Spell;
 import utilities.Util;
+import windows.CreatureAttributesWindow;
 
 public class Creature extends LiveBeing
 {
@@ -387,7 +388,6 @@ public class Creature extends LiveBeing
 		spell.getCooldownCounter().start() ;
 
 		BufferedTextAnimation.start(new Point((int) pos.x, (int) (pos.y - size.height - 10)), spell.getName(), Palette.colors[5]) ;
-		spell.activate() ;
         PA.getMp().decTotalValue(spell.getMpCost()) ;
 		switch (spell.getType())
 		{
@@ -429,6 +429,9 @@ public class Creature extends LiveBeing
 		if (isFighting())
 		{
 			displayAttributes(new Point(headPos().x - size.width / 2, headPos().y), false) ;
+            ((CreatureAttributesWindow) attWindow).open() ;
+            ((CreatureAttributesWindow) attWindow).update() ;
+            ((CreatureAttributesWindow) attWindow).display() ;
 		}
         GamePanel.getDP().drawText(Util.translate(pos, 0, -20), Align.bottomCenter, name + ": " + type.getMovePattern().toString(), Color.black) ;
 		if (Game.DEBUG_MODE)

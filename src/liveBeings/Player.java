@@ -1155,7 +1155,6 @@ public class Player extends LiveBeing
 		stats.incNumberMagAtk() ;
 		
 		BufferedTextAnimation.start(new Point((int) pos.x, (int) (pos.y - size.height - 10)), spell.getName(), Palette.colors[5]) ;
-		spell.activate() ;
 		PA.getMp().decTotalValue(spell.getMpCost()) ;
 
 		if (job == 1 & 1 <= spells.get(8).getLevel())
@@ -1284,13 +1283,13 @@ public class Player extends LiveBeing
 				if (!(PA.getLife().getRate() <= 0.2) & spell.isActive())
 				{
 					spell.deactivate();
-					spell.applyBuffs(false, this) ;
-					spell.applyNerfs(false, this) ;
+					// spell.applyBuffs(false, this) ;
+					// spell.applyNerfs(false, this) ;
 					return ;
 				}
 				spell.activate();
-				spell.applyBuffs(true, this) ;
-				spell.applyNerfs(true, this) ;
+				// spell.applyBuffs(true, this) ;
+				// spell.applyNerfs(true, this) ;
 
 				return ;
 			
