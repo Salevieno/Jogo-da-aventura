@@ -168,8 +168,6 @@ public abstract class LiveBeing implements Drawable
 		return atkResults ;
 	}
 
-	public abstract void applyPassiveSpell(Spell spell) ;
-
 	protected void useSupportSpell(Spell spell, LiveBeing receiver)
 	{
 		// apenas efeitos permanentes entram aqui. Efeitos temporários são causados pelos buffs
@@ -231,12 +229,10 @@ public abstract class LiveBeing implements Drawable
 		spell.applyNerfs(receiver) ;
         spell.activate() ;
 		return new AtkResults(AtkTypes.magical, effect, damage, inflictedStatus) ;
-		
 	}
 
-	public abstract void useAutoSpell(boolean activate, Spell spell);
 	public abstract void dies() ;
-	
+
 	public String getName() {return name ;}
 	public int getLevel() {return level ;}
 	public int getJob() {return job ;}
@@ -346,8 +342,9 @@ public abstract class LiveBeing implements Drawable
 			}
 		}
 	}
+
+    public int getRange() { return range ;}
 	public void setRange(int newValue) {range = newValue ;}
-	public void setStep(int newValue) {step = newValue ;}
 	public void setCombo(List<String> newValue) {combo = newValue ;}
 	public void setCurrentAtkType(AtkTypes ba) { currentAtkType = ba ;}
 	

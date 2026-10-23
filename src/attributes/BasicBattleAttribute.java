@@ -39,8 +39,6 @@ public class BasicBattleAttribute extends LiveBeingAttribute
 	public String text() {return Util.round(baseValue, 1) + " + " + Util.round(bonus, 1) + " + " + Util.round(train, 1) ;}
 	
 	public double getTotal() {return baseValue + bonus + train ;}
-	public double modified(double perc, double value) { return baseValue * (1 + perc) + value ;}
-	public double totalModified(double perc, double value) { return getTotal() * (1 + perc) + value ;}
 	public double totalModified(AttMod attMod) { return getTotal() * (1 + attMod.getPercentualIncrease()) + attMod.getValueIncrease() ;}
 
 	@SuppressWarnings("unchecked")

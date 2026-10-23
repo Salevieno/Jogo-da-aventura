@@ -64,6 +64,8 @@ public class Game
 	// TODO ideia - todo personagem pode inspecionar para aprender 1 att ou 2 da criatura, mas tem que estar perto e isso pode provocar certas criaturas meio agressivas
     // TODO fome causa redução da força
     // TODO corrigir funcionamento do spell vida eterna
+    // TODO corrigir abertura e fechamento de algumas janelas (spellstree e bag)
+    // TODO corrigir criaturas ficando presas nos cantos do mapa
 
 	private GameStates state ;
 	private boolean shouldRepaint; // tells if the panel should be repainted, responding to multiple requests only once

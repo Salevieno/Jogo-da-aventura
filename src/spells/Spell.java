@@ -9,11 +9,17 @@ import java.util.stream.Collectors;
 import org.json.simple.JSONObject;
 
 import attributes.Attributes;
+import attributes.BattleAttributes;
+import attributes.PersonalAttributes;
 import liveBeings.AttackModifiers;
 import liveBeings.LiveBeing;
+import liveBeings.Pet;
+import liveBeings.Player;
 import main.Elements;
+import main.Game;
 import main.GameTimer;
 import main.ImageLoader;
+import main.Log;
 import main.Path;
 import utilities.Util;
 
@@ -211,7 +217,78 @@ public class Spell
 
 		nerf.applyNerf(level, receiver) ;
 	}
-	
+
+	public void applyPassiveEffect(LiveBeing target)
+	{
+        if (!SpellTypes.passive.equals(this.getType())) { Log.warn("Tentando aplicar efeito 'passivo' de uma magia do tipo " + this.getType()) ; return ;}
+
+        PersonalAttributes PA = target.getPA() ;
+        BattleAttributes BA = target.getBA() ;
+
+		switch (this.getId())
+		{
+			case 1: PA.getLife().incMaxValue(10 + (int) (0.05 * PA.getLife().getMaxValue())) ; PA.getLife().setToMaximum() ; return ;
+			case 2: BA.getPhyAtk().incBaseValue(2 + (int) (0.04 * BA.getPhyAtk().getBaseValue())) ; return ;
+			case 3: BA.getPhyDef().incBaseValue(2 + (int) (0.04 * BA.getPhyDef().getBaseValue())) ; return ;
+			case 7: BA.getBlood().incBasicDef(0.4 + 0.05 * BA.getBlood().getBasicDef()) ; return ;
+			case 10: BA.setElemResistance(Elements.neutral, 1 - 0.03 * this.getLevel()); return ;
+			case 11: BA.getPhyAtk().incBaseValue(2) ; BA.getDex().incBaseValue(1) ; BA.getAgi().incBaseValue(1) ; return ;
+			case 14: PA.getLife().incMaxValue(202) ; PA.getLife().setToMaximum() ; BA.getPhyAtk().incBaseValue(9) ; BA.getPhyDef().incBaseValue(5) ; return ;
+			case 18: BA.getDex().incBaseValue(3) ; BA.getAgi().incBaseValue(3) ; BA.getStun().incAtkChance(0.04) ; return ;
+			case 24: PA.getLife().incMaxValue(202) ; PA.getLife().setToMaximum() ; BA.getPhyAtk().incBaseValue(5) ; BA.getPhyDef().incBaseValue(9) ; return ;
+			case 26: BA.getBlock().incAtkChance(0.06) ; return ;
+			case 27: BA.getMagDef().incBaseValue(0.1 * BA.getMagDef().getBaseValue()) ; return ;
+			case 28: BA.getCritDef().incBaseValue(0.15) ; return ;
+			case 29: BA.getPoison().incDefChance(0.1) ; return ;
+			case 36: BA.getMagAtk().incBaseValue(2 + (int) (0.04 * BA.getMagAtk().getBaseValue())) ; BA.getMagDef().incBaseValue(2 + (int) (0.04 * BA.getMagDef().getBaseValue())) ; return ;
+			case 49: PA.getMp().incMaxValue(202) ; PA.getMp().setToMaximum() ; BA.getMagAtk().incBaseValue(9) ; BA.getMagDef().incBaseValue(5) ; return ;
+			case 59: PA.getMp().incMaxValue(202) ; PA.getMp().setToMaximum() ; BA.getMagAtk().incBaseValue(5) ; BA.getMagDef().incBaseValue(9) ; return ;
+			case 70: BA.getDex().incBaseValue(1) ; BA.getAgi().incBaseValue(0.4) ; return ;
+			case 73:  return ; // permite o uso de flechas mais poderosas
+			case 76: BA.getMagAtk().incBaseValue(1 + (int) (0.02 * BA.getMagAtk().getBaseValue())) ; BA.getPhyAtk().incBaseValue(1 + (int) (0.02 * BA.getPhyAtk().getBaseValue())) ; return ;
+			case 77:  return ; // permite a fabricação de flechas elementais
+			case 79: BA.getBlood().incDefChance(0.05) ; BA.getPoison().incDefChance(0.05) ; return ;
+			case 82:  return ; // chance permanente de recuperar a flecha de até 50%
+			case 84: BA.getPhyAtk().incBaseValue(7) ; BA.getDex().incBaseValue(10) ; BA.getAgi().incBaseValue(3) ; return ;
+			case 86: target.setRange((int) (target.getRange() * 1.148698)) ; return ;
+			
+			case 105: BA.getDex().incBaseValue(2) ; BA.getAgi().incBaseValue(1) ; return ;
+			case 107: BA.getCritAtk().incBaseValue(0.03) ; return ;
+			case 108:  return ; // chance de coleta em dobro em até 70%
+			case 111:  return ; // efeito das poções até + 30%
+			case 113:
+				PA.getLife().incMaxValue((int) (0.03 * PA.getLife().getMaxValue())) ;
+				PA.getLife().setToMaximum() ;
+				BA.getPhyAtk().incBaseValue(2) ; BA.getPhyDef().incBaseValue(2) ;
+				return ;
+			case 117: 
+				Pet pet = Game.getPet() ;
+				if (pet == null) { return ;}
+				pet.getPA().getLife().incMaxValue(10) ;
+				pet.getPA().getLife().setToMaximum() ;
+				pet.getPA().getMp().incMaxValue(10) ;
+				pet.getPA().getMp().setToMaximum() ;
+				pet.getBA().getPhyAtk().incBaseValue(2) ;
+				pet.getBA().getMagAtk().incBaseValue(2) ;
+				pet.getBA().getDex().incBaseValue(1) ;
+				pet.getBA().getAgi().incBaseValue(1) ;
+				return ;
+			case 118: PA.getMp().incMaxValue(48) ; PA.getMp().setToMaximum() ; BA.getPhyAtk().incBaseValue(7) ; BA.getMagAtk().incBaseValue(4) ; BA.getDex().incBaseValue(2) ; BA.getAgi().incBaseValue(3) ; return ;
+			case 128: PA.getLife().incMaxValue(28) ; PA.getLife().setToMaximum() ; BA.getPhyAtk().incBaseValue(11) ; BA.getPhyDef().incBaseValue(4) ; BA.getDex().incBaseValue(3) ; BA.getAgi().incBaseValue(5) ; return ;	
+			case 139: BA.getAgi().incBaseValue(1) ; return ;
+			case 142: BA.getPhyAtk().incBaseValue(3) ; BA.getDex().incBaseValue(1) ; return ;
+			case 144: 
+                if (!(target instanceof Player)) { return ;}
+                ((Player) target).setDigBonus(((Player) target).getDigBonus() + 0.04) ; return ;
+			case 146:  return ; // permite o uso de itens na batalha
+			case 147:  return ; // permite a fabricação de poções venenosas
+			case 151: BA.getPoison().incBasicDef(1); return ;
+
+			default: return ;
+			
+		}
+	}
+
 	public void removeBuffs()
 	{
 		if (buffID < 0 || Buff.getAllBuffs().size() <= buffID) { return ;}

@@ -195,7 +195,7 @@ public class Player extends LiveBeing
 		this.pauseWindow = new PauseWindow();
 		this.equips = new Equip[4] ;
 		this.equippedArrow = null ;
-		this.spellPoints = 0 ;
+		this.spellPoints = 100 ;
         this.expToGain = 0 ;
     	
 		this.collectLevel = new ArrayList<>(List.of(0.0, 0.0, 0.0));
@@ -289,6 +289,7 @@ public class Player extends LiveBeing
 	public void setClosestCreature(Creature creature) { closestCreature = creature ;}
 	public void setGoldMultiplier(double goldMultiplier) { this.goldMultiplier = goldMultiplier ;}
 	public double getDigBonus() { return digBonus ;}
+    public void setDigBonus(double digBonus) { this.digBonus = digBonus ;}
 	public void setFocusWindow(GameWindow W) { focusWindow = W ;}
 	public void setSpells(List<Spell> spells) { this.spells = spells ;}
 
@@ -1111,87 +1112,6 @@ public class Player extends LiveBeing
 		}	
 		
 		meetWithNPCs(mousePos) ;
-	}
-
-	public void applyPassiveSpell(Spell spell)
-	{
-		switch (spell.getId())
-		{
-			case 1: PA.getLife().incMaxValue(10 + (int) (0.05 * PA.getLife().getMaxValue())) ; PA.getLife().setToMaximum() ; return ;
-			case 2: BA.getPhyAtk().incBaseValue(2 + (int) (0.04 * BA.getPhyAtk().getBaseValue())) ; return ;
-			case 3: BA.getPhyDef().incBaseValue(2 + (int) (0.04 * BA.getPhyDef().getBaseValue())) ; return ;
-			case 7: BA.getBlood().incBasicDef(0.4 + 0.05 * BA.getBlood().getBasicDef()) ; return ;
-			case 10: BA.setElemResistance(Elements.neutral, 1 - 0.03 * spell.getLevel()); return ;
-			case 11: BA.getPhyAtk().incBaseValue(2) ; BA.getDex().incBaseValue(1) ; BA.getAgi().incBaseValue(1) ; return ;
-			case 14: PA.getLife().incMaxValue(202) ; PA.getLife().setToMaximum() ; BA.getPhyAtk().incBaseValue(9) ; BA.getPhyDef().incBaseValue(5) ; return ;
-			case 18: BA.getDex().incBaseValue(3) ; BA.getAgi().incBaseValue(3) ; BA.getStun().incAtkChance(0.04) ; return ;
-//			case 19: return ; // proTODO aumenta bônus do atk físico da arma em até 50%
-//			case 23: return ; // proTODO aumenta o efeito do treinamento em 20%
-			case 24: PA.getLife().incMaxValue(202) ; PA.getLife().setToMaximum() ; BA.getPhyAtk().incBaseValue(5) ; BA.getPhyDef().incBaseValue(9) ; return ;
-			case 26: BA.getBlock().incAtkChance(0.06) ; return ;
-			case 27: BA.getMagDef().incBaseValue(0.1 * BA.getMagDef().getBaseValue()) ; return ;
-			case 28: BA.getCritDef().incBaseValue(0.15) ; return ;
-			case 29: BA.getPoison().incDefChance(0.1) ; return ;
-			
-			case 36: BA.getMagAtk().incBaseValue(2 + (int) (0.04 * BA.getMagAtk().getBaseValue())) ; BA.getMagDef().incBaseValue(2 + (int) (0.04 * BA.getMagDef().getBaseValue())) ; return ;
-			case 49: PA.getMp().incMaxValue(202) ; PA.getMp().setToMaximum() ; BA.getMagAtk().incBaseValue(9) ; BA.getMagDef().incBaseValue(5) ; return ;
-//			case 54: return ; // proTODO reduz o cooldown das magias em 50%
-//			case 57: return ; // proTODO descobre o próximo movimento da criatura com chance de 70%
-			case 59: PA.getMp().incMaxValue(202) ; PA.getMp().setToMaximum() ; BA.getMagAtk().incBaseValue(5) ; BA.getMagDef().incBaseValue(9) ; return ;
-//			case 62: return ; // proTODO regen de até 5% da vida, consome mp
-//			case 65: return ; // proTODO chance de converter até 100% do dano mágico recebido em vida
-			
-			case 70: BA.getDex().incBaseValue(1) ; BA.getAgi().incBaseValue(0.4) ; return ;
-			case 73:  return ; // permite o uso de flechas mais poderosas
-			case 76: BA.getMagAtk().incBaseValue(1 + (int) (0.02 * BA.getMagAtk().getBaseValue())) ; BA.getPhyAtk().incBaseValue(1 + (int) (0.02 * BA.getPhyAtk().getBaseValue())) ; return ;
-			case 77:  return ; // permite a fabricação de flechas elementais
-			case 79: BA.getBlood().incDefChance(0.05) ; BA.getPoison().incDefChance(0.05) ; return ;
-			case 82:  return ; // chance permanente de recuperar a flecha de até 50%
-			case 84: BA.getPhyAtk().incBaseValue(7) ; BA.getDex().incBaseValue(10) ; BA.getAgi().incBaseValue(3) ; return ;
-			case 86: range *= 1.148698 ; return ;
-//			case 88: return ; // proTODO permite fabricar flechas especiais
-//			case 89: return ; // proTODO permite se mover durante a batalha com redução de destreza
-//			case 92: return ; // proTODO aumenta a saciedade, comidas recuperam vida
-//			case 94: PA.getMp().incMaxValue(68) ; PA.getMp().setToMaximum() ; BA.getMagAtk().incBaseValue(7) ; BA.getDex().incBaseValue(3) ; BA.getAgi().incBaseValue(2) ; return ;
-//			case 96: return ; // proTODO aumenta a resistência aos elementos em 30%
-//			case 99: return ; // proTODO vê o elemento das criaturas
-			
-			case 105: BA.getDex().incBaseValue(2) ; BA.getAgi().incBaseValue(1) ; return ;
-			case 107: BA.getCritAtk().incBaseValue(0.03) ; return ;
-			case 108:  return ; // chance de coleta em dobro em até 70%
-//			case 111:  return ; // efeito das poções até + 30%
-			case 113:
-				PA.getLife().incMaxValue((int) (0.03 * PA.getLife().getMaxValue())) ;
-				PA.getLife().setToMaximum() ;
-				BA.getPhyAtk().incBaseValue(2) ; BA.getPhyDef().incBaseValue(2) ;
-				return ;
-			case 117: 
-				Pet pet = Game.getPet() ;
-				if (pet == null) { return ;}
-				pet.applyPassiveSpell(spell);
-				return ;
-			case 118: PA.getMp().incMaxValue(48) ; PA.getMp().setToMaximum() ; BA.getPhyAtk().incBaseValue(7) ; BA.getMagAtk().incBaseValue(4) ; BA.getDex().incBaseValue(2) ; BA.getAgi().incBaseValue(3) ; return ;
-			case 128: PA.getLife().incMaxValue(28) ; PA.getLife().setToMaximum() ; BA.getPhyAtk().incBaseValue(11) ; BA.getPhyDef().incBaseValue(4) ; BA.getDex().incBaseValue(3) ; BA.getAgi().incBaseValue(5) ; return ;	
-//			case 129: return ; // proTODO aumenta a velocidade de ataque
-//			case 133: return ; // proTODO Se a criatura estiver com a vida abaixo de 30%, os ataques físicos e mágicos do Selvagem aumentam em 30%
-			
-			case 139: BA.getAgi().incBaseValue(1) ; return ;
-			case 142: BA.getPhyAtk().incBaseValue(3) ; BA.getDex().incBaseValue(1) ; return ;
-			case 144: digBonus += 0.04 ; return ;
-			case 146:  return ; // permite o uso de itens na batalha
-			case 147:  return ; // permite a fabricação de poções venenosas
-			case 151: BA.getPoison().incBasicDef(1); return ;
-//			case 152: PA.getLife().incMaxValue(10) ; PA.getLife().setToMaximum() ; BA.getPhyAtk().incBaseValue(6) ; BA.getPhyDef().incBaseValue(6) ; BA.getDex().incBaseValue(3) ; BA.getAgi().incBaseValue(10) ; return ;
-//			case 155: return ; // proTODO chance de 30% de atacar sem gastar o turno
-//			case 156: BA.getStun().incDefChance(0.1) ; return ;
-//			case 162: PA.getLife().incMaxValue(16) ; PA.getLife().setToMaximum() ; BA.getPhyAtk().incBaseValue(3) ; BA.getPhyDef().incBaseValue(3) ; BA.getDex().incBaseValue(5) ; BA.getAgi().incBaseValue(6) ; return ;
-//			case 163: return ; // proTODO aumenta o ganho de ouro em 20%
-//			case 165: return ; // proTODO 50% do dano recebido de envenenamento é convertido em vida
-//			case 168: return ; // proTODO aumenta o multiplicador de ataque em 5%
-			
-			default: return ;
-			
-		}
 	}
 
 	public void useAutoSpell(boolean activate, Spell spell)

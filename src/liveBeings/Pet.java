@@ -296,24 +296,7 @@ public class Pet extends LiveBeing
 		resetBattleActions() ;
 		setPos(Game.getPlayer().getPosAsDouble()) ;
 	}
-	
-	public void applyPassiveSpell(Spell spell)
-	{
-		switch (spell.getId())
-		{
-			case 117: 
-				PA.getLife().incMaxValue(10) ;
-				PA.getLife().setToMaximum() ;
-				PA.getMp().incMaxValue(10) ;
-				PA.getMp().setToMaximum() ;
-				BA.getPhyAtk().incBaseValue(2) ;
-				BA.getMagAtk().incBaseValue(2) ;
-				BA.getDex().incBaseValue(1) ;
-				BA.getAgi().incBaseValue(1) ;
-				return ;
-		}
-	}
-	
+
 	public void useAutoSpell(boolean activate, Spell spell)
 	{
 		

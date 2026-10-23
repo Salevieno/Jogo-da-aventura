@@ -143,7 +143,7 @@ public class SpellsTreeWindow extends GameWindow
 		spell.incLevel(1) ;
 		if (spell.getType().equals(SpellTypes.passive))
 		{
-			player.applyPassiveSpell(spell) ;
+            spell.applyPassiveEffect(player) ;
 		}
 		
 	}
