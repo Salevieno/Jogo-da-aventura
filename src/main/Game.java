@@ -17,7 +17,6 @@ import Buildings.Building;
 import UI.GameButton;
 import UI.GameTextButton;
 import animations.Animation;
-import battle.AtkTypes;
 import battle.Battle;
 import components.Projectiles;
 import graphics.Align;
@@ -63,7 +62,7 @@ public class Game
 	// TODO ideia - magias e flechas são projéteis que precisam acertar o oponente para dar dano. O oponente pode se mover durante a luta E usar magias de longe enquanto se move (ou defender)
 	// TODO ideia - todo personagem pode inspecionar para aprender 1 att ou 2 da criatura, mas tem que estar perto e isso pode provocar certas criaturas meio agressivas
     // TODO fome causa redução da força
-    // TODO corrigir funcionamento do spell vida eterna
+    // TODO corrigir funcionamento das magias
     // TODO corrigir abertura e fechamento de algumas janelas (spellstree e bag)
     // TODO corrigir criaturas ficando presas nos cantos do mapa
 
@@ -202,7 +201,7 @@ public class Game
 		}
 	}
 
-	private void activateCounters()
+	private void applyCounterActions()
 	{
 		if (dayTimer.hasFinished())
 		{
@@ -245,11 +244,7 @@ public class Game
 		List<Creature> creaturesInMap = ((FieldMap) player.getMap()).getCreatures();
 		for (Creature creature : creaturesInMap)
 		{
-			if (creature.getBattleActionCounter().hasFinished() && AtkTypes.defense.equals(creature.getCurrentAtkType()))
-			{
-				creature.deactivateDef() ;
-				creature.setCurrentAtkType(null);
-			}
+			creature.deactivateDefWhenNeeded() ;
 			creature.takeBloodAndPoisonDamage() ;
 			creature.act(player.getPosAsDouble(), player.getMap(), dt) ;
 		}
@@ -259,6 +254,7 @@ public class Game
 	{
 		if (!pet.isAlive()) { return ;}
 
+        pet.deactivateDefWhenNeeded() ;
 		pet.takeBloodAndPoisonDamage();
 		pet.updateCombo();
 		pet.think(player.isFighting(), player.getPosAsDouble());
@@ -267,6 +263,7 @@ public class Game
 
 	private void playerActs(double dt)
 	{
+        player.deactivateDefWhenNeeded() ;
 		player.takeBloodAndPoisonDamage();
 		player.updateBloodAndPoisonStatistics();
 		if (player.canAct() && player.hasActed())
@@ -290,17 +287,7 @@ public class Game
 		if (Math.pow(10, 1) <= dt) { return ;}
 
 		Screen.getMe().updateSky(dt);
-		activateCounters();
-		
-		// TODO mover as verificações de batalha pra cá e unir às gerais
-		if (player.getBattleActionCounter().hasFinished() && player.getCurrentAtkType() != null)
-		{
-			if (player.getCurrentAtkType().equals(AtkTypes.defense))
-			{
-				player.deactivateDef() ;
-				player.setCurrentAtkType(null);
-			}
-		}
+		applyCounterActions();
 
 		checkKonamiCode(player.getCombo());
 		if (konamiCodeIsActive)
@@ -316,10 +303,6 @@ public class Game
 
 		if (pet != null && pet.isAlive())
 		{
-			// if (pet.getBattleActionCounter().hasFinished() && AtkTypes.defense.equals(pet.getCurrentAtkType()))
-			// {
-			// 	pet.deactivateDef() ;
-			// }
 			petActs(dt);
 		}
 

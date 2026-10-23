@@ -294,6 +294,10 @@ public class Pet extends LiveBeing
 	public void dies()
 	{
 		resetBattleActions() ;
+        if (AtkTypes.defense.equals(currentAtkType))
+		{
+			deactivateDef() ;
+		}
 		setPos(Game.getPlayer().getPosAsDouble()) ;
 	}
 

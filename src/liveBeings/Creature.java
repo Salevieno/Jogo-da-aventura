@@ -343,12 +343,9 @@ public class Creature extends LiveBeing
 		setState(LiveBeingStates.idle) ;
 		PA.getLife().setToMaximum() ;
 		PA.getMp().setToMaximum() ;
-		if (currentAtkType != null)
+		if (AtkTypes.defense.equals(currentAtkType))
 		{
-			if (currentAtkType.equals(AtkTypes.defense))
-			{
-				deactivateDef() ;
-			}
+			deactivateDef() ;
 		}
 		setRandomPos() ;
 	}

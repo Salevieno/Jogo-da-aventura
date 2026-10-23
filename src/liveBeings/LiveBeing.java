@@ -360,7 +360,7 @@ public abstract class LiveBeing implements Drawable
 	
 	public static void updateDamageAnimation(int newDamageStyle) { damageStyle = newDamageStyle ;}
 
-	public void resetStatus()
+	protected void resetStatus()
 	{
 		for (Attributes att : Attributes.values())
 		{
@@ -839,16 +839,22 @@ public abstract class LiveBeing implements Drawable
 
 	}
 	
-	public void activateDef()
+	private void activateDef()
 	{
 		BA.getPhyDef().incBonus(BA.getPhyDef().getBaseValue()) ;
 		BA.getMagDef().incBonus(BA.getMagDef().getBaseValue()) ;
 	}
-	public void deactivateDef()
+	protected void deactivateDef()
 	{
 		BA.getPhyDef().incBonus(-BA.getPhyDef().getBaseValue()) ;
 		BA.getMagDef().incBonus(-BA.getMagDef().getBaseValue()) ;
 	}
+    public void deactivateDefWhenNeeded()
+    {
+        if (battleActionCounter.hasFinished() && AtkTypes.defense.equals(currentAtkType)) { return ;}
+        deactivateDef() ;
+        setCurrentAtkType(null);
+    }
 	protected AtkResults useSpell(Spell spell, LiveBeing receiver)
 	{
 		if (receiver == null) { Log.warn(name + " tentando usar magia em ninguém") ;}

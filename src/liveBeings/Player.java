@@ -1425,6 +1425,10 @@ public class Player extends LiveBeing
 		PA.getMp().setToMaximum() ;
 		PA.getSatiation().setToMaximum() ;
 		PA.getThirst().setToMaximum() ;
+		if (AtkTypes.defense.equals(currentAtkType))
+		{
+			deactivateDef() ;
+		}
 		resetStatus() ;
 		state = LiveBeingStates.idle ;
 		if (opponent != null)
