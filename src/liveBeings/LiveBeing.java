@@ -506,11 +506,12 @@ public abstract class LiveBeing implements Drawable
 		int maxPower = 10000 ;
 		Color color = Palette.colors[6] ;
 		Font font = new Font(Game.getMainFontName(), Font.BOLD, 11) ;
-		Dimension barSize = new Dimension(15, POWER_BAR_IMAGE.getHeight(null) * totalPower() / maxPower) ;
+        int totalPower = totalPower() ;
+		Dimension barSize = new Dimension(15, POWER_BAR_IMAGE.getHeight(null) * totalPower / maxPower) ;
 		
 		GamePanel.getDP().drawRect(Util.translate(pos, 0, -13), Align.bottomCenter, barSize, 0, color, null, 1.0) ;
 		GamePanel.getDP().drawImage(POWER_BAR_IMAGE, pos, Align.bottomCenter) ;
-		GamePanel.getDP().drawText(Util.translate(pos, 0, -POWER_BAR_IMAGE.getHeight(null) - 10), Align.bottomCenter, 0, String.valueOf(totalPower()), font, color) ;
+		GamePanel.getDP().drawText(Util.translate(pos, 0, -POWER_BAR_IMAGE.getHeight(null) - 10), Align.bottomCenter, 0, String.valueOf(totalPower), font, color) ;
 	}
 
 	private static Directions calcDrunkDir(Directions dir, GameTimer drunk)
@@ -599,7 +600,7 @@ public abstract class LiveBeing implements Drawable
 	
 	public void resetBattleActions() { battleActionCounter.restart() ; }
 	
-	protected int totalPower()
+	private int totalPower()
 	{
 		// optionalTODO - consider special ba, element mult, mp with spells and items
 		// Dano = nHits . hitRate . (PhyAtkRate . PhyDam + MagAtkRate . MagDam + BloodRate . BloodDam + PoisonRate . PoisonDam)
@@ -851,7 +852,7 @@ public abstract class LiveBeing implements Drawable
 	}
     public void deactivateDefWhenNeeded()
     {
-        if (battleActionCounter.hasFinished() && AtkTypes.defense.equals(currentAtkType)) { return ;}
+        if (!battleActionCounter.hasFinished() || !AtkTypes.defense.equals(currentAtkType)) { return ;}
         deactivateDef() ;
         setCurrentAtkType(null);
     }

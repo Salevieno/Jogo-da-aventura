@@ -2,7 +2,6 @@ package liveBeings ;
 
 import java.awt.Color ;
 import java.awt.Dimension;
-import java.awt.Font;
 import java.awt.Point;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
@@ -259,12 +258,6 @@ public class Creature extends LiveBeing
 	public Elements[] atkElems() { return new Elements[] {atkElem, Elements.neutral, Elements.neutral} ;}
 	public Elements[] defElems() { return new Elements[] {atkElem, atkElem} ;}
 
-	public void displayName(Point pos, Align alignment, Color color)
-	{
-		Font font = new Font(Game.getMainFontName(), Font.BOLD, 13) ;
-		GamePanel.getDP().drawText(pos, alignment, name, font, color) ;
-	}
-	
 	public void display(Point pos, Scale scale)
 	{
 		if (!idleTimer.isActive())
@@ -301,7 +294,7 @@ public class Creature extends LiveBeing
             GamePanel.getDP().drawText(Util.translate(pos, 0, -30), Align.bottomCenter, state.toString(), Color.black) ;
 			GamePanel.getDP().drawText(Util.translate(pos, 0, -40), Align.bottomCenter, !idleTimer.isActive() ? "is moving: " + dir : "", Color.black) ;
             displayState() ;
-			GamePanel.getDP().drawText(Util.translate(pos, 0, -50), Align.bottomCenter, totalPower() + " ", Color.black) ;
+			displayPowerBar(Util.translate(pos, 0, -50)) ;
 			hitbox.display();
 		}
 	}	
@@ -309,12 +302,6 @@ public class Creature extends LiveBeing
 	public void display()
 	{
 		display(getPos(), Scale.unit) ;
-	}
-	
-	public void displayAdditionalInfo()
-	{
-		GamePanel.getDP().drawText(new Point((int) pos.x, (int) pos.y + 20), Align.center, 0, String.valueOf(this.totalPower()), new Font(Game.getMainFontName(), Font.BOLD, 14), Color.black) ;
-		GamePanel.getDP().drawText(getPos(), Align.center, 0, String.valueOf(type.getID()), new Font(Game.getMainFontName(), Font.BOLD, 24), Color.black) ;
 	}
 	
 	public void dies()
