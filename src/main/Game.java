@@ -33,7 +33,6 @@ import maps.FieldMap;
 import screen.Screen;
 import sidebar.HotKeysBar;
 import sidebar.SideBar;
-import simulations.EvolutionSimulation;
 import spells.Spell;
 import utilities.Util;
 import windows.GameWindow;
@@ -415,7 +414,7 @@ public class Game
 
 		SideBar.display(player, pet, GamePanel.getMousePos());
 
-        // TODO consider show all active buttons
+        // optionalTODO consider show all active buttons
         // GameButton.getALL().stream().filter(b -> b.isActive()).forEach(b -> b.display(true, GamePanel.getMousePos())) ;
 
 		if (DEBUG_MODE)
@@ -452,10 +451,6 @@ public class Game
 				LoadingGame.display(GamePanel.getMousePos()) ;
 
 				shouldRepaint = true;
-				return;
-
-			case simulation:
-				EvolutionSimulation.run(GamePanel.getMousePos());
 				return;
 
 			case running:

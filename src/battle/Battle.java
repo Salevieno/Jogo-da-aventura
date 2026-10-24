@@ -10,10 +10,7 @@ import liveBeings.LiveBeing;
 import liveBeings.Pet;
 import liveBeings.Player;
 import main.Elements;
-import main.Game;
-import main.GameStates;
 import main.Log;
-import simulations.EvolutionSimulation;
 import spells.Spell;
 import utilities.Util;
 
@@ -198,11 +195,6 @@ public abstract class Battle
 
 	public static void finishBattle(Player player, Pet pet, Creature creature)
 	{
-		if (Game.getState().equals(GameStates.simulation))
-		{
-			EvolutionSimulation.setBattleResults(player.getLife().getCurrentValue(), creature.getLife().getCurrentValue()) ;
-		}		
-		
 		for (Spell spell : player.getSpells())
 		{
 			spell.getDurationCounter().reset() ;

@@ -29,13 +29,11 @@ import items.PetItem;
 import main.Directions;
 import main.Elements;
 import main.Game;
-import main.GameStates;
 import main.GameTimer;
 import main.Log;
 import main.Palette;
 import main.Path;
 import maps.GameMap;
-import simulations.EvolutionSimulation;
 import spells.Spell;
 import utilities.Util;
 import windows.PetAttributesWindow;
@@ -234,11 +232,6 @@ public class Pet extends LiveBeing
 		AtkResults atkResults = performAtk(atkType, Game.getPlayer().getOpponent()) ;
 		trainOffensive(atkResults) ;
 		battleActionCounter.restart() ;
-
-		if (Game.getState().equals(GameStates.simulation))
-		{
-			EvolutionSimulation.updateBattleStats(this, Game.getPlayer().getOpponent(), atkResults) ;
-		}
 		Log.debug("=======================================================\n") ;
 	}
 

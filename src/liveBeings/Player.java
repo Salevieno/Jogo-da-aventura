@@ -51,7 +51,6 @@ import main.Directions;
 import main.Elements;
 import main.Game;
 import main.GamePanel;
-import main.GameStates;
 import main.GameTimer;
 import main.ImageLoader;
 import main.Log;
@@ -67,7 +66,6 @@ import maps.TreasureChest;
 import screen.Screen;
 import sidebar.HotKeysBar;
 import sidebar.SpellsBar;
-import simulations.EvolutionSimulation;
 import spells.Buff;
 import spells.Spell;
 import spells.SpellTypes;
@@ -916,11 +914,6 @@ public class Player extends LiveBeing
 		trainOffensive(atkResults) ;
 		stats.updateOffensive(atkResults) ;
 		battleActionCounter.restart() ;
-
-		if (Game.getState().equals(GameStates.simulation))
-		{
-			EvolutionSimulation.updateBattleStats(this, opponent, atkResults) ;
-		}
 		Log.debug("=======================================================\n") ;
 	}
 

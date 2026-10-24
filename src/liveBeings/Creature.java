@@ -22,13 +22,11 @@ import items.Item;
 import main.Elements;
 import main.Game;
 import main.GamePanel;
-import main.GameStates;
 import main.GameTimer;
 import main.Log;
 import maps.GameMap;
 import screen.Screen;
 import screen.Sky;
-import simulations.EvolutionSimulation;
 import spells.Spell;
 import utilities.Util;
 import windows.CreatureAttributesWindow;
@@ -155,20 +153,7 @@ public class Creature extends LiveBeing
 	}
 		
 	public void chooseFightMove(String playerMove)
-	{
-		if (Game.getState().equals(GameStates.simulation))
-		{
-			int qtdAvailableMoves = canUseSpell(spells.get(0)) ? 2 : 1 ;
-			int move = Util.randomInt(0, qtdAvailableMoves) ;
-			switch (move)
-			{
-				case 0:	setCurrentAction(BATTLE_KEYS[0]) ; return ;	// Physical attack
-				case 1:	setCurrentAction(BATTLE_KEYS[1]) ; return ;	// Defense
-				case 2:	setCurrentAction(String.valueOf(Util.randomInt(0, spells.size() - 1))) ; return ;	// spell
-			}
-			return ;
-		}
-		
+	{		
 		List<Double> modifiedGenes = type.getGenes().getModifiedGenes(playerMove) ;
 
 		int move = Util.randomFromChanceList(modifiedGenes) ;
@@ -178,7 +163,6 @@ public class Creature extends LiveBeing
 			case 1:	setCurrentAction(BATTLE_KEYS[1]) ; return ;	// Defense
 			case 2:	setCurrentAction(String.valueOf(Util.randomInt(0, spells.size() - 1))) ; return ;	// spell
 		}
-
 	}
 
 	private void doBattleAction()
@@ -208,11 +192,6 @@ public class Creature extends LiveBeing
 
 		updateCombo() ;
 		battleActionCounter.restart() ;
-
-		if (Game.getState().equals(GameStates.simulation))
-		{
-			EvolutionSimulation.updateBattleStats(this, creatureTarget, atkResults) ;
-		}
 		Log.debug("=======================================================\n") ;
 	}
 	
