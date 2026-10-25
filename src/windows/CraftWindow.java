@@ -129,6 +129,8 @@ public class CraftWindow extends GameWindow
 		}
 		
 		recipesInPage = RECIPES_PER_PAGE <= recipes.size() ? recipes.subList(page, RECIPES_PER_PAGE + page) : recipes ;
+
+        returnAndCloseOnExit(action) ;
 	}
     protected int itemHoveredID(Point mousePos)
     {

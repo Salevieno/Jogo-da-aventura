@@ -62,6 +62,8 @@ public class Game
     // TODO corrigir funcionamento das magias
     // TODO corrigir abertura e fechamento de algumas janelas (spellstree e bag)
     // TODO corrigir criaturas ficando presas nos cantos do mapa
+    // optionalTODO window shake
+    // optionalTODO animação item indo até a mochila ao ser adicionado
 
 	private GameStates state ;
 	private boolean shouldRepaint; // tells if the panel should be repainted, responding to multiple requests only once

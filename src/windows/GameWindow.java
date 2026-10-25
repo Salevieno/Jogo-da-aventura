@@ -103,8 +103,27 @@ public abstract class GameWindow
 
     protected abstract void onOpen() ;
     protected abstract void onUpdate() ;
+    protected abstract void onClose() ;
     public abstract void act(Player player, Point mousePos) ;
     protected abstract int itemHoveredID(Point mousePos) ;
+	public abstract void navigate(String action) ;
+	public abstract void display(Point mousePos) ;
+
+    protected void returnAndCloseOnExit(String action)
+    {
+        if (action.equals(stdExit))
+        {
+            if (1 <= menu)
+            {
+                menuDown() ;
+            }
+            else
+            {
+                close() ;
+            }
+        }
+    }
+
     public void updateSelectedItemOnHover(Point mousePos)
     {
         int itemHoveredID = itemHoveredID(mousePos) ; // TODO permitir não ter nenhum item selecionado
@@ -113,9 +132,6 @@ public abstract class GameWindow
       
         item = itemHoveredID ;
     }
-    protected abstract void onClose() ;
-	public abstract void navigate(String action) ;
-	public abstract void display(Point mousePos) ;
 
     // optionalTODO considerar criar um enum com o estado da janela // OPENING, OPEN, CLOSED
 	public boolean isOpen() { return isOpen ;}

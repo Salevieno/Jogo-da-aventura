@@ -602,41 +602,15 @@ public abstract class LiveBeing implements Drawable
 	
 	private int totalPower()
 	{
-		// optionalTODO - consider special ba, element mult, mp with spells and items
-		// Dano = nHits . hitRate . (PhyAtkRate . PhyDam + MagAtkRate . MagDam + BloodRate . BloodDam + PoisonRate . PoisonDam)
-		// TODO função para estudo de como o poder evolui com o aumento de cada atributo
-		LiveBeing defender = new Creature(CreatureType.getAll().get(0)) ;
-//		new CreatureType(0, "", 0, new Dimension(0, 0), 60, 0, new Elements[] {Elements.water}, 0, 0, 0, 0, 0, null,
-//				new PersonalAttributes(new BasicAttribute(100, 100, 1), new BasicAttribute(100, 100, 1), new BasicAttribute(100, 100, 1), new BasicAttribute(100, 100, 1), new BasicAttribute(100, 100, 1)),
-//				new BattleAttributes(new BasicBattleAttribute(3, 0, 0), new BasicBattleAttribute(3, 0, 0), new BasicBattleAttribute(3, 0, 0), new BasicBattleAttribute(3, 0, 0), new BasicBattleAttribute(3, 0, 0), new BasicBattleAttribute(3, 0, 0),
-//						new BasicBattleAttribute(0.1, 0, 0), new BasicBattleAttribute(0, 0, 0),
-//						new BattleSpecialAttribute(0, 0, 0, 0, 0), new BattleSpecialAttribute(0, 0, 0, 0, 0), new BattleSpecialAttributeWithDamage(0, 0, 0, 0, 0, 0, 0, 0, 0), new BattleSpecialAttributeWithDamage(0, 0, 0, 0, 0, 0, 0, 0, 0), new BattleSpecialAttribute(0, 0, 0, 0, 0),
-//						new BasicBattleAttribute(1, 0, 0)),
-//				new ArrayList<>(),
-//				new HashSet<>(),
-//				0, null, new int[] {})
-
-		// double attackerAtkRate = 1 ;
-		// double defenderAtkRate = 1 ;
-		// double critRate = this.getBA().getCritAtk().getTotal() - defender.getBA().getCritDef().getTotal() ;
-		// double hitRate = 1 - 1 / (1 + Math.pow(1.1, this.getBA().getDex().getTotal() - defender.getBA().getAgi().getTotal())) ;
-		// int phyDamBase = Math.max((int) Util.round(this.getBA().getPhyAtk().getTotal() - defender.getBA().getPhyDef().getTotal(), 0), 0) ;
-		// int phyDamInDefense = Math.max((int) Util.round(this.getBA().getPhyAtk().getTotal() - defender.getBA().getPhyDef().getTotal() - defender.getBA().getPhyDef().getBaseValue(), 0), 0) ;
-		// int phyDamCrit = (int) Util.round(this.getBA().getPhyAtk().getTotal(), 0) ;
-
-
-		// double movesPerSec = 1 / this.getBattleActionCounter().getDuration() ;
-		// double damAvr = (1 - critRate) * (defenderAtkRate * phyDamBase + (1 - defenderAtkRate) * phyDamInDefense) + critRate * phyDamCrit ;
-		// double damPerSec = damAvr * hitRate * attackerAtkRate * movesPerSec ;
-		// double timeToWin = defender.getPA().getLife().getMaxValue() / damPerSec ;
-		
+		LiveBeing defender = new Creature(CreatureType.getAll().get(0)) ;		
 		int totalPower = (int) (10000 / timeToWin(defender)) ;
-		return totalPower ;
-		
+		return totalPower ;		
 	}
 	
 	private double timeToWin(LiveBeing defender)
 	{
+		// optionalTODO - consider special ba, element mult, mp with spells and items
+		// Dano = nHits . hitRate . (PhyAtkRate . PhyDam + MagAtkRate . MagDam + BloodRate . BloodDam + PoisonRate . PoisonDam)
 		double rateMagAtkAttacker =	this instanceof Player ? 0.4147 :  0.366;
 		double ratePhyAtkAttacker = 0.5 - rateMagAtkAttacker / 2.0  ;
 		double rateDefDefender = 0.5 - rateMagAtkAttacker / 2.0 ;

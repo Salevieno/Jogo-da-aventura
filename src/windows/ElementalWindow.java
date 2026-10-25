@@ -162,6 +162,8 @@ public class ElementalWindow extends GameWindow
 			pageDown() ;
 			updatePage() ;
 		}
+
+        returnAndCloseOnExit(action) ;
 	}
 
 	private void updatePage()

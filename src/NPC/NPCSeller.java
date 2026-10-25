@@ -1,6 +1,7 @@
 package NPC;
 
 import java.awt.Point;
+import java.awt.event.KeyEvent;
 import java.util.List;
 import java.util.Map;
 
@@ -43,5 +44,10 @@ public class NPCSeller extends NPC
             shopping.openShopBag() ;
 			player.switchOpenClose(shopping) ;
 		}
+
+        if (currentMenuID == 1 && action.equals(KeyEvent.getKeyText(KeyEvent.VK_ESCAPE)))
+        {
+            player.switchOpenClose(player.getBag()) ;
+        }
 	}
 }

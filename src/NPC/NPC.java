@@ -116,7 +116,6 @@ public abstract class NPC implements Interactable
 
 	private void goToMenu(int menuID)
 	{
-
 		if (menuID == -1)
 		{
 			endInteraction() ;

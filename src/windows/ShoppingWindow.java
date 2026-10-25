@@ -193,6 +193,8 @@ public class ShoppingWindow extends GameWindow
 		{
 			itemUp() ;
 		}
+
+        returnAndCloseOnExit(action) ;
 	}
 
 	public void act(Player player, Point mousePos)

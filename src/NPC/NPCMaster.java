@@ -17,7 +17,10 @@ public class NPCMaster extends NPC
 
 	protected void onEndInteraction()
 	{
-		Game.getPlayer().switchOpenClose(Game.getPlayer().getSpellsTreeWindow()) ;
+        if (Game.getPlayer().getSpellsTreeWindow().isOpen())
+        {
+            Game.getPlayer().switchOpenClose(Game.getPlayer().getSpellsTreeWindow()) ;
+        }
 	}
 
 	public void act(Player player, Pet pet, String action)
@@ -36,7 +39,7 @@ public class NPCMaster extends NPC
 		
 		if (action == null) { return ;}
 	
-		if ((currentMenuID == 0 || currentMenuID == 5) && actionIsForward(action))
+		if ((currentMenuID == 0 || currentMenuID == 5) && selOption == 0 && actionIsForward(action))
 		{
 			player.switchOpenClose(player.getSpellsTreeWindow()) ;
 		}

@@ -210,11 +210,9 @@ public class BagWindow extends GameWindow
 				pageDown() ;
 				updatePage() ;
 			}
-			if (action.equals(stdExit) || action.equals(stdReturn))
-			{
-				menuDown() ;
-			}
 		}
+
+        returnAndCloseOnExit(action) ;
 	}
 	
 	public void act(Player player, Point mousePos)

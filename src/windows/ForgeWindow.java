@@ -112,6 +112,8 @@ public class ForgeWindow extends GameWindow
 		{
 			itemDown() ;
 		}
+
+        returnAndCloseOnExit(action) ;
 	}
     protected int itemHoveredID(Point mousePos)
     {        

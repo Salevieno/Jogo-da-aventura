@@ -115,7 +115,7 @@ public class BankWindow extends GameWindow
 	
 	public void navigate(String action)
 	{
-
+        returnAndCloseOnExit(action) ;
 	}
 
 	public void deposit(BagWindow bag, int amount)

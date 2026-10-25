@@ -168,6 +168,10 @@
                 ]
             },
             {
+                "fala": "Fique à vontade",
+                "opcoes": []
+            },
+            {
                 "fala": "Obrigado e até mais!",
                 "opcoes": [
                     "Tchau"
@@ -189,10 +193,8 @@
                 "fala": "Escolha seu equipamento!"
             },
             {
-                "fala": "Volte sempre!",
-                "opcoes": [
-                    "Até mais"
-                ]
+                "fala": "O que você tem para vender?",
+                "opcoes": []
             }
         ]
     },
@@ -210,10 +212,8 @@
                 "fala": "O que deseja comprar?"
             },
             {
-                "fala": "Até mais!",
-                "opcoes": [
-                    "Até mais"
-                ]
+                "fala": "O que você tem para vender?",
+                "opcoes": []
             }
         ]
     },
@@ -231,10 +231,8 @@
                 "fala": "O que deseja comprar?"
             },
             {
-                "fala": "Até mais!",
-                "opcoes": [
-                    "Até mais"
-                ]
+                "fala": "O que você tem para vender?",
+                "opcoes": []
             }
         ]
     },

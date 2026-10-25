@@ -28,12 +28,12 @@ public class NPCQuest extends NPC
 
         Quest quest = Quest.getAll().get(questID) ;
 
-		if (actionIsForward(action) && selOption == 0)
+		if (actionIsForward(action) && currentMenuID == 0 && selOption == 0)
 		{
 			if (!player.getQuests().contains(quest))
 			{
 				quest.checkCompletion(player.getBag()) ;
-				if (!quest.isRepeatable() & quest.isComplete())
+				if (!quest.isRepeatable() && quest.isComplete())
 				{
 					quest.complete(player.getBag(), player.getPA(), player.getQuestSkills()) ;
 					return ;

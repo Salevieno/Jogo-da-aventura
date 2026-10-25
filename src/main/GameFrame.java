@@ -21,7 +21,7 @@ public class GameFrame extends JFrame implements ActionListener
 	private Timer timer ;		// Main timer of the game
 	private GameStates previousState ;
 	private boolean fullScreen = false ;
-	private final Dimension windowSize = new Dimension(1280,960) ; // TODO obter resolução do laptop e calcular tamanho de acordo
+	private final Dimension windowSize = new Dimension(1280,960) ; // TODO obter resolução do laptop e calcular tamanho de acordo'
 	private final Image icon = ImageLoader.loadImage(Path.GAME_IMG + "gameIcon.png") ;
 	private static GameFrame gameFrame ;
 
