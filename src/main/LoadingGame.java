@@ -19,11 +19,7 @@ import components.Quest;
 import graphics.Align;
 import graphics2.SpriteAnimation;
 import items.Arrow;
-import items.Equip;
-import items.Food;
-import items.GeneralItem;
 import items.Item;
-import items.Potion;
 import items.Recipe;
 import liveBeings.CreatureData;
 import liveBeings.Player;
@@ -96,8 +92,7 @@ public abstract class LoadingGame
 			if (player.getSpells().isEmpty())
 			{
 				player.setSpells(Player.jobSpells(player.getJob()));
-			}
-			
+			}			
 			if (player.getJob() == 2)
 			{
 				player.getBag().add(Arrow.getAll()[0], 100) ;
@@ -113,17 +108,6 @@ public abstract class LoadingGame
 			{
 				MusicManager.switchMusic(player.getMap().getMusic());
 			}
-            player.getBag().add(Potion.getAll()[0], 1);
-            player.getBag().add(Potion.getAll()[1], 1);
-            player.getBag().add(Food.getAll()[0], 1);
-            player.getBag().add(Food.getAll()[1], 1);
-            player.getBag().add(Equip.getAll()[0], 1);
-            player.getBag().add(Equip.getAll()[1], 1);
-            player.getBag().add(Equip.getAll()[3], 1);
-            player.getBag().add(GeneralItem.getAll()[380], 1);
-            player.getBag().add(GeneralItem.getAll()[390], 1);
-            player.getBag().add(GeneralItem.getAll()[398], 1);
-            player.getBag().add(GeneralItem.getAll()[399], 1);
 			Game.getDayTimer().start();
 			startButton.activateAndSelect() ;
 		}

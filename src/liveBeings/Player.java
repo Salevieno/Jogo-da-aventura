@@ -193,7 +193,7 @@ public class Player extends LiveBeing
 		this.pauseWindow = new PauseWindow();
 		this.equips = new Equip[4] ;
 		this.equippedArrow = null ;
-		this.spellPoints = 100 ;
+		this.spellPoints = 0 ;
         this.expToGain = 0 ;
     	
 		this.collectLevel = new ArrayList<>(List.of(0.0, 0.0, 0.0));
@@ -1167,17 +1167,16 @@ public class Player extends LiveBeing
 	
 	public void useItem(Item item)
 	{
-		if (item == null) { Log.warn("Tentando usar item nulo!"); return ;}
-		if (!bag.contains(item)) { Log.warn("Tentando usar item que não tem na mochila!"); return ;}
+		if (item == null) { Log.warn("Tentando usar item nulo!") ; return ;}
+		if (!bag.contains(item)) { Log.warn("Tentando usar item que não tem na mochila!") ; return ;}
 
 		bag.updateRecentlyUsedItem(item) ;
 		if (item instanceof Potion)
 		{
 			Potion pot = (Potion) item ;
 			double powerMult = job == 3 && 1 <= spells.get(7).getLevel() ? 1 + 0.06 * spells.get(7).getLevel() : 1 ;
-			// TODO not use potion if HP or MP is maxed
 			pot.use(this, powerMult) ;
-			bag.remove(pot, 1) ;
+            // TODO para todos os itens usáveis que aumentam atributos, usar apenas se puder aumentar o atributo, como poções hoje
 			
 			return ;			
 		}
@@ -1247,7 +1246,7 @@ public class Player extends LiveBeing
 		{
 			GeneralItem genItem = (GeneralItem) item ;
 			
-			if (isFighting() & canThrowItem(genItem))
+			if (isFighting() && canThrowItem(genItem))
 			{
 				throwItem(genItem, opponent) ;
 				

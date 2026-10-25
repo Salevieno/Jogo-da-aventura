@@ -275,13 +275,22 @@ public abstract class LiveBeing implements Drawable
         }
 	}
 
+    public boolean canIncreatePersonalAttribute(BasicAttribute att, int value)
+    {
+        int attIndex = PA.getAttributes().indexOf(att) ;
+
+        if (attIndex == -1) { Log.warn("Trying to increase invalid personal attribute " + att) ; return false ;}
+        if (att.isMaxed() && 0 <= value) { Log.warn("Trying to increase maxed attribute " + att) ; return false ;}
+        if (att.getCurrentValue() <= 0 && value < 0) { Log.warn("Trying to decrease attribute on zero " + att) ; return false ;}
+
+        return true ;
+    }
+
     public void incPersonalAttribute(BasicAttribute att, int value, boolean displayAnimation)
     {
         int attIndex = PA.getAttributes().indexOf(att) ;
 
-        if (attIndex == -1) { Log.warn("Trying to increase invalid personal attribute " + att) ; return ;}
-        if (att.isMaxed() && 0 <= value) { Log.warn("Trying to increase maxed attribute " + att) ; return ;}
-        if (att.getCurrentValue() <= 0 && value < 0) { Log.warn("Trying to decrease attribute on zero " + att) ; return ;}
+        if (!canIncreatePersonalAttribute(att, value)) { return ;}
 
         att.incCurrentValue(value) ;
 

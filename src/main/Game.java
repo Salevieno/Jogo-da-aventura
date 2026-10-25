@@ -41,6 +41,9 @@ import windows.ShopBag;
 public class Game
 {
 	// TODO arquivos - nomes das criaturas
+    // TODO criar lista de itens usáveis e remover apenas os usáveis
+    // TODO corrigir funcionamento das magias
+	// ideia de magia - todo personagem pode inspecionar para aprender 1 att ou 2 da criatura, mas tem que estar perto e isso pode provocar certas criaturas meio agressivas
 	// TODO remapeamento de teclas
 		// WASD e setas -> movimento
 		// tab (segurando) -> mapa
@@ -56,11 +59,8 @@ public class Game
 		// hints
 		// hot keys
 	// optionalTODO - unificar throw item, calcPhysicalAtk e useSpell dos liveBeings
-	// TODO ideia - magias e flechas são projéteis que precisam acertar o oponente para dar dano. O oponente pode se mover durante a luta E usar magias de longe enquanto se move (ou defender)
-	// TODO ideia - todo personagem pode inspecionar para aprender 1 att ou 2 da criatura, mas tem que estar perto e isso pode provocar certas criaturas meio agressivas
+	// optionalTODO - magias e flechas são projéteis que precisam acertar o oponente para dar dano
     // TODO fome causa redução da força
-    // TODO corrigir funcionamento das magias
-    // TODO corrigir abertura e fechamento de algumas janelas (spellstree e bag)
     // TODO corrigir criaturas ficando presas nos cantos do mapa
     // optionalTODO window shake
     // optionalTODO animação item indo até a mochila ao ser adicionado

@@ -6,6 +6,7 @@ import java.util.List;
 
 import graphics.Align;
 import liveBeings.LiveBeing;
+import main.Game;
 import main.ImageLoader;
 import main.Path;
 import utilities.Util;
@@ -62,9 +63,16 @@ public class Potion extends Item
 	public void use(LiveBeing target, double powerMult)
 	{
         int lifeInc = (int) (lifeHeal * target.getPA().getLife().getMaxValue() * powerMult) ;
-        int mpInc = (int) (lifeHeal * target.getPA().getMp().getMaxValue() * powerMult) ;
+        int mpInc = (int) (MPHeal * target.getPA().getMp().getMaxValue() * powerMult) ;
+
+        if (0 < lifeInc && !target.canIncreatePersonalAttribute(target.getPA().getLife(), lifeInc) && mpInc <= 0) { return ;}
+        if (lifeInc <= 0 && 0 < mpInc && !target.canIncreatePersonalAttribute(target.getPA().getMp(), mpInc)) { return ;}
+        if (0 < lifeInc && !target.canIncreatePersonalAttribute(target.getPA().getLife(), lifeInc) && 0 < mpInc && !target.canIncreatePersonalAttribute(target.getPA().getMp(), mpInc)) { return ;}
+
         target.incPersonalAttribute(target.getPA().getLife(), lifeInc, true);
         target.incPersonalAttribute(target.getPA().getMp(), mpInc, true);
+        
+        Game.getPlayer().getBag().remove(this, 1) ;
 		// proTODO - bebidas
 	}
 

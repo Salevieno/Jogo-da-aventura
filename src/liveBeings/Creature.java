@@ -28,7 +28,6 @@ import screen.Screen;
 import screen.Sky;
 import spells.Spell;
 import utilities.Util;
-import windows.CreatureAttributesWindow;
 
 public class Creature extends LiveBeing
 {
@@ -284,9 +283,6 @@ public class Creature extends LiveBeing
 		if (isFighting())
 		{
 			displayAttributes(new Point(headPos().x - size.width / 2, headPos().y), false) ;
-            ((CreatureAttributesWindow) attWindow).open() ;
-            ((CreatureAttributesWindow) attWindow).update() ;
-            ((CreatureAttributesWindow) attWindow).display() ;
 		}
         GamePanel.getDP().drawText(Util.translate(pos, 0, -20), Align.bottomCenter, name + ": " + type.getMovePattern().toString(), Color.black) ;
 		if (Game.DEBUG_MODE)
