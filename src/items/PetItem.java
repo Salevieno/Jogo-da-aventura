@@ -8,7 +8,9 @@ import animations.MessageAnimation;
 import attributes.BattleAttributes;
 import attributes.PersonalAttributes;
 import graphics.Align;
+import liveBeings.LiveBeing;
 import liveBeings.Pet;
+import main.Game;
 import main.ImageLoader;
 import main.Palette;
 import main.Path;
@@ -16,7 +18,7 @@ import screen.Screen;
 import utilities.Util;
 
 
-public class PetItem extends Item
+public class PetItem extends Item implements UsableItem
 {
 	private final double lifeHeal ;
 	private final double mpHeal ;
@@ -50,9 +52,6 @@ public class PetItem extends Item
 		}
 	}
 
-	public double getLifeHeal() {return lifeHeal ;}
-	public double getMPHeal() {return mpHeal ;}	
-	public int getSatiationHeal() {return satiationHeal ;}	
 	public static PetItem[] getAll() {return ALL ;}
 
 	public static boolean isLifePotion(int id) { return id % 4 == 0 ;}
@@ -94,9 +93,20 @@ public class PetItem extends Item
 		MessageAnimation.start(Screen.getMe().pos(0.4, 0.36), equip.getName() + " desequipado!", Palette.colors[0]) ;
 		pet.setEquip(null) ;
 	}
-	
-	public void use(Pet pet)
+
+    public boolean canUse(LiveBeing user)
+    {
+        if (user == null) { return false ;}
+        if (!(user instanceof Pet)) { return false ;}
+        if (user.getPA() == null) { return false ;}
+        return true ;
+    }
+
+	public void use(LiveBeing user)
 	{
+        if (!canUse(user)) { return ;}
+
+        Pet pet = Game.getPet() ;
 		// proTODO - customizar pet item power
 		if (isLifePotion(id))
 		{

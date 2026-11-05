@@ -6,12 +6,13 @@ import java.util.List;
 
 import graphics.Align;
 import liveBeings.LiveBeing;
+import liveBeings.Player;
 import main.ImageLoader;
 import main.Path;
 import utilities.Util;
 
 
-public class Alchemy extends Item
+public class Alchemy extends Item implements UsableItem
 {
 	private final double lifeHeal ;
 	private final double MPHeal ;
@@ -47,12 +48,52 @@ public class Alchemy extends Item
 	public static Image imageFromID(int id) { return isHerb(id) ? HERB_ICON : isWood(id) ? WOOD_ICON : METAL_ICON ;}
 
 	public static Alchemy[] getAll() {return all ;}
-	
-	public void use(LiveBeing target, double powerMult)
+
+    private double calcLifeInc(LiveBeing user)
+    {
+        double powerMult = 1.0 ;
+        if (user instanceof Player)
+        {
+            powerMult = ((Player) user).getPotionMultiplier() ;
+        }
+        return lifeHeal * user.getPA().getLife().getMaxValue() * powerMult ;
+    }
+
+    private double calcMpInc(LiveBeing user)
+    {
+        double powerMult = 1.0 ;
+        if (user instanceof Player)
+        {
+            powerMult = ((Player) user).getPotionMultiplier() ;
+        }
+        return MPHeal * user.getPA().getMp().getMaxValue() * powerMult ;
+    }
+
+    public boolean canUse(LiveBeing user)
+    {
+        if (user == null) { return false ;}
+        if (user.getPA() == null) { return false ;}
+
+        int lifeInc = (int) calcLifeInc(user) ;
+        int mpInc = (int) calcMpInc(user) ;
+
+        if (0 < lifeInc && !user.canIncreasePersonalAttribute(user.getPA().getLife(), lifeInc) && mpInc <= 0) { return false ;}
+        if (lifeInc <= 0 && 0 < mpInc && !user.canIncreasePersonalAttribute(user.getPA().getMp(), mpInc)) { return false ;}
+        if (0 < lifeInc && !user.canIncreasePersonalAttribute(user.getPA().getLife(), lifeInc) && 0 < mpInc && !user.canIncreasePersonalAttribute(user.getPA().getMp(), mpInc)) { return false ;}
+
+        return true ;
+    }
+
+	public void use(LiveBeing user)
 	{
-        target.incPersonalAttribute(target.getPA().getLife(), (int) (lifeHeal * target.getPA().getLife().getMaxValue() * powerMult), true) ;
-        target.incPersonalAttribute(target.getPA().getMp(), (int) (MPHeal * target.getPA().getMp().getMaxValue() * powerMult), true) ;
-	}
+        if (!canUse(user)) { return ;}
+
+        int lifeInc = (int) calcLifeInc(user) ;
+        int mpInc = (int) calcMpInc(user) ;
+
+        user.incPersonalAttribute(user.getPA().getLife(), lifeInc, true);
+        user.incPersonalAttribute(user.getPA().getMp(), mpInc, true);
+    }
 	
 	public void displayInfo(Point pos, Align align)
 	{

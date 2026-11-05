@@ -275,7 +275,7 @@ public abstract class LiveBeing implements Drawable
         }
 	}
 
-    public boolean canIncreatePersonalAttribute(BasicAttribute att, int value)
+    public boolean canIncreasePersonalAttribute(BasicAttribute att, int value)
     {
         int attIndex = PA.getAttributes().indexOf(att) ;
 
@@ -290,7 +290,7 @@ public abstract class LiveBeing implements Drawable
     {
         int attIndex = PA.getAttributes().indexOf(att) ;
 
-        if (!canIncreatePersonalAttribute(att, value)) { return ;}
+        if (!canIncreasePersonalAttribute(att, value)) { return ;}
 
         att.incCurrentValue(value) ;
 
@@ -618,7 +618,7 @@ public abstract class LiveBeing implements Drawable
 	
 	private double timeToWin(LiveBeing defender)
 	{
-		// optionalTODO - consider special ba, element mult, mp with spells and items
+		// TODO - consider special ba, element mult, mp with spells and items
 		// Dano = nHits . hitRate . (PhyAtkRate . PhyDam + MagAtkRate . MagDam + BloodRate . BloodDam + PoisonRate . PoisonDam)
 		double rateMagAtkAttacker =	this instanceof Player ? 0.4147 :  0.366;
 		double ratePhyAtkAttacker = 0.5 - rateMagAtkAttacker / 2.0  ;

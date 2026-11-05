@@ -11,12 +11,11 @@ import liveBeings.LiveBeing;
 import liveBeings.Player;
 import main.Elements;
 import main.ImageLoader;
-import main.Log;
 import main.Palette;
 import main.Path;
 import screen.Screen;
 import utilities.Util;
-public class Arrow extends Item
+public class Arrow extends Item implements UsableItem
 {
 	private final double atkPower ;
 	private final Elements elem ;	
@@ -68,9 +67,26 @@ public class Arrow extends Item
 		return ARROW_IMAGE ;
 	}
 	
+    public boolean canUse(LiveBeing user)
+    {
+        if (!(user instanceof Player)) { return false ;}
+        Player player = (Player) user ;
+        if (player.getJob() != 2) { return false ;}
+
+        int periciaEmFlechasLevel = player.getSpells().get(4).getLevel() ;
+        
+        if (1 <= id && periciaEmFlechasLevel <= 0) { return false ;}
+        if (4 <= id && periciaEmFlechasLevel <= 1) { return false ;}
+        if (5 <= id && periciaEmFlechasLevel <= 2) { return false ;}
+        if (6 <= id && periciaEmFlechasLevel <= 3) { return false ;}
+        if (15 <= id && periciaEmFlechasLevel <= 4) { return false ;}
+
+        return true ;
+    }
+
 	public void use(LiveBeing user)
 	{
-		if (!(user instanceof Player)) { Log.warn("Non-player livebeing trying to use arrow") ; return ;}
+		if (!canUse(user)) { return ;}
 
 		Player player = (Player) user ;
 		Arrow arrow = Arrow.getAll()[id] ;
@@ -106,8 +122,6 @@ public class Arrow extends Item
 	@Override
 	public String toString()
 	{
-//		return "Arrow [atkPower=" + atkPower + ", elem=" + elem + ", id=" + id + ", name=" + name + ", description=" + description + ", image=" + image + ", price=" + price + ", dropChance=" + dropChance + "]";
 		return "Arrow," + id + "," + name;
 	}
-	
 }

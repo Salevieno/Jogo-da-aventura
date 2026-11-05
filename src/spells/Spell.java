@@ -255,7 +255,11 @@ public class Spell
 			case 105: BA.getDex().incBaseValue(2) ; BA.getAgi().incBaseValue(1) ; return ;
 			case 107: BA.getCritAtk().incBaseValue(0.03) ; return ;
 			case 108:  return ; // chance de coleta em dobro em até 70%
-			case 111:  return ; // efeito das poções até + 30%
+			case 111:
+                if (!(target instanceof Player)) { return ;}
+                Player player = (Player) target ;
+                player.incPotionMultiplier(0.06) ;
+                return ;
 			case 113:
 				PA.getLife().incMaxValue((int) (0.03 * PA.getLife().getMaxValue())) ;
 				PA.getLife().setToMaximum() ;

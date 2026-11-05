@@ -39,14 +39,10 @@ import graphics2.SpriteAnimation;
 import items.Alchemy;
 import items.Arrow;
 import items.Equip;
-import items.Fab;
 import items.Food;
-import items.Forge;
 import items.GeneralItem;
 import items.Item;
-import items.PetItem;
-import items.Potion;
-import items.QuestItem;
+import items.UsableItem;
 import main.Directions;
 import main.Elements;
 import main.Game;
@@ -103,6 +99,7 @@ public class Player extends LiveBeing
 	private List<Double> collectLevel ;	// 0: herb, 1: wood, 2: metal
 	private Equip[] equips ;			// 0: weapon, 1: shield, 2: armor, 3: emblem
 	private Arrow equippedArrow ;
+	private double potionMultiplier ;
 	private double goldMultiplier ;
 	private double digBonus ;
 	private Elements superElem ;
@@ -197,6 +194,7 @@ public class Player extends LiveBeing
         this.expToGain = 0 ;
     	
 		this.collectLevel = new ArrayList<>(List.of(0.0, 0.0, 0.0));
+        this.potionMultiplier = 1.0 ;
 		this.goldMultiplier = PlayerData.getGoldmultiplier().get(job) ;
 		this.digBonus = 0 ;
 		this.questSkills = new HashMap<QuestSkills, Boolean>() ;
@@ -283,13 +281,15 @@ public class Player extends LiveBeing
 	public Creature getOpponent() { return opponent ;}
 	public Statistics getStatistics() { return stats ;}
     public double getHearingRange() { return hearingRange ;}
+    public double getPotionMultiplier() { return potionMultiplier ;}
+	public double getDigBonus() { return digBonus ;}
 	public void setAttInc(AttributeIncrease newAttInc) { attInc = newAttInc ;}
 	public void setClosestCreature(Creature creature) { closestCreature = creature ;}
 	public void setGoldMultiplier(double goldMultiplier) { this.goldMultiplier = goldMultiplier ;}
-	public double getDigBonus() { return digBonus ;}
     public void setDigBonus(double digBonus) { this.digBonus = digBonus ;}
 	public void setFocusWindow(GameWindow W) { focusWindow = W ;}
 	public void setSpells(List<Spell> spells) { this.spells = spells ;}
+    public void incPotionMultiplier(double amount) { this.potionMultiplier += amount ;}
 
 	public static String[] getHotKeys() { return HOT_KEYS ;}
 
@@ -334,7 +334,7 @@ public class Player extends LiveBeing
 	public boolean arrowIsEquipped() { return (equippedArrow != null) ;}
 	private boolean hitCreature() { return (usedPhysicalAtk() | usedSpell()) & closestCreature != null ;}	
 	public boolean shouldLevelUP() { return getExp().getMaxValue() <= getExp().getCurrentValue() ;}
-	private boolean canThrowItem(GeneralItem item)
+	public boolean canThrowItem(GeneralItem item)
 	{
 		if (job != 4) { return false ;}
 		if (!item.isThrowable()) { return false ;}
@@ -1111,8 +1111,8 @@ public class Player extends LiveBeing
 	{
 		if (!spell.getType().equals(SpellTypes.auto)) { return ;}
 		if (spell.getLevel() <= 0) { return ;}
-		if (spell.isActive() & activate) { return ;}
-		if (!spell.isActive() & !activate) { return ;}
+		if (spell.isActive() && activate) { return ;}
+		if (!spell.isActive() && !activate) { return ;}
 
 		switch (spell.getId())
 		{
@@ -1171,76 +1171,20 @@ public class Player extends LiveBeing
 		if (!bag.contains(item)) { Log.warn("Tentando usar item que não tem na mochila!") ; return ;}
 
 		bag.updateRecentlyUsedItem(item) ;
-		if (item instanceof Potion)
-		{
-			Potion pot = (Potion) item ;
-			double powerMult = job == 3 && 1 <= spells.get(7).getLevel() ? 1 + 0.06 * spells.get(7).getLevel() : 1 ;
-			pot.use(this, powerMult) ;
-            // TODO para todos os itens usáveis que aumentam atributos, usar apenas se puder aumentar o atributo, como poções hoje
-			
-			return ;			
-		}
-		if (item instanceof Alchemy)
+		if (!(item instanceof UsableItem)) { return ;}
+
+        if (item instanceof Alchemy)
 		{
 			Alchemy alch = (Alchemy) item ;
-			double powerMult = job == 3 && 1 <= spells.get(7).getLevel() ? 1 + 0.06 * spells.get(7).getLevel() : 1 ;
 			
-			if (job == 3 & 0 < spells.get(10).getLevel() & !spells.get(10).isActive())
+			if (job == 3 && 0 < spells.get(10).getLevel() && !spells.get(10).isActive())
 			{
 				int alchBuffId = Alchemy.isHerb(alch.getId()) ? 10 : Alchemy.isWood(alch.getId()) ? 11 : 12 ;
 				Buff alchBuff = new Buff(Buff.getAllBuffs().get(alchBuffId)) ;
 				alchBuff.applyBuff(spells.get(10).getLevel(), Game.getPet());
 				spells.get(10).activate();
 				Game.getPet().setAlchBuffId(alchBuffId) ;
-			}
-			
-			alch.use(this, powerMult) ;
-			bag.remove(alch, 1) ;
-			
-			return ;			
-		}
-		if (item instanceof Forge)
-		{
-			return ;
-		}
-		if (item instanceof Food)
-		{
-			Food food = (Food) item ;
-			
-			food.use(this) ;
-			bag.remove(food, 1);
-		}
-		if (item instanceof PetItem)
-		{
-			if (Game.getPet() == null) { return ;}
-			PetItem petItem = (PetItem) item ;
-			
-			petItem.use(Game.getPet()) ;
-			
-			return ;			
-		}
-		if (item instanceof Arrow)
-		{
-			if (job != 2) { return ;}
-			
-			Arrow arrow = (Arrow) item ;
-			if (1 <= arrow.getId() & spells.get(4).getLevel() <= 0) { return ;}
-			if (4 <= arrow.getId() & spells.get(4).getLevel() <= 1) { return ;}
-			if (5 <= arrow.getId() & spells.get(4).getLevel() <= 2) { return ;}
-			if (6 <= arrow.getId() & spells.get(4).getLevel() <= 3) { return ;}
-			if (15 <= arrow.getId() & spells.get(4).getLevel() <= 4) { return ;}
-
-			arrow.use(this) ;
-			
-			return ;
-		}
-		if (item instanceof Equip)
-		{
-			Equip equip = (Equip) item ;
-			
-			equip.use(this) ;
-			
-			return ;			
+			}		
 		}
 		if (item instanceof GeneralItem)
 		{
@@ -1252,19 +1196,14 @@ public class Player extends LiveBeing
 				
 				return ;
 			}
-			
-			genItem.use(this) ;
-			
-			return ;
 		}
-		if (item instanceof Fab)
-		{
-			return ;
-		}
-		if (item instanceof QuestItem)
-		{
-			return ;
-		}
+
+        UsableItem usableItem = (UsableItem) item ;
+        if (usableItem.canUse(this))
+        {
+            usableItem.use(this) ;
+            bag.remove(item, 1) ;
+        }
 	}
 	
 	public void switchOpenClose(GameWindow win)

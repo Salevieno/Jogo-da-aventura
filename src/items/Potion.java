@@ -6,13 +6,13 @@ import java.util.List;
 
 import graphics.Align;
 import liveBeings.LiveBeing;
-import main.Game;
+import liveBeings.Player;
 import main.ImageLoader;
 import main.Path;
 import utilities.Util;
 
 
-public class Potion extends Item
+public class Potion extends Item implements UsableItem
 {
 	private final double lifeHeal ;
 	private final double MPHeal ;
@@ -55,24 +55,54 @@ public class Potion extends Item
 		
 		return null ;
 	}
-	
-	public double getLifeHeal() {return lifeHeal ;}
-	public double getMPHeal() {return MPHeal ;}	
+
 	public static Potion[] getAll() {return ALL ;}
-		
-	public void use(LiveBeing target, double powerMult)
+
+    private double calcLifeInc(LiveBeing target)
+    {
+        double powerMult = 1.0 ;
+        if (target instanceof Player)
+        {
+            powerMult = ((Player) target).getPotionMultiplier() ;
+        }
+        return lifeHeal * target.getPA().getLife().getMaxValue() * powerMult ;
+    }
+
+    private double calcMpInc(LiveBeing target)
+    {
+        double powerMult = 1.0 ;
+        if (target instanceof Player)
+        {
+            powerMult = ((Player) target).getPotionMultiplier() ;
+        }
+        return MPHeal * target.getPA().getMp().getMaxValue() * powerMult ;
+    }
+
+    public boolean canUse(LiveBeing user)
+    {
+        if (user == null) { return false ;}
+        if (user.getPA() == null) { return false ;}
+
+        int lifeInc = (int) calcLifeInc(user) ;
+        int mpInc = (int) calcMpInc(user) ;
+
+        if (0 < lifeInc && !user.canIncreasePersonalAttribute(user.getPA().getLife(), lifeInc) && mpInc <= 0) { return false ;}
+        if (lifeInc <= 0 && 0 < mpInc && !user.canIncreasePersonalAttribute(user.getPA().getMp(), mpInc)) { return false ;}
+        if (0 < lifeInc && !user.canIncreasePersonalAttribute(user.getPA().getLife(), lifeInc) && 0 < mpInc && !user.canIncreasePersonalAttribute(user.getPA().getMp(), mpInc)) { return false ;}
+
+        return true ;
+    }
+
+	public void use(LiveBeing user)
 	{
-        int lifeInc = (int) (lifeHeal * target.getPA().getLife().getMaxValue() * powerMult) ;
-        int mpInc = (int) (MPHeal * target.getPA().getMp().getMaxValue() * powerMult) ;
+        if (!canUse(user)) { return ;}
 
-        if (0 < lifeInc && !target.canIncreatePersonalAttribute(target.getPA().getLife(), lifeInc) && mpInc <= 0) { return ;}
-        if (lifeInc <= 0 && 0 < mpInc && !target.canIncreatePersonalAttribute(target.getPA().getMp(), mpInc)) { return ;}
-        if (0 < lifeInc && !target.canIncreatePersonalAttribute(target.getPA().getLife(), lifeInc) && 0 < mpInc && !target.canIncreatePersonalAttribute(target.getPA().getMp(), mpInc)) { return ;}
+        int lifeInc = (int) calcLifeInc(user) ;
+        int mpInc = (int) calcMpInc(user) ;
 
-        target.incPersonalAttribute(target.getPA().getLife(), lifeInc, true);
-        target.incPersonalAttribute(target.getPA().getMp(), mpInc, true);
-        
-        Game.getPlayer().getBag().remove(this, 1) ;
+        user.incPersonalAttribute(user.getPA().getLife(), lifeInc, true);
+        user.incPersonalAttribute(user.getPA().getMp(), mpInc, true);
+
 		// proTODO - bebidas
 	}
 

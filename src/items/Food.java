@@ -12,7 +12,7 @@ import main.Path;
 import utilities.Util;
 
 
-public class Food extends Item
+public class Food extends Item implements UsableItem
 {
 	private final double lifeHeal ;
 	private final double MPHeal ;
@@ -48,12 +48,21 @@ public class Food extends Item
 
 	public static Image imageFromID(int id) { return FOOD_BERRY_ICON ;}
 	
+    public boolean canUse(LiveBeing user)
+    {
+        if (user == null) { return false ;}
+        if (user.getPA() == null) { return false ;}
+        return true ;
+    }
+
 	public void use(LiveBeing user)
 	{
+        if (!canUse(user)) { return ;}
+
 		PersonalAttributes PA = user.getPA() ;
-        user.incPersonalAttribute(user.getPA().getLife(), (int) (lifeHeal * PA.getLife().getMaxValue()), true) ;
-        user.incPersonalAttribute(user.getPA().getMp(), (int) (MPHeal * PA.getMp().getMaxValue()), true) ;
-        user.incPersonalAttribute(user.getPA().getSatiation(), (int) (satiationHeal / 310.0 * PA.getSatiation().getMaxValue()), true) ;
+        user.incPersonalAttribute(PA.getLife(), (int) (lifeHeal * PA.getLife().getMaxValue()), true) ;
+        user.incPersonalAttribute(PA.getMp(), (int) (MPHeal * PA.getMp().getMaxValue()), true) ;
+        user.incPersonalAttribute(PA.getSatiation(), (int) (satiationHeal * PA.getSatiation().getMaxValue()), true) ;
 	}
 
 	public void displayInfo(Point pos, Align align)

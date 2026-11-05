@@ -27,7 +27,7 @@ import screen.Screen;
 import utilities.Util;
 import windows.AttributesWindow;
 
-public class Equip extends Item
+public class Equip extends Item implements UsableItem
 {
 	private final AttributeBonus attBonus ;
 	private final Elements originalElem ;
@@ -237,10 +237,13 @@ public class Equip extends Item
 		BA.getSilence().incDuration(attBonus.getSilenceDuration() * mult) ;
 	}
 	
+    public boolean canUse(LiveBeing user)
+    {
+        return user instanceof Player ;
+    }
+
 	public void use(LiveBeing user)
-	{		
-		if (!(user instanceof Player)) { return ;}
-		
+	{
 		Player player = (Player) user ;
 		int type = numTypeFromID(id) ;
 
@@ -254,7 +257,6 @@ public class Equip extends Item
 		{
 			equip(player, Equip.getAll()[id]) ;
 		}
-		
 	}
 	
 	private void equip(Player player, Equip equip)

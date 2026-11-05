@@ -3,9 +3,8 @@ package items;
 import java.awt.Font;
 import java.awt.Image;
 import java.awt.Point;
-import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Set;
 
 import attributes.Attributes;
 import graphics.Align;
@@ -22,13 +21,14 @@ import maps.GroundType;
 import utilities.Util;
 
 
-public class GeneralItem extends Item
+public class GeneralItem extends Item implements UsableItem
 {
 	private final double power ;
 	private final AttackModifiers atkMod ;
 	private final Elements elem ;	
 	
 	private static final Image GENERAL_ITEM_ICON = ImageLoader.loadImage(Path.WINDOWS_IMG + "bagIcons\\" + "IconGenItem.png") ;
+    private static final Set<Integer> USABLE_ITEM_IDS = Set.of(21, 22, 23, 26, 27, 28, 29, 30, 31, 74, 79, 81, 82, 83, 84, 86, 87, 89, 105, 106, 109, 111) ;
 	private static final GeneralItem[] ALL = new GeneralItem[400];
 	
 	public GeneralItem(int id, int price, double dropChance, int power, Elements elem)
@@ -67,9 +67,7 @@ public class GeneralItem extends Item
 			default -> new AttackModifiers() ;
 		};
 	}
-	
-	public static List<Item> throwableItems() { return Arrays.asList(ALL).stream().filter(item -> item.isThrowable()).collect(Collectors.toList()) ;}
-	
+
 	public boolean isThrowable() { return 0 < power ;}
 
 	public static GeneralItem[] getAll() {return ALL ;}
@@ -82,139 +80,127 @@ public class GeneralItem extends Item
 	{		
 		return GENERAL_ITEM_ICON ;		
 	}
-	
-	public void use(LiveBeing target)
-	{		
+
+    public boolean canUse(LiveBeing user)
+    {
+        return USABLE_ITEM_IDS.contains(id) && user instanceof Player ;
+    }
+
+	public void use(LiveBeing user)
+	{
+        if (!canUse(user)) { return ;}
+
 		switch (id)
 		{
 			case 21:
-				if (!target.isPlayerAlly()) { return ;}
+				if (!user.isPlayerAlly()) { return ;}
 				
-				target.getHpCounter().restart() ;
-                Game.getPlayer().getBag().remove(this, 1) ;				
+				user.getHpCounter().restart() ;				
 				return ;
 				
 			case 22:
-				if (!target.isPlayerAlly()) { return ;}
+				if (!user.isPlayerAlly()) { return ;}
 				
-				target.getStatus().get(Attributes.poison).reset() ;
-                Game.getPlayer().getBag().remove(this, 1) ;				
+				user.getStatus().get(Attributes.poison).reset() ;				
 				return ;
 				
 			case 23:
-				if (!target.isPlayerAlly()) { return ;}
-                if (!target.canIncreatePersonalAttribute(target.getPA().getLife(), 20)) { return ;}
+				if (!user.isPlayerAlly()) { return ;}
+                if (!user.canIncreasePersonalAttribute(user.getPA().getLife(), 20)) { return ;}
 
-                target.incPersonalAttribute(target.getPA().getLife(), 20, true) ;
-                Game.getPlayer().getBag().remove(this, 1) ;
+                user.incPersonalAttribute(user.getPA().getLife(), 20, true) ;
 				return ;
 				
 			case 26, 27, 28: 
-				if (!(target instanceof Player) | !target.isTouching(GroundType.water)) { return ;}
+				if (!(user instanceof Player) | !user.isTouching(GroundType.water)) { return ;}
 				
-				((Player) target).getBag().add(ALL[id + 3], 1) ;
-                Game.getPlayer().getBag().remove(this, 1) ;
+				((Player) user).getBag().add(ALL[id + 3], 1) ;
                 return ;
 			
 			case 29:
-                target.incPersonalAttribute(target.getPA().getThirst(), 30, true) ;
-                Game.getPlayer().getBag().remove(this, 1) ;
+                user.incPersonalAttribute(user.getPA().getThirst(), 30, true) ;
                 return ;
 			
             case 30:
-                target.incPersonalAttribute(target.getPA().getThirst(), 60, true) ; 
-                Game.getPlayer().getBag().remove(this, 1) ;
+                user.incPersonalAttribute(user.getPA().getThirst(), 60, true) ; 
                 return ;
 			
             case 31:
-                target.incPersonalAttribute(target.getPA().getThirst(), 100, true) ; 
-                Game.getPlayer().getBag().remove(this, 1) ;
+                user.incPersonalAttribute(user.getPA().getThirst(), 100, true) ; 
                 return ;
 			
             case 74:
-                target.getsDrunk(20) ; 
-                Game.getPlayer().getBag().remove(this, 1) ;
+                user.getsDrunk(20) ; 
                 return ;
 
 			case 79:
-				target.getBA().getAtkSpeed().incBonus(-target.getStatus().get(Attributes.atkSpeed).getIntensity()) ;
-				target.getBA().getAtkSpeed().incBonus(-0.2) ;
-				target.getBattleActionCounter().setDuration(target.getBA().TotalAtkSpeed()) ;
-				target.getStatus().get(Attributes.atkSpeed).inflictStatus(-0.2, 5) ;
-                Game.getPlayer().getBag().remove(this, 1) ;
+				user.getBA().getAtkSpeed().incBonus(-user.getStatus().get(Attributes.atkSpeed).getIntensity()) ;
+				user.getBA().getAtkSpeed().incBonus(-0.2) ;
+				user.getBattleActionCounter().setDuration(user.getBA().TotalAtkSpeed()) ;
+				user.getStatus().get(Attributes.atkSpeed).inflictStatus(-0.2, 5) ;
                 return ;
 				
 			case 81, 84:
-                target.getStatus().get(Attributes.blood).reset() ;
-                Game.getPlayer().getBag().remove(this, 1) ;
+                user.getStatus().get(Attributes.blood).reset() ;
                 return ;
 			
 			case 82:
-				target.getStatus().get(Attributes.blood).reset() ;
-				target.getBA().getAtkSpeed().incBonus(-target.getStatus().get(Attributes.atkSpeed).getIntensity()) ;
-				target.getBA().getAtkSpeed().incBonus(0.2) ;
-				target.getBattleActionCounter().setDuration(target.getBA().TotalAtkSpeed()) ;
-				target.getStatus().get(Attributes.atkSpeed).inflictStatus(0.2, 5) ;
-                Game.getPlayer().getBag().remove(this, 1) ;
+				user.getStatus().get(Attributes.blood).reset() ;
+				user.getBA().getAtkSpeed().incBonus(-user.getStatus().get(Attributes.atkSpeed).getIntensity()) ;
+				user.getBA().getAtkSpeed().incBonus(0.2) ;
+				user.getBattleActionCounter().setDuration(user.getBA().TotalAtkSpeed()) ;
+				user.getStatus().get(Attributes.atkSpeed).inflictStatus(0.2, 5) ;
                 return ;
 				
 			case 83:
-				target.getBA().getAtkSpeed().incBonus(-target.getStatus().get(Attributes.atkSpeed).getIntensity()) ;
-				target.getBA().getAtkSpeed().incBonus(-0.3) ;
-				target.getBattleActionCounter().setDuration(target.getBA().TotalAtkSpeed()) ;
-				target.getStatus().get(Attributes.atkSpeed).inflictStatus(-0.3, 5) ;
-                Game.getPlayer().getBag().remove(this, 1) ;
+				user.getBA().getAtkSpeed().incBonus(-user.getStatus().get(Attributes.atkSpeed).getIntensity()) ;
+				user.getBA().getAtkSpeed().incBonus(-0.3) ;
+				user.getBattleActionCounter().setDuration(user.getBA().TotalAtkSpeed()) ;
+				user.getStatus().get(Attributes.atkSpeed).inflictStatus(-0.3, 5) ;
                 return ;
 
 			case 86:
-				target.getBA().getDex().incBonus(-target.getStatus().get(Attributes.dex).getIntensity()) ;
-				target.getBA().getDex().incBonus(10) ;
-				target.getStatus().get(Attributes.dex).inflictStatus(10, 100) ;
-                Game.getPlayer().getBag().remove(this, 1) ;
+				user.getBA().getDex().incBonus(-user.getStatus().get(Attributes.dex).getIntensity()) ;
+				user.getBA().getDex().incBonus(10) ;
+				user.getStatus().get(Attributes.dex).inflictStatus(10, 100) ;
                 return ;
 				
 			case 87:
-				target.getBA().getDex().incBonus(-target.getStatus().get(Attributes.dex).getIntensity()) ;
-				target.getBA().getDex().incBonus(20) ;
-				target.getStatus().get(Attributes.dex).inflictStatus(20, 100) ;
-                Game.getPlayer().getBag().remove(this, 1) ;
+				user.getBA().getDex().incBonus(-user.getStatus().get(Attributes.dex).getIntensity()) ;
+				user.getBA().getDex().incBonus(20) ;
+				user.getStatus().get(Attributes.dex).inflictStatus(20, 100) ;
                 return ;
 				
 			case 89:
-				target.getBA().getMagAtk().incBonus(-target.getStatus().get(Attributes.magAtk).getIntensity()) ;
-				target.getBA().getMagDef().incBonus(-target.getStatus().get(Attributes.magDef).getIntensity()) ;
-				target.getBA().getPhyDef().incBonus(-target.getStatus().get(Attributes.phyDef).getIntensity()) ;
-				target.getBA().getMagAtk().incBonus(5) ;
-				target.getBA().getMagDef().incBonus(5) ;
-				target.getBA().getPhyDef().incBonus(5) ;
-				target.getStatus().get(Attributes.magAtk).inflictStatus(5, 100) ;
-				target.getStatus().get(Attributes.magDef).inflictStatus(5, 100) ;
-				target.getStatus().get(Attributes.phyDef).inflictStatus(5, 100) ;
-                Game.getPlayer().getBag().remove(this, 1) ;
+				user.getBA().getMagAtk().incBonus(-user.getStatus().get(Attributes.magAtk).getIntensity()) ;
+				user.getBA().getMagDef().incBonus(-user.getStatus().get(Attributes.magDef).getIntensity()) ;
+				user.getBA().getPhyDef().incBonus(-user.getStatus().get(Attributes.phyDef).getIntensity()) ;
+				user.getBA().getMagAtk().incBonus(5) ;
+				user.getBA().getMagDef().incBonus(5) ;
+				user.getBA().getPhyDef().incBonus(5) ;
+				user.getStatus().get(Attributes.magAtk).inflictStatus(5, 100) ;
+				user.getStatus().get(Attributes.magDef).inflictStatus(5, 100) ;
+				user.getStatus().get(Attributes.phyDef).inflictStatus(5, 100) ;
                 return ;
 				
 			case 105:
-                target.getsDrunk(50) ;
-                Game.getPlayer().getBag().remove(this, 1) ;
+                user.getsDrunk(50) ;
                 return ;
 
 			case 106:
-                target.getsDrunk(150) ;
-                Game.getPlayer().getBag().remove(this, 1) ;
+                user.getsDrunk(150) ;
                 return ;
 			
 			case 109:
-				target.getBA().getAgi().incBonus(-target.getStatus().get(Attributes.agi).getIntensity()) ;
-				target.getBA().getAgi().incBonus(-10) ;
-				target.getStatus().get(Attributes.agi).inflictStatus(-10, 100) ;
-                Game.getPlayer().getBag().remove(this, 1) ;
+				user.getBA().getAgi().incBonus(-user.getStatus().get(Attributes.agi).getIntensity()) ;
+				user.getBA().getAgi().incBonus(-10) ;
+				user.getStatus().get(Attributes.agi).inflictStatus(-10, 100) ;
                 return ;
 				
 			case 111: 
-				if (!target.isPlayerAlly()) { return ;}
+				if (!user.isPlayerAlly()) { return ;}
 				
-				target.getStatus().get(Attributes.silence).reset() ;
-                Game.getPlayer().getBag().remove(this, 1) ;			
+				user.getStatus().get(Attributes.silence).reset() ;			
 				return ;
 		}
 	}
