@@ -43,32 +43,6 @@ public abstract class Battle
 		return mult ;
 	}
 
-	public static AtkResults calcPhysicalAtk(LiveBeing attacker, LiveBeing receiver)
-	{
-		double arrowPower = 0 ;
-		if (attacker.actionIsArrowAtk())
-		{
-			arrowPower += ((Player) attacker).getEquippedArrow().getAtkPower() ;
-		}
-		
-		double atkDex = attacker.getBA().TotalDex() ;
-		double defAgi = receiver.getBA().TotalAgi() ;
-		double atkCrit = attacker.getBA().TotalCritAtkChance() ;
-		double defCrit = receiver.getBA().TotalCritDefChance() ;
-		double defBlock = receiver.getBA().getBlock().totalDefChance() ;
-		double atkPhyAtk = attacker.getBA().TotalPhyAtk() ;
-		double defPhyDef = receiver.getBA().TotalPhyDef() ;
-		Elements[] atkElems = attacker.atkElems() ;
-		Elements[] defElems = receiver.defElems() ;
-		double elemRes = receiver.defElems()[0] != null ? attacker.getBA().getElemResistanceMult().get(receiver.defElems()[0]) : 1.0 ;
-		
-		AtkEffects effect = calcEffect(atkDex, defAgi, atkCrit, defCrit, defBlock) ;
-		int damage = calcDamage(effect, atkPhyAtk + arrowPower, defPhyDef, atkElems, defElems, elemRes) ;
-		Map<Attributes, Double> inflictedStatus = calcStatus(attacker.getBA().baseAtkChances(), receiver.getBA().baseDefChances(), attacker.getBA().baseDurations()) ;				
-		
-		return new AtkResults(AtkTypes.physical, effect, damage, inflictedStatus) ;
-	}
-
 	public static AtkEffects calcEffect(double dex, double agi, double critAtk, double critDef, double blockDef)
 	{
 		if (block(blockDef))

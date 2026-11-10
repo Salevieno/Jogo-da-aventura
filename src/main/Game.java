@@ -60,7 +60,6 @@ public class Game
 		// hot keys
 	// optionalTODO - unificar throw item, calcPhysicalAtk e useSpell dos liveBeings
 	// optionalTODO - magias e flechas são projéteis que precisam acertar o oponente para dar dano
-    // TODO fome causa redução da força
     // TODO corrigir criaturas ficando presas nos cantos do mapa
     // optionalTODO window shake
     // optionalTODO animação item indo até a mochila ao ser adicionado

@@ -115,11 +115,16 @@ public abstract class LiveBeing implements Drawable
 	public abstract Point center() ;
 	public abstract Point headPos() ;
 
+    private double calcStrengthReduction()
+    {
+        return 1 - PA.getSatiation().getRate() ;
+    }
+
     private AtkResults calcAtkResults(AtkTypes atkType, LiveBeing receiver)
 	{
 		switch (atkType)
 		{
-			case physical: return Battle.calcPhysicalAtk(this, receiver) ;
+			case physical: return calcPhysicalAtk(receiver) ;
 				
 			case magical:
 			{
@@ -144,6 +149,35 @@ public abstract class LiveBeing implements Drawable
 			}
 			default: return new AtkResults() ;
 		}
+	}
+
+	public AtkResults calcPhysicalAtk(LiveBeing receiver)
+	{
+		double arrowPower = 0 ;
+		if (actionIsArrowAtk())
+		{
+			arrowPower += ((Player) this).getEquippedArrow().getAtkPower() ;
+		}
+		
+        double strengthReduction = calcStrengthReduction() ;
+        System.out.println("Strength reduction: " + (1 - strengthReduction)) ;
+		double atkDex = BA.TotalDex() ;
+		double defAgi = receiver.getBA().TotalAgi() ;
+		double atkCrit = BA.TotalCritAtkChance() ;
+		double defCrit = receiver.getBA().TotalCritDefChance() ;
+		double defBlock = receiver.getBA().getBlock().totalDefChance() ;
+		double atkPhyAtk = BA.TotalPhyAtk() ;
+		double defPhyDef = receiver.getBA().TotalPhyDef() ;
+		Elements[] atkElems = atkElems() ;
+		Elements[] defElems = receiver.defElems() ;
+		double elemRes = receiver.defElems()[0] != null ? BA.getElemResistanceMult().get(receiver.defElems()[0]) : 1.0 ;
+		
+		AtkEffects effect = Battle.calcEffect(atkDex, defAgi, atkCrit, defCrit, defBlock) ;
+		int damage = Battle.calcDamage(effect, atkPhyAtk * (1 - strengthReduction) + arrowPower, defPhyDef, atkElems, defElems, elemRes) ;
+		System.out.println("damage: " + damage) ;
+        Map<Attributes, Double> inflictedStatus = Battle.calcStatus(BA.baseAtkChances(), receiver.getBA().baseDefChances(), BA.baseDurations()) ;				
+		
+		return new AtkResults(AtkTypes.physical, effect, damage, inflictedStatus) ;
 	}
 
 	protected AtkResults performAtk(AtkTypes atkType, LiveBeing receiver)
@@ -209,6 +243,7 @@ public abstract class LiveBeing implements Drawable
 		if (spell == null) { return null ;}
 		if (receiver == null) { Log.warn(name + " trying to use offensive spell in no one") ; return null ;}
 
+        double strengthReduction = calcStrengthReduction() ;
 		double basicAtk = BA.getMagAtk().totalModified(spell.getAttMod(Attributes.magAtk)) ;
 		double basicDef = receiver.getBA().getMagDef().totalModified(spell.getAttMod(Attributes.magDef)) ;
 		double atkDex = BA.getDex().totalModified(spell.getAttMod(Attributes.dex)) ;
@@ -221,7 +256,7 @@ public abstract class LiveBeing implements Drawable
         atkElems[0] = spell.getElem() ;
 
 		AtkEffects effect = Battle.calcEffect(atkDex, defAgi, atkCrit, defCrit, receiver.getBA().getBlock().totalDefChance()) ;
-		int damage = Battle.calcDamage(effect, basicAtk, basicDef, atkElems, receiver.defElems(), receiverElemMod) ;
+		int damage = Battle.calcDamage(effect, basicAtk * (1 - strengthReduction), basicDef, atkElems, receiver.defElems(), receiverElemMod) ;
         // TODO são consideradas apenas as chances da magia de aplicar status, deve considerar também as chances-base do atacante
 		Map<Attributes, Double> inflictedStatus = Battle.calcStatus(spell.getSpecialAtt(), receiver.getBA().baseDefChances(), BA.baseDurations()) ;				
 		
