@@ -505,6 +505,8 @@ public class Game
 		GameTextButton.updateAllTextSize() ;
 	}
 
+    public static boolean thereIsFetchingItem() { return Game.getPlayer().getBag().getItemFetched() != null ;}
+
 	protected void keyPressedAction(KeyEvent event)
 	{
 		int keyCode = event.getKeyCode();

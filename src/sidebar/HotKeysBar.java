@@ -23,25 +23,26 @@ import utilities.Util;
 
 public abstract class HotKeysBar
 {
-    private static final int QTD_ITEMS = 3 ;
+    private static final int QTD_SLOTS = 3 ;
     private static List<Item> hotItems = Arrays.asList(null, null, null) ;
     private static final List<Point> SLOT_CENTER ;
     private static final List<Point> KEY_TEXT_POS ;
     private static final List<Point> ITEM_NAME_POS ;
     
-	private static final Image SLOT_TRANSPARENT_IMAGE = ImageLoader.loadImage(Path.SIDEBAR_IMG + "SlotTransparent.png") ;
-	private static final Dimension SLOT_SIZE = Util.getSize(SLOT_TRANSPARENT_IMAGE) ;
+	private static final Image SLOT_IMAGE = ImageLoader.loadImage(Path.SIDEBAR_IMG + "SlotTransparent.png") ;
+	private static final Image SLOT_FETCHING_IMAGE = ImageLoader.loadImage(Path.SIDEBAR_IMG + "SlotFetching.png") ;
+	private static final Dimension SLOT_SIZE = Util.getSize(SLOT_IMAGE) ;
 	private static final Font FONT = new Font(Game.getMainFontName(), Font.BOLD, 14) ;
 	private static final Color TEXT_COLOR = Palette.colors[0] ;
 	private static final Image IMAGE = ImageLoader.loadImage(Path.SIDEBAR_IMG + "HotBar.png") ;
 	private static final Point BAR_POS = new Point(Screen.getMe().mapSize().width + 2, Screen.getMe().getSize().height - 10) ;
-// TODO highlight empty slots when an item is fetched 
+
     static
     {
-        SLOT_CENTER = new ArrayList<>(QTD_ITEMS) ;
-        KEY_TEXT_POS = new ArrayList<>(QTD_ITEMS) ;
-        ITEM_NAME_POS = new ArrayList<>(QTD_ITEMS) ;
-        for (int i = 0 ; i <= QTD_ITEMS - 1 ; i += 1)
+        SLOT_CENTER = new ArrayList<>(QTD_SLOTS) ;
+        KEY_TEXT_POS = new ArrayList<>(QTD_SLOTS) ;
+        ITEM_NAME_POS = new ArrayList<>(QTD_SLOTS) ;
+        for (int i = 0 ; i <= QTD_SLOTS - 1 ; i += 1)
         {
             SLOT_CENTER.add(Util.translate(topLeft(), 13, 16 + 24 * i)) ;
             KEY_TEXT_POS.add(Util.translate(SLOT_CENTER.get(i), SLOT_SIZE.width / 2 + 6, SLOT_SIZE.height / 2)) ;
@@ -65,7 +66,7 @@ public abstract class HotKeysBar
 
 	public static int getSlotHoveredIndex(Point mousePos)
 	{
-		for (int i = 0 ; i <= QTD_ITEMS - 1 ; i += 1)
+		for (int i = 0 ; i <= QTD_SLOTS - 1 ; i += 1)
 		{
 			if (Util.isInside(mousePos, UtilAlignment.getTopLeft(SLOT_CENTER.get(i), Align.center, SLOT_SIZE), SLOT_SIZE))
 			{
@@ -80,9 +81,9 @@ public abstract class HotKeysBar
 	{
 		GamePanel.getDP().drawImage(IMAGE, BAR_POS, Align.bottomLeft) ;
 		
-		for (int i = 0 ; i <= QTD_ITEMS - 1 ; i += 1)
+		for (int i = 0 ; i <= QTD_SLOTS - 1 ; i += 1)
 		{
-			GamePanel.getDP().drawImage(SLOT_TRANSPARENT_IMAGE, SLOT_CENTER.get(i), Align.center) ;
+			GamePanel.getDP().drawImage(Game.thereIsFetchingItem() ? SLOT_FETCHING_IMAGE : SLOT_IMAGE, SLOT_CENTER.get(i), Align.center) ;
 			GamePanel.getDP().drawText(KEY_TEXT_POS.get(i), Align.bottomLeft, Player.getHotKeys()[i], FONT, TEXT_COLOR) ;
 			
 			if (hotItems.get(i) == null) { continue ;}

@@ -160,7 +160,6 @@ public abstract class LiveBeing implements Drawable
 		}
 		
         double strengthReduction = calcStrengthReduction() ;
-        System.out.println("Strength reduction: " + (1 - strengthReduction)) ;
 		double atkDex = BA.TotalDex() ;
 		double defAgi = receiver.getBA().TotalAgi() ;
 		double atkCrit = BA.TotalCritAtkChance() ;
@@ -174,7 +173,6 @@ public abstract class LiveBeing implements Drawable
 		
 		AtkEffects effect = Battle.calcEffect(atkDex, defAgi, atkCrit, defCrit, defBlock) ;
 		int damage = Battle.calcDamage(effect, atkPhyAtk * (1 - strengthReduction) + arrowPower, defPhyDef, atkElems, defElems, elemRes) ;
-		System.out.println("damage: " + damage) ;
         Map<Attributes, Double> inflictedStatus = Battle.calcStatus(BA.baseAtkChances(), receiver.getBA().baseDefChances(), BA.baseDurations()) ;				
 		
 		return new AtkResults(AtkTypes.physical, effect, damage, inflictedStatus) ;

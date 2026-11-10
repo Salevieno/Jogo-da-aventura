@@ -47,6 +47,7 @@ public class ShopBag
     private static final int SPACING_Y = 24 ;
     private static final int MAX_ITEMS_DISPLAYED = 7 ;
     private static final Image SHOP_BAG_IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "ShopBag.png") ;
+    private static final Image SHOP_BAG_FETCHING_IMAGE = ImageLoader.loadImage(Path.WINDOWS_IMG + "ShopBagFetching.png") ;
     private static final Dimension BAG_SIZE = Util.getSize(SHOP_BAG_IMAGE) ;
     private static final Set<ShopBag> ALL = new HashSet<>() ;
 
@@ -206,7 +207,7 @@ public class ShopBag
 
     protected void display()
     {
-        GamePanel.getDP().drawImage(SHOP_BAG_IMAGE, topLeftPos, Align.topLeft) ;
+        GamePanel.getDP().drawImage(Game.thereIsFetchingItem() ? SHOP_BAG_FETCHING_IMAGE : SHOP_BAG_IMAGE, topLeftPos, Align.topLeft) ;
 
         for (int i = 0 ; i <= qtdItemsOnDisplay - 1 ; i += 1)
         {
